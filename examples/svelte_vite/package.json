@@ -5,8 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"start": "node dist/index.cjs",
-		"example": "vite build && node dist/index.cjs"
+		"start": "node --conditions=browser dist/index.cjs",
+		"example": "vite build && node --conditions=browser dist/index.cjs"
 	},
 	"dependencies": {
 		"@wolfie/svelte": "workspace:*"
