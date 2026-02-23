@@ -17,7 +17,7 @@ import {
 
 //#region Types
 
-export type Framework = 'react' | 'vue' | 'angular' | 'solid'
+export type Framework = 'react' | 'vue' | 'angular' | 'solid' | 'svelte'
 
 /**
  * Wolfie plugin options.
@@ -59,8 +59,9 @@ export const unpluginFactory: UnpluginFactory<[Framework, WolfieOptions?]> = (
 ): UnpluginOptions | UnpluginOptions[] => {
 	const isVue = framework === 'vue'
 	const isAngular = framework === 'angular'
-	// Hardcoded: React uses camelCase, Vue/Angular use kebab-case
-	const camelCase = !isVue && !isAngular
+	const isSvelte = framework === 'svelte'
+	// WHY: Svelte uses kebab-case class names (same as Vue/Angular)
+	const camelCase = !isVue && !isAngular && !isSvelte
 
 	// Main CSS transform plugin
 	const mainPlugin: UnpluginOptions = {
