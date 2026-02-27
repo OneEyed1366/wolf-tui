@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   checks:
-    name: lint / typecheck / test / build
+    name: lint / build / typecheck / test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,18 +29,55 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Build
+        run: pnpm build
+
       - name: Typecheck
         run: pnpm typecheck
 
       - name: Unit tests
         run: pnpm test
 
-      - name: Build
-        run: pnpm build
+  native:
+    name: Build native bindings (Linux x64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: internal/core -> target
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build native bindings
+        working-directory: internal/core
+        run: pnpm build:rust
+
+      - name: Upload native bindings
+        uses: actions/upload-artifact@v4
+        with:
+          name: wolfie-core-node
+          path: internal/core/*.node
+          if-no-files-found: error
 
   e2e:
     name: E2E tests (Playwright)
-    needs: checks
+    needs: [checks, native]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -57,16 +94,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Download native bindings
+        uses: actions/download-artifact@v4
+        with:
+          name: wolfie-core-node
+          path: internal/core
+
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
 
       - name: Install Playwright + system deps
         run: npx playwright install --with-deps chromium
 
-      - name: Build all apps
+      - name: Build all packages
         run: pnpm build
 
       - name: E2E tests

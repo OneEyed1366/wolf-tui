@@ -56,7 +56,7 @@ jobs:
       - name: Cache Rust build
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: internal/core/rust -> target
+          workspaces: internal/core -> target
           key: ${{ matrix.target }}
 
       - name: Install dependencies

@@ -5,6 +5,7 @@
   "packages/solid": "1.1.0",
   "packages/svelte": "1.0.0",
   "packages/plugin": "1.1.0",
+  "packages/typescript-plugin": "1.0.1",
   "internal/core": "1.1.0",
   "internal/css-parser": "1.1.0",
   "internal/shared": "1.1.0"

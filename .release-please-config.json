@@ -9,6 +9,7 @@
     "packages/solid": { "component": "solid" },
     "packages/svelte": { "component": "svelte" },
     "packages/plugin": { "component": "plugin" },
+    "packages/typescript-plugin": { "component": "typescript-plugin" },
     "internal/core": { "component": "core" },
     "internal/css-parser": { "component": "css-parser" },
     "internal/shared": { "component": "shared" }
