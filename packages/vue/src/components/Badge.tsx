@@ -5,7 +5,12 @@ import {
 	type DefineComponent,
 } from 'vue'
 import type { Styles } from '@wolfie/core'
-import { Text, type TextProps } from './Text'
+import {
+	renderBadge,
+	defaultBadgeTheme,
+	type BadgeRenderTheme,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface BadgeProps {
@@ -21,31 +26,7 @@ export interface BadgeProps {
 	 */
 	color?: Styles['color']
 }
-
-export type BadgeTheme = {
-	styles: {
-		container: (props: { color?: Styles['color'] }) => Partial<TextProps>
-		label: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const badgeTheme: BadgeTheme = {
-	styles: {
-		container: ({ color }): Partial<TextProps> => ({
-			style: {
-				backgroundColor: color,
-			},
-		}),
-		label: (): Partial<TextProps> => ({
-			style: {
-				color: 'black',
-			},
-		}),
-	},
-}
-//#endregion Theme
 
 //#region Helpers
 function extractTextFromSlot(children: VNode[] | undefined): string | null {
@@ -54,12 +35,10 @@ function extractTextFromSlot(children: VNode[] | undefined): string | null {
 	const firstChild = children[0]
 	if (!firstChild) return null
 
-	// Direct string in slot
 	if (typeof firstChild === 'string') {
 		return firstChild
 	}
 
-	// VNode with children property
 	if (
 		firstChild &&
 		typeof firstChild === 'object' &&
@@ -69,7 +48,6 @@ function extractTextFromSlot(children: VNode[] | undefined): string | null {
 		if (typeof nodeChildren === 'string') {
 			return nodeChildren
 		}
-		// Handle array of children
 		if (Array.isArray(nodeChildren) && nodeChildren.length > 0) {
 			const text = nodeChildren[0]
 			if (typeof text === 'string') {
@@ -95,24 +73,19 @@ export const Badge: DefineComponent<{ color?: Styles['color'] }> =
 		setup(props, { slots }) {
 			return () => {
 				const { color } = props
-				const { styles } = badgeTheme
+				const { styles } = defaultBadgeTheme
 
 				const children = slots.default?.()
 				const text = extractTextFromSlot(children)
-				const displayContent: VNode[] | string | undefined = text
+				const label = text
 					? text.toUpperCase()
-					: children
+					: String(children?.[0] ?? '')
 
-				const result = (
-					<Text {...styles.container({ color })}>
-						{' '}
-						<Text {...styles.label()}>{displayContent}</Text>{' '}
-					</Text>
-				)
-				return result
+				return wNodeToVue(renderBadge({ label, color }, { styles }))
 			}
 		},
 	})
 //#endregion Component
 
+export { defaultBadgeTheme as badgeTheme, type BadgeRenderTheme as BadgeTheme }
 export type { BadgeProps as Props, BadgeProps as IProps }

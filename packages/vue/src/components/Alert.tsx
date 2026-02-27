@@ -1,10 +1,14 @@
 import { defineComponent, type PropType, type VNode } from 'vue'
-import figures from 'figures'
-import { Box, type BoxProps } from './Box'
-import { Text, type TextProps } from './Text'
+import {
+	renderAlert,
+	defaultAlertTheme,
+	type AlertRenderTheme,
+	type AlertVariant,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
-export type AlertVariant = 'info' | 'success' | 'error' | 'warning'
+export { type AlertVariant }
 
 export interface AlertProps {
 	/**
@@ -22,79 +26,25 @@ export interface AlertProps {
 	 */
 	title?: string
 }
-
-export type AlertTheme = {
-	styles: {
-		container: (props: { variant: AlertVariant }) => Partial<BoxProps>
-		iconContainer: () => Partial<BoxProps>
-		icon: (props: { variant: AlertVariant }) => Partial<TextProps>
-		content: () => Partial<BoxProps>
-		title: () => Partial<TextProps>
-		message: () => Partial<TextProps>
-	}
-	config: (props: { variant: AlertVariant }) => {
-		icon: string
-	}
-}
 //#endregion Types
 
-//#region Theme
-const colorByVariant: Record<AlertVariant, string> = {
-	info: 'blue',
-	success: 'green',
-	error: 'red',
-	warning: 'yellow',
+//#region Helpers
+function extractTextFromSlot(children: VNode[] | undefined): string {
+	if (!children || children.length === 0) return ''
+	const firstChild = children[0]
+	if (!firstChild) return ''
+	if (typeof firstChild === 'string') return firstChild
+	if (typeof firstChild === 'object' && 'children' in firstChild) {
+		const nodeChildren = firstChild.children
+		if (typeof nodeChildren === 'string') return nodeChildren
+		if (Array.isArray(nodeChildren) && nodeChildren.length > 0) {
+			const text = nodeChildren[0]
+			if (typeof text === 'string') return text
+		}
+	}
+	return ''
 }
-
-const iconByVariant: Record<AlertVariant, string> = {
-	info: figures.info,
-	success: figures.tick,
-	error: figures.cross,
-	warning: figures.warning,
-}
-
-export const alertTheme: AlertTheme = {
-	styles: {
-		container: ({ variant }): Partial<BoxProps> => ({
-			style: {
-				flexGrow: 1,
-				borderStyle: 'round',
-				borderColor: colorByVariant[variant],
-				gap: 1,
-				paddingX: 1,
-			},
-		}),
-		iconContainer: (): Partial<BoxProps> => ({
-			style: {
-				flexShrink: 0,
-			},
-		}),
-		icon: ({ variant }): Partial<TextProps> => ({
-			style: {
-				color: colorByVariant[variant],
-			},
-		}),
-		content: (): Partial<BoxProps> => ({
-			style: {
-				flexShrink: 1,
-				flexGrow: 1,
-				minWidth: 0,
-				flexDirection: 'column',
-				gap: 1,
-			},
-		}),
-		title: (): Partial<TextProps> => ({
-			style: {
-				fontWeight: 'bold',
-			},
-		}),
-		message: (): Partial<TextProps> => ({}),
-	},
-	config({ variant }) {
-		return { icon: iconByVariant[variant] }
-	},
-}
-//#endregion Theme
+//#endregion Helpers
 
 //#region Component
 export const Alert = defineComponent({
@@ -110,28 +60,16 @@ export const Alert = defineComponent({
 		},
 	},
 	setup(props, { slots }) {
+		const { styles, config } = defaultAlertTheme
+
 		return () => {
 			const { variant, title } = props
-			const { styles, config } = alertTheme
-
-			const result = (
-				<Box {...styles.container({ variant })}>
-					<Box {...styles.iconContainer()}>
-						<Text {...styles.icon({ variant })}>
-							{config({ variant }).icon}
-						</Text>
-					</Box>
-
-					<Box {...styles.content()}>
-						{title && <Text {...styles.title()}>{title}</Text>}
-						<Text {...styles.message()}>{slots.default?.()}</Text>
-					</Box>
-				</Box>
-			)
-			return result
+			const message = extractTextFromSlot(slots.default?.())
+			return wNodeToVue(renderAlert({ variant, title, message }, { styles, config }))
 		}
 	},
 })
 //#endregion Component
 
+export { defaultAlertTheme as alertTheme, type AlertRenderTheme as AlertTheme }
 export type { AlertProps as Props, AlertProps as IProps }

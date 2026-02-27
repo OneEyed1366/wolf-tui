@@ -2,16 +2,18 @@ import {
 	defineComponent,
 	toRef,
 	type PropType,
-	type VNode,
 	type DefineComponent,
 } from 'vue'
-import { Box } from './Box'
-import { Text } from './Text'
-import { SelectOption, selectTheme, type SelectTheme } from './SelectOption'
+import {
+	renderSelect,
+	defaultSelectTheme,
+	type SelectRenderTheme,
+} from '@wolfie/shared'
 import { useComponentTheme } from '../theme'
 import type { Option } from '../types'
 import { useSelectState } from '../composables/use-select-state'
 import { useSelect } from '../composables/use-select'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface SelectProps {
@@ -100,51 +102,26 @@ export const Select: DefineComponent<SelectProps> = defineComponent({
 
 		useSelect({ isDisabled: toRef(props, 'isDisabled'), state })
 
-		const theme = useComponentTheme<SelectTheme>('Select')
-		const { styles } = theme ?? selectTheme
+		const theme = useComponentTheme<SelectRenderTheme>('Select')
+		const { styles } = theme ?? defaultSelectTheme
 
 		return () => {
-			const result = (
-				<Box {...styles.container()}>
-					{state.visibleOptions.value.map((option) => {
-						let label: VNode | VNode[] | string = option.label
-
-						if (
-							props.highlightText &&
-							option.label.includes(props.highlightText)
-						) {
-							const index = option.label.indexOf(props.highlightText)
-
-							label = (
-								<>
-									{option.label.slice(0, index)}
-									<Text {...styles.highlightedText()}>
-										{props.highlightText}
-									</Text>
-									{option.label.slice(index + props.highlightText.length)}
-								</>
-							) as unknown as VNode
-						}
-
-						return (
-							<SelectOption
-								key={option.value}
-								isFocused={
-									!props.isDisabled && state.focusedValue.value === option.value
-								}
-								isSelected={state.value.value === option.value}
-							>
-								{label}
-							</SelectOption>
-						)
-					})}
-				</Box>
+			return wNodeToVue(
+				renderSelect(
+					{
+						visibleOptions: state.visibleOptions.value,
+						focusedValue: state.focusedValue.value,
+						value: state.value.value,
+						isDisabled: props.isDisabled ?? false,
+						highlightText: props.highlightText,
+					},
+					{ styles }
+				)
 			)
-			return result
 		}
 	},
 })
 //#endregion Component
 
-export { selectTheme, type SelectTheme }
+export { defaultSelectTheme as selectTheme, type SelectRenderTheme as SelectTheme }
 export type { SelectProps as Props, SelectProps as IProps }
