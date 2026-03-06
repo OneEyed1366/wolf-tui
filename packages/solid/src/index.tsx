@@ -42,6 +42,7 @@ export interface RenderOptions {
 	debug?: boolean
 	isScreenReaderEnabled?: boolean
 	theme?: ITheme
+	incrementalRendering?: boolean
 }
 
 interface Focusable {
@@ -87,7 +88,9 @@ class WolfieSolid {
 		this.layoutTree = new TaffyLayoutTree()
 		this.rootNode = createNode('wolfie-root' as ElementNames, this.layoutTree)
 
-		this.log = logUpdate.create(this.stdout)
+		this.log = logUpdate.create(this.stdout, {
+			incremental: options.incrementalRendering ?? true,
+		})
 		this.eventEmitter = new EventEmitter()
 		this.lastTerminalWidth = this.getTerminalWidth()
 

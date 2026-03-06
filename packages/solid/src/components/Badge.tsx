@@ -1,7 +1,12 @@
-import { type JSX, splitProps } from 'solid-js'
+import { type JSX, splitProps, createMemo } from 'solid-js'
 import type { Styles } from '@wolfie/core'
-import { Box } from './Box'
-import { Text } from './Text'
+import {
+	renderBadge,
+	defaultBadgeTheme,
+	type BadgeRenderTheme,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../theme'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export interface IBadgeProps {
@@ -12,12 +17,18 @@ export interface IBadgeProps {
 //#endregion Types
 
 export function Badge(props: IBadgeProps): JSX.Element {
-	const [local] = splitProps(props, ['children', 'color', 'style'])
+	const [local] = splitProps(props, ['children', 'color'])
 
-	return (
-		<Box style={{ backgroundColor: local.color ?? 'magenta', ...local.style }}>
-			{/* WHY: space padding mirrors React Badge for consistent terminal appearance */}
-			<Text style={{ color: '#ffffff' }}> {local.children} </Text>
-		</Box>
-	)
+	const theme = useComponentTheme<BadgeRenderTheme>('Badge')
+	const { styles } = theme ?? defaultBadgeTheme
+
+	const wnode = createMemo(() => {
+		const label = String(local.children ?? '').toUpperCase()
+		return renderBadge(
+			{ label, color: local.color as Styles['color'] },
+			{ styles }
+		)
+	})
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }

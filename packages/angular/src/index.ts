@@ -57,6 +57,7 @@ export {
 
 // Components
 export {
+	WNodeOutletComponent,
 	BoxComponent,
 	TextComponent,
 	NewlineComponent,

@@ -8,10 +8,10 @@ import {
 	computed,
 	ChangeDetectionStrategy,
 } from '@angular/core'
-import { TextComponent } from '../text/text.component'
 import { injectInput, type Key } from '../../services/stdin.service'
 import { FocusService } from '../../services/focus.service'
-import type { Styles } from '@wolfie/core'
+import { renderConfirmInput, defaultConfirmInputTheme } from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface ConfirmInputProps {
@@ -53,8 +53,8 @@ export interface ConfirmInputProps {
 @Component({
 	selector: 'w-confirm-input',
 	standalone: true,
-	imports: [TextComponent],
-	template: `<w-text [style]="textStyle()">{{ displayText() }}</w-text>`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmInputComponent implements OnInit, OnDestroy {
@@ -87,15 +87,12 @@ export class ConfirmInputComponent implements OnInit, OnDestroy {
 		return !this.isDisabled && this.isFocused()
 	})
 
-	protected displayText = computed(() => {
-		return this.defaultChoice === 'confirm' ? 'Y/n' : 'y/N'
-	})
-
-	protected textStyle = computed((): Partial<Styles> => {
-		return {
-			color: this.isFocused() ? undefined : 'gray',
-		}
-	})
+	protected readonly wnode = computed(() =>
+		renderConfirmInput(
+			{ defaultChoice: this.defaultChoice, isDisabled: this.isDisabled },
+			defaultConfirmInputTheme
+		)
+	)
 	//#endregion Computed State
 
 	//#region Constructor

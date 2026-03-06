@@ -8,12 +8,14 @@ import {
 	signal,
 	computed,
 } from '@angular/core'
-import { BoxComponent } from '../box/box.component'
-import { TextComponent } from '../text/text.component'
-import { MultiSelectOptionComponent } from './multi-select-option.component'
 import { injectInput, type Key } from '../../services/stdin.service'
-import { OptionMap, type Option } from '@wolfie/shared'
-import type { Styles } from '@wolfie/core'
+import {
+	OptionMap,
+	type Option,
+	renderMultiSelect,
+	defaultMultiSelectTheme,
+} from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface MultiSelectProps {
@@ -53,25 +55,8 @@ export interface MultiSelectProps {
 @Component({
 	selector: 'w-multi-select',
 	standalone: true,
-	imports: [BoxComponent, TextComponent, MultiSelectOptionComponent],
-	template: `
-		<w-box [style]="containerStyle">
-			@for (option of visibleOptions(); track option.value) {
-				<w-multi-select-option
-					[isFocused]="!isDisabled && focusedValue() === option.value"
-					[isSelected]="value().includes(option.value)"
-				>
-					@if (highlightText && option.label.includes(highlightText)) {
-						{{ getBeforeHighlight(option.label)
-						}}<w-text [style]="highlightStyle">{{ highlightText }}</w-text
-						>{{ getAfterHighlight(option.label) }}
-					} @else {
-						{{ option.label }}
-					}
-				</w-multi-select-option>
-			}
-		</w-box>
-	`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MultiSelectComponent implements OnInit, OnDestroy {
@@ -105,16 +90,6 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
 	@Output() submitSelection = new EventEmitter<string[]>()
 	//#endregion Outputs
 
-	//#region Styles
-	readonly containerStyle: Partial<Styles> = {
-		flexDirection: 'column',
-	}
-
-	readonly highlightStyle: Partial<Styles> = {
-		fontWeight: 'bold',
-	}
-	//#endregion Styles
-
 	//#region Computed State
 	readonly visibleOptions = computed(() => {
 		const options = this.lastOptions()
@@ -122,6 +97,19 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
 			.map((option, index) => ({ ...option, index }))
 			.slice(this.visibleFromIndex(), this.visibleToIndex())
 	})
+
+	readonly wnode = computed(() =>
+		renderMultiSelect(
+			{
+				visibleOptions: this.visibleOptions(),
+				focusedValue: this.focusedValue(),
+				value: this.value(),
+				isDisabled: this._isDisabled(),
+				highlightText: this.highlightText,
+			},
+			defaultMultiSelectTheme
+		)
+	)
 	//#endregion Computed State
 
 	//#region Constructor
@@ -131,20 +119,6 @@ export class MultiSelectComponent implements OnInit, OnDestroy {
 		})
 	}
 	//#endregion Constructor
-
-	//#region Highlight Helpers
-	getBeforeHighlight(label: string): string {
-		if (!this.highlightText) return label
-		const index = label.indexOf(this.highlightText)
-		return index >= 0 ? label.slice(0, index) : label
-	}
-
-	getAfterHighlight(label: string): string {
-		if (!this.highlightText) return ''
-		const index = label.indexOf(this.highlightText)
-		return index >= 0 ? label.slice(index + this.highlightText.length) : ''
-	}
-	//#endregion Highlight Helpers
 
 	//#region State Operations
 	private focusNextOption(): void {

@@ -10,9 +10,10 @@ import {
 	ChangeDetectionStrategy,
 } from '@angular/core'
 import chalk from 'chalk'
-import { TextComponent } from '../text/text.component'
 import { injectInput, type Key } from '../../services/stdin.service'
 import { FocusService } from '../../services/focus.service'
+import { renderTextInput, defaultTextInputTheme } from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface TextInputProps {
@@ -58,8 +59,8 @@ const CURSOR = chalk.inverse(' ')
 @Component({
 	selector: 'w-text-input',
 	standalone: true,
-	imports: [TextComponent],
-	template: `<w-text>{{ inputValue() }}</w-text>`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextInputComponent implements OnInit, OnDestroy {
@@ -169,6 +170,10 @@ export class TextInputComponent implements OnInit, OnDestroy {
 			? this.renderedValue()
 			: this.renderedPlaceholder()
 	})
+
+	protected readonly wnode = computed(() =>
+		renderTextInput({ inputValue: this.inputValue() }, defaultTextInputTheme)
+	)
 	//#endregion Computed State
 
 	//#region Constructor

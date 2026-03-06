@@ -8,12 +8,14 @@ import {
 	signal,
 	computed,
 } from '@angular/core'
-import { BoxComponent } from '../box/box.component'
-import { TextComponent } from '../text/text.component'
-import { SelectOptionComponent } from './select-option.component'
 import { injectInput, type Key } from '../../services/stdin.service'
-import { OptionMap, type Option } from '@wolfie/shared'
-import type { Styles } from '@wolfie/core'
+import {
+	OptionMap,
+	type Option,
+	renderSelect,
+	defaultSelectTheme,
+} from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface SelectProps {
@@ -52,25 +54,8 @@ export interface SelectProps {
 @Component({
 	selector: 'w-select',
 	standalone: true,
-	imports: [BoxComponent, TextComponent, SelectOptionComponent],
-	template: `
-		<w-box [style]="containerStyle">
-			@for (option of visibleOptions(); track option.value) {
-				<w-select-option
-					[isFocused]="!isDisabled && focusedValue() === option.value"
-					[isSelected]="value() === option.value"
-				>
-					@if (highlightText && option.label.includes(highlightText)) {
-						{{ getBeforeHighlight(option.label)
-						}}<w-text [style]="highlightStyle">{{ highlightText }}</w-text
-						>{{ getAfterHighlight(option.label) }}
-					} @else {
-						{{ option.label }}
-					}
-				</w-select-option>
-			}
-		</w-box>
-	`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent implements OnInit, OnDestroy {
@@ -103,16 +88,6 @@ export class SelectComponent implements OnInit, OnDestroy {
 	@Output() selectChange = new EventEmitter<string>()
 	//#endregion Outputs
 
-	//#region Styles
-	readonly containerStyle: Partial<Styles> = {
-		flexDirection: 'column',
-	}
-
-	readonly highlightStyle: Partial<Styles> = {
-		fontWeight: 'bold',
-	}
-	//#endregion Styles
-
 	//#region Computed State
 	readonly visibleOptions = computed(() => {
 		const options = this.lastOptions()
@@ -120,6 +95,19 @@ export class SelectComponent implements OnInit, OnDestroy {
 			.map((option, index) => ({ ...option, index }))
 			.slice(this.visibleFromIndex(), this.visibleToIndex())
 	})
+
+	readonly wnode = computed(() =>
+		renderSelect(
+			{
+				visibleOptions: this.visibleOptions(),
+				focusedValue: this.focusedValue(),
+				value: this.value(),
+				isDisabled: this._isDisabled(),
+				highlightText: this.highlightText,
+			},
+			defaultSelectTheme
+		)
+	)
 	//#endregion Computed State
 
 	//#region Constructor
@@ -129,20 +117,6 @@ export class SelectComponent implements OnInit, OnDestroy {
 		})
 	}
 	//#endregion Constructor
-
-	//#region Highlight Helpers
-	getBeforeHighlight(label: string): string {
-		if (!this.highlightText) return label
-		const index = label.indexOf(this.highlightText)
-		return index >= 0 ? label.slice(0, index) : label
-	}
-
-	getAfterHighlight(label: string): string {
-		if (!this.highlightText) return ''
-		const index = label.indexOf(this.highlightText)
-		return index >= 0 ? label.slice(index + this.highlightText.length) : ''
-	}
-	//#endregion Highlight Helpers
 
 	//#region State Operations
 	private focusNextOption(): void {
