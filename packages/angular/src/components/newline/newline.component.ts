@@ -1,4 +1,11 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core'
+import {
+	Component,
+	Input,
+	computed,
+	ChangeDetectionStrategy,
+} from '@angular/core'
+import { renderNewline } from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region NewlineComponent
 /**
@@ -7,13 +14,15 @@ import { Component, ChangeDetectionStrategy } from '@angular/core'
 @Component({
 	selector: 'w-newline',
 	standalone: true,
-	template: ``,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	host: {
-		'[style.height]': '1',
-	},
 })
 export class NewlineComponent {
-	constructor() {}
+	@Input() count = 1
+
+	protected readonly wnode = computed(() =>
+		renderNewline({ count: this.count })
+	)
 }
 //#endregion NewlineComponent

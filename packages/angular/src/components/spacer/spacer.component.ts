@@ -1,4 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core'
+import { renderSpacer } from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region SpacerComponent
 /**
@@ -7,13 +9,12 @@ import { Component, ChangeDetectionStrategy } from '@angular/core'
 @Component({
 	selector: 'w-spacer',
 	standalone: true,
-	template: ``,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	host: {
-		'[style.flexGrow]': '1',
-	},
 })
 export class SpacerComponent {
-	constructor() {}
+	// WHY: not a computed() — renderSpacer() is a static constant, no signals
+	protected readonly wnode = renderSpacer()
 }
 //#endregion SpacerComponent
