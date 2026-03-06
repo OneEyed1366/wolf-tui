@@ -988,12 +988,18 @@ importers:
       cli-spinners:
         specifier: ^3.4.0
         version: 3.4.0
+      code-excerpt:
+        specifier: ^4.0.0
+        version: 4.0.0
       es-toolkit:
         specifier: ^1.39.10
         version: 1.44.0
       figures:
         specifier: ^6.1.0
         version: 6.1.0
+      stack-utils:
+        specifier: ^2.0.6
+        version: 2.0.6
 
   internal/spec:
     dependencies:
