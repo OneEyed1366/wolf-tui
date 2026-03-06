@@ -1,5 +1,6 @@
 import { defineComponent } from 'vue'
-import { Box } from './Box'
+import { renderSpacer } from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 /**
  * A flexible space that expands along the major axis of its containing layout.
@@ -9,8 +10,6 @@ import { Box } from './Box'
 export const Spacer = defineComponent({
 	name: 'Spacer',
 	setup() {
-		return () => {
-			return <Box style={{ flexGrow: 1 }} />
-		}
+		return () => wNodeToVue(renderSpacer())
 	},
 })
