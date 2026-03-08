@@ -24,7 +24,8 @@
 	],
 	"dependencies": {
 		"cli-spinners": "^3.4.0",
-		"es-toolkit": "^1.39.10"
+		"es-toolkit": "^1.39.10",
+		"figures": "^6.1.0"
 	},
 	"peerDependencies": {
 		"@wolfie/core": "workspace:*",

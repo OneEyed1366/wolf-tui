@@ -1,4 +1,6 @@
 import { defineComponent, type PropType } from 'vue'
+import { renderNewline } from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface NewlineProps {
@@ -24,7 +26,7 @@ export const Newline = defineComponent({
 	setup(props) {
 		return () => {
 			const count = props.count ?? 1
-			return <wolfie-text>{'\n'.repeat(count)}</wolfie-text>
+			return wNodeToVue(renderNewline({ count }))
 		}
 	},
 })

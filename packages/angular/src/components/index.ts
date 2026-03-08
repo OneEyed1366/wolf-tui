@@ -1,3 +1,4 @@
+export { WNodeOutletComponent } from './wnode-outlet/wnode-outlet.component'
 export { BoxComponent } from './box/box.component'
 export { TextComponent } from './text/text.component'
 export { NewlineComponent } from './newline/newline.component'

@@ -48,6 +48,7 @@ async function verify() {
 		stderr,
 		debug: false,
 		maxFps: 30,
+		incrementalRendering: false,
 	})
 
 	await delay(200)

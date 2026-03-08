@@ -1,12 +1,13 @@
-import type { ReactNode } from 'react'
-import { Box } from '../Box'
-import { Text } from '../Text'
+import {
+	renderSelect,
+	defaultSelectTheme,
+	type SelectRenderTheme,
+} from '@wolfie/shared'
+import type { Option } from '@wolfie/shared'
 import { useComponentTheme } from '../../theme/theme'
-import type { Option } from '../types'
-import { SelectOption } from './SelectOption'
 import { useSelectState } from './use-select-state'
 import { useSelect } from './use-select'
-import type { Theme } from './theme'
+import { wNodeToReact } from '../../wnode/wnode-to-react'
 
 //#region Types
 export type ISelectProps = {
@@ -71,36 +72,20 @@ export function Select({
 
 	useSelect({ isDisabled, state })
 
-	const { styles } = useComponentTheme<Theme>('Select')
+	const theme = useComponentTheme<SelectRenderTheme>('Select')
+	const { styles } = theme ?? defaultSelectTheme
 
-	return (
-		<Box {...styles.container()}>
-			{state.visibleOptions.map((option) => {
-				let label: ReactNode = option.label
-
-				if (highlightText && option.label.includes(highlightText)) {
-					const index = option.label.indexOf(highlightText)
-
-					label = (
-						<>
-							{option.label.slice(0, index)}
-							<Text {...styles.highlightedText()}>{highlightText}</Text>
-							{option.label.slice(index + highlightText.length)}
-						</>
-					)
-				}
-
-				return (
-					<SelectOption
-						key={option.value}
-						isFocused={!isDisabled && state.focusedValue === option.value}
-						isSelected={state.value === option.value}
-					>
-						{label}
-					</SelectOption>
-				)
-			})}
-		</Box>
+	return wNodeToReact(
+		renderSelect(
+			{
+				visibleOptions: state.visibleOptions,
+				focusedValue: state.focusedValue,
+				value: state.value,
+				isDisabled,
+				highlightText,
+			},
+			{ styles }
+		)
 	)
 }
 //#endregion Component

@@ -53,6 +53,7 @@ async function verify() {
 		stderr,
 		debug: true,
 		exitOnCtrlC: false,
+		incrementalRendering: false,
 	})
 
 	await delay(500)

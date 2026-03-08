@@ -30,6 +30,7 @@ export interface WolfieOptions {
 	debug?: boolean
 	isScreenReaderEnabled?: boolean
 	exitOnCtrlC?: boolean
+	incrementalRendering?: boolean
 }
 
 export type WolfieAngularInstance = {
@@ -79,7 +80,9 @@ export class WolfieAngular {
 			: rawLayoutTree
 		this.rootNode = createNode('wolfie-root' as ElementNames, this.layoutTree)
 
-		this.log = logUpdate.create(this.stdout)
+		this.log = logUpdate.create(this.stdout, {
+			incremental: options.incrementalRendering ?? true,
+		})
 		this.eventEmitter = new EventEmitter()
 		this.lastTerminalWidth = this.getTerminalWidth()
 

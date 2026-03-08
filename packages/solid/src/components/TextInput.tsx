@@ -1,8 +1,13 @@
-import { type JSX, splitProps } from 'solid-js'
-import { Text, type TextProps } from './Text'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import { type JSX, splitProps, createMemo } from 'solid-js'
 import { useTextInputState } from '../composables/use-text-input-state'
 import { useTextInput } from '../composables/use-text-input'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../theme'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export interface ITextInputProps {
@@ -13,21 +18,7 @@ export interface ITextInputProps {
 	onChange?: (value: string) => void
 	onSubmit?: (value: string) => void
 }
-
-export type TextInputTheme = IComponentTheme & {
-	styles: {
-		value: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const textInputTheme: TextInputTheme = {
-	styles: {
-		value: (): Partial<TextProps> => ({}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export function TextInput(props: ITextInputProps): JSX.Element {
@@ -53,9 +44,14 @@ export function TextInput(props: ITextInputProps): JSX.Element {
 		state,
 	})
 
-	const theme = useComponentTheme<TextInputTheme>('TextInput')
-	const { styles } = theme ?? textInputTheme
+	const theme = useComponentTheme<TextInputRenderTheme>('TextInput')
+	const { styles } = theme ?? defaultTextInputTheme
 
-	return <Text {...styles.value()}>{inputValue()}</Text>
+	// inputValue() is a signal accessor — createMemo tracks it
+	const wnode = createMemo(() =>
+		renderTextInput({ inputValue: inputValue() }, { styles })
+	)
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }
 //#endregion Component

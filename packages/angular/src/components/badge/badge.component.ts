@@ -1,19 +1,14 @@
-import type { OnInit, OnDestroy } from '@angular/core'
+import type { OnInit, OnDestroy, OnChanges } from '@angular/core'
 import {
 	Component,
 	Input,
 	ChangeDetectionStrategy,
 	signal,
 	computed,
-	inject,
 } from '@angular/core'
 import type { Styles } from '@wolfie/core'
-import { TextComponent } from '../text/text.component'
-import {
-	THEME_CONTEXT,
-	useComponentTheme,
-	type IComponentTheme,
-} from '../../theme'
+import { renderBadge, defaultBadgeTheme } from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface BadgeProps {
@@ -23,21 +18,13 @@ export interface BadgeProps {
 	 * @default "magenta"
 	 */
 	color?: Styles['color']
+
+	/**
+	 * Label text.
+	 */
+	label?: string
 }
 //#endregion Types
-
-//#region Theme
-export const badgeTheme: IComponentTheme = {
-	styles: {
-		container: (color: Styles['color']): Partial<Styles> => ({
-			backgroundColor: color,
-		}),
-		label: (): Partial<Styles> => ({
-			color: 'black',
-		}),
-	},
-}
-//#endregion Theme
 
 //#region BadgeComponent
 /**
@@ -46,38 +33,23 @@ export const badgeTheme: IComponentTheme = {
 @Component({
 	selector: 'w-badge',
 	standalone: true,
-	imports: [TextComponent],
-	template: `
-		<w-text [style]="containerStyle()">
-			{{ ' ' }}<w-text [style]="labelStyle()"><ng-content /></w-text>{{ ' ' }}
-		</w-text>
-	`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BadgeComponent implements OnInit, OnDestroy {
+export class BadgeComponent implements OnInit, OnDestroy, OnChanges {
 	//#region Inputs
 	@Input() color: Styles['color'] = 'magenta'
+	@Input() label = ''
 	//#endregion Inputs
-
-	//#region Theme
-	private readonly theme = inject(THEME_CONTEXT)
-	private readonly componentTheme = computed(
-		() => useComponentTheme<IComponentTheme>(this.theme, 'Badge') ?? badgeTheme
-	)
-	//#endregion Theme
 
 	//#region Internal State
 	private _color = signal<Styles['color']>('magenta')
 	//#endregion Internal State
 
 	//#region Computed Properties
-	readonly containerStyle = computed(
-		() =>
-			this.componentTheme().styles?.container?.(this._color()) ??
-			badgeTheme.styles!.container(this._color())
-	)
-	readonly labelStyle = computed(
-		() => this.componentTheme().styles?.label?.() ?? badgeTheme.styles!.label()
+	readonly wnode = computed(() =>
+		renderBadge({ color: this._color(), label: this.label }, defaultBadgeTheme)
 	)
 	//#endregion Computed Properties
 

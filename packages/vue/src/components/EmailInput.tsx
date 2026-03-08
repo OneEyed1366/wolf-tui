@@ -1,8 +1,13 @@
 import { defineComponent, type PropType, type DefineComponent } from 'vue'
-import { Text, type TextProps } from './Text'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import { useComponentTheme } from '../theme'
 import { useEmailInputState } from '../composables/use-email-input-state'
 import { useEmailInput } from '../composables/use-email-input'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface EmailInputProps {
@@ -40,21 +45,7 @@ export interface EmailInputProps {
 	 */
 	onSubmit?: (value: string) => void
 }
-
-export type EmailInputTheme = IComponentTheme & {
-	styles: {
-		value: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const emailInputTheme: EmailInputTheme = {
-	styles: {
-		value: (): Partial<TextProps> => ({}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export const EmailInput: DefineComponent<EmailInputProps> = defineComponent({
@@ -99,14 +90,20 @@ export const EmailInput: DefineComponent<EmailInputProps> = defineComponent({
 			state,
 		})
 
-		const theme = useComponentTheme<EmailInputTheme>('EmailInput')
-		const { styles } = theme ?? emailInputTheme
+		const theme = useComponentTheme<TextInputRenderTheme>('EmailInput')
+		const { styles } = theme ?? defaultTextInputTheme
 
 		return () => {
-			return <Text {...styles.value()}>{inputValue.value}</Text>
+			return wNodeToVue(
+				renderTextInput({ inputValue: inputValue.value }, { styles })
+			)
 		}
 	},
 })
 //#endregion Component
 
+export {
+	defaultTextInputTheme as emailInputTheme,
+	type TextInputRenderTheme as EmailInputTheme,
+}
 export type { EmailInputProps as Props, EmailInputProps as IProps }

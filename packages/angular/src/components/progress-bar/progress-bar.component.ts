@@ -1,4 +1,4 @@
-import type { OnInit, OnDestroy, AfterViewInit } from '@angular/core'
+import type { OnInit, OnDestroy, AfterViewInit, OnChanges } from '@angular/core'
 import {
 	Component,
 	Input,
@@ -8,16 +8,10 @@ import {
 	ElementRef,
 	inject,
 } from '@angular/core'
-import type { Styles, DOMElement } from '@wolfie/core'
+import type { DOMElement } from '@wolfie/core'
 import { measureElement } from '@wolfie/core'
-import figures from 'figures'
-import { BoxComponent } from '../box/box.component'
-import { TextComponent } from '../text/text.component'
-import {
-	THEME_CONTEXT,
-	useComponentTheme,
-	type IComponentTheme,
-} from '../../theme'
+import { renderProgressBar, defaultProgressBarTheme } from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface ProgressBarProps {
@@ -31,30 +25,6 @@ export interface ProgressBarProps {
 }
 //#endregion Types
 
-//#region Theme
-export const progressBarTheme: IComponentTheme = {
-	styles: {
-		container: (): Partial<Styles> => ({
-			flexGrow: 1,
-			minWidth: 0,
-		}),
-		completed: (): Partial<Styles> => ({
-			color: 'magenta',
-		}),
-		remaining: (): Partial<Styles> => ({
-			color: 'gray',
-		}),
-	},
-	config: () => ({
-		// Character for rendering a completed bar
-		completedCharacter: figures.square,
-
-		// Character for rendering a remaining bar
-		remainingCharacter: figures.squareLightShade,
-	}),
-}
-//#endregion Theme
-
 //#region ProgressBarComponent
 /**
  * `<w-progress-bar>` displays a visual progress indicator.
@@ -62,20 +32,13 @@ export const progressBarTheme: IComponentTheme = {
 @Component({
 	selector: 'w-progress-bar',
 	standalone: true,
-	imports: [BoxComponent, TextComponent],
-	template: `
-		<w-box [style]="containerStyle()">
-			@if (complete() > 0) {
-				<w-text [style]="completedStyle()">{{ completedBar() }}</w-text>
-			}
-			@if (remaining() > 0) {
-				<w-text [style]="remainingStyle()">{{ remainingBar() }}</w-text>
-			}
-		</w-box>
-	`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressBarComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProgressBarComponent
+	implements OnInit, OnDestroy, AfterViewInit, OnChanges
+{
 	//#region Inputs
 	@Input({ required: true }) value!: number
 	//#endregion Inputs
@@ -84,63 +47,18 @@ export class ProgressBarComponent implements OnInit, OnDestroy, AfterViewInit {
 	private elementRef = inject(ElementRef)
 	//#endregion Injected Dependencies
 
-	//#region Theme
-	private readonly theme = inject(THEME_CONTEXT)
-	private readonly componentTheme = computed(
-		() =>
-			useComponentTheme<IComponentTheme>(this.theme, 'ProgressBar') ??
-			progressBarTheme
-	)
-	//#endregion Theme
-
 	//#region Internal State
 	private _value = signal(0)
 	private _width = signal(0)
 	//#endregion Internal State
 
 	//#region Computed Properties
-	readonly containerStyle = computed(
-		() =>
-			this.componentTheme().styles?.container?.() ??
-			progressBarTheme.styles!.container()
+	readonly wnode = computed(() =>
+		renderProgressBar(
+			{ value: this._value(), width: this._width() },
+			defaultProgressBarTheme
+		)
 	)
-	readonly completedStyle = computed(
-		() =>
-			this.componentTheme().styles?.completed?.() ??
-			progressBarTheme.styles!.completed()
-	)
-	readonly remainingStyle = computed(
-		() =>
-			this.componentTheme().styles?.remaining?.() ??
-			progressBarTheme.styles!.remaining()
-	)
-
-	readonly progress = computed(() => Math.min(100, Math.max(0, this._value())))
-	readonly complete = computed(() =>
-		Math.round((this.progress() / 100) * this._width())
-	)
-	readonly remaining = computed(() => this._width() - this.complete())
-
-	readonly completedBar = computed(() => {
-		const config = this.componentTheme().config?.() as
-			| { completedCharacter: string }
-			| undefined
-		const char =
-			config?.completedCharacter ??
-			(progressBarTheme.config!() as { completedCharacter: string })
-				.completedCharacter
-		return char.repeat(this.complete())
-	})
-	readonly remainingBar = computed(() => {
-		const config = this.componentTheme().config?.() as
-			| { remainingCharacter: string }
-			| undefined
-		const char =
-			config?.remainingCharacter ??
-			(progressBarTheme.config!() as { remainingCharacter: string })
-				.remainingCharacter
-		return char.repeat(this.remaining())
-	})
 	//#endregion Computed Properties
 
 	//#region Lifecycle
@@ -156,7 +74,6 @@ export class ProgressBarComponent implements OnInit, OnDestroy, AfterViewInit {
 
 	ngOnChanges(): void {
 		this._value.set(this.value)
-		// Width is measured once in ngAfterViewInit - no need to remeasure on value changes
 	}
 	//#endregion Lifecycle
 

@@ -4,9 +4,14 @@ import {
 	type PropType,
 	type DefineComponent,
 } from 'vue'
-import { Text, type TextProps } from './Text'
 import { useInput } from '../composables/use-input'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import { useComponentTheme } from '../theme'
+import {
+	renderConfirmInput,
+	defaultConfirmInputTheme,
+	type ConfirmInputRenderTheme,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface ConfirmInputProps {
@@ -42,25 +47,7 @@ export interface ConfirmInputProps {
 	 */
 	onCancel: () => void
 }
-
-export type ConfirmInputTheme = IComponentTheme & {
-	styles: {
-		input: (props: { isFocused: boolean }) => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const confirmInputTheme: ConfirmInputTheme = {
-	styles: {
-		input: ({ isFocused }: { isFocused: boolean }): Partial<TextProps> => ({
-			style: {
-				color: isFocused ? undefined : 'gray',
-			},
-		}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export const ConfirmInput: DefineComponent<ConfirmInputProps> = defineComponent(
@@ -112,14 +99,18 @@ export const ConfirmInput: DefineComponent<ConfirmInputProps> = defineComponent(
 				{ isActive }
 			)
 
-			const theme = useComponentTheme<ConfirmInputTheme>('ConfirmInput')
-			const { styles } = theme ?? confirmInputTheme
+			const theme = useComponentTheme<ConfirmInputRenderTheme>('ConfirmInput')
+			const { styles } = theme ?? defaultConfirmInputTheme
 
 			return () => {
-				return (
-					<Text {...styles.input({ isFocused: !props.isDisabled })}>
-						{props.defaultChoice === 'confirm' ? 'Y/n' : 'y/N'}
-					</Text>
+				return wNodeToVue(
+					renderConfirmInput(
+						{
+							defaultChoice: props.defaultChoice ?? 'confirm',
+							isDisabled: props.isDisabled ?? false,
+						},
+						{ styles }
+					)
 				)
 			}
 		},
@@ -127,4 +118,8 @@ export const ConfirmInput: DefineComponent<ConfirmInputProps> = defineComponent(
 )
 //#endregion Component
 
+export {
+	defaultConfirmInputTheme as confirmInputTheme,
+	type ConfirmInputRenderTheme as ConfirmInputTheme,
+}
 export type { ConfirmInputProps as Props, ConfirmInputProps as IProps }

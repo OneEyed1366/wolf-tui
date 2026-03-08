@@ -2,20 +2,18 @@ import {
 	defineComponent,
 	toRef,
 	type PropType,
-	type VNode,
 	type DefineComponent,
 } from 'vue'
-import { Box } from './Box'
-import { Text } from './Text'
 import {
-	MultiSelectOption,
-	multiSelectTheme,
-	type MultiSelectTheme,
-} from './MultiSelectOption'
+	renderMultiSelect,
+	defaultMultiSelectTheme,
+	type MultiSelectRenderTheme,
+} from '@wolfie/shared'
 import { useComponentTheme } from '../theme'
 import type { Option } from '../types'
 import { useMultiSelectState } from '../composables/use-multi-select-state'
 import { useMultiSelect } from '../composables/use-multi-select'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface MultiSelectProps {
@@ -116,51 +114,29 @@ export const MultiSelect: DefineComponent<MultiSelectProps> = defineComponent({
 
 		useMultiSelect({ isDisabled: toRef(props, 'isDisabled'), state })
 
-		const theme = useComponentTheme<MultiSelectTheme>('MultiSelect')
-		const { styles } = theme ?? multiSelectTheme
+		const theme = useComponentTheme<MultiSelectRenderTheme>('MultiSelect')
+		const { styles } = theme ?? defaultMultiSelectTheme
 
 		return () => {
-			const result = (
-				<Box {...styles.container()}>
-					{state.visibleOptions.value.map((option) => {
-						let label: VNode | VNode[] | string = option.label
-
-						if (
-							props.highlightText &&
-							option.label.includes(props.highlightText)
-						) {
-							const index = option.label.indexOf(props.highlightText)
-
-							label = (
-								<>
-									{option.label.slice(0, index)}
-									<Text {...styles.highlightedText()}>
-										{props.highlightText}
-									</Text>
-									{option.label.slice(index + props.highlightText.length)}
-								</>
-							) as unknown as VNode
-						}
-
-						return (
-							<MultiSelectOption
-								key={option.value}
-								isFocused={
-									!props.isDisabled && state.focusedValue.value === option.value
-								}
-								isSelected={state.value.value.includes(option.value)}
-							>
-								{label}
-							</MultiSelectOption>
-						)
-					})}
-				</Box>
+			return wNodeToVue(
+				renderMultiSelect(
+					{
+						visibleOptions: state.visibleOptions.value,
+						focusedValue: state.focusedValue.value,
+						value: state.value.value,
+						isDisabled: props.isDisabled ?? false,
+						highlightText: props.highlightText,
+					},
+					{ styles }
+				)
 			)
-			return result
 		}
 	},
 })
 //#endregion Component
 
-export { multiSelectTheme, type MultiSelectTheme }
+export {
+	defaultMultiSelectTheme as multiSelectTheme,
+	type MultiSelectRenderTheme as MultiSelectTheme,
+}
 export type { MultiSelectProps as Props, MultiSelectProps as IProps }

@@ -1,8 +1,12 @@
-import { Text } from '../Text'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
 import { useComponentTheme } from '../../theme/theme'
 import { useTextInputState } from './use-text-input-state'
 import { useTextInput } from './use-text-input'
-import type { Theme } from './theme'
+import { wNodeToReact } from '../../wnode/wnode-to-react'
 
 export type ITextInputProps = {
 	/**
@@ -59,7 +63,8 @@ export function TextInput({
 		state,
 	})
 
-	const { styles } = useComponentTheme<Theme>('TextInput')
+	const theme = useComponentTheme<TextInputRenderTheme>('TextInput')
+	const { styles } = theme ?? defaultTextInputTheme
 
-	return <Text {...styles.value()}>{inputValue}</Text>
+	return wNodeToReact(renderTextInput({ inputValue }, { styles }))
 }

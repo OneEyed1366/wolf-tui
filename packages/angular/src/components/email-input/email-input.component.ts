@@ -10,10 +10,14 @@ import {
 	ChangeDetectionStrategy,
 } from '@angular/core'
 import chalk from 'chalk'
-import { DEFAULT_DOMAINS } from '@wolfie/shared'
-import { TextComponent } from '../text/text.component'
+import {
+	DEFAULT_DOMAINS,
+	renderTextInput,
+	defaultTextInputTheme,
+} from '@wolfie/shared'
 import { injectInput, type Key } from '../../services/stdin.service'
 import { FocusService } from '../../services/focus.service'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface EmailInputProps {
@@ -61,8 +65,8 @@ const CURSOR = chalk.inverse(' ')
 @Component({
 	selector: 'w-email-input',
 	standalone: true,
-	imports: [TextComponent],
-	template: `<w-text>{{ inputValue() }}</w-text>`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmailInputComponent implements OnInit, OnDestroy {
@@ -175,6 +179,10 @@ export class EmailInputComponent implements OnInit, OnDestroy {
 			? this.renderedValue()
 			: this.renderedPlaceholder()
 	})
+
+	protected readonly wnode = computed(() =>
+		renderTextInput({ inputValue: this.inputValue() }, defaultTextInputTheme)
+	)
 	//#endregion Computed State
 
 	//#region Constructor

@@ -9,4 +9,4 @@ export {
 	type SelectState,
 } from './use-select-state'
 export { useSelect, type UseSelectProps } from './use-select'
-export { default as selectTheme, type Theme as SelectTheme } from './theme'
+export { selectTheme, type Theme as SelectTheme } from './theme'

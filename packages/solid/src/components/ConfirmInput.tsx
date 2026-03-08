@@ -1,7 +1,12 @@
 import { type JSX, createMemo, splitProps } from 'solid-js'
-import { Text, type TextProps } from './Text'
 import { useInput } from '../composables/use-input'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import {
+	renderConfirmInput,
+	defaultConfirmInputTheme,
+	type ConfirmInputRenderTheme,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../theme'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export interface IConfirmInputProps {
@@ -11,25 +16,7 @@ export interface IConfirmInputProps {
 	onConfirm: () => void
 	onCancel: () => void
 }
-
-export type ConfirmInputTheme = IComponentTheme & {
-	styles: {
-		input: (props: { isFocused: boolean }) => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const confirmInputTheme: ConfirmInputTheme = {
-	styles: {
-		input: ({ isFocused }: { isFocused: boolean }): Partial<TextProps> => ({
-			style: {
-				color: isFocused ? undefined : 'gray',
-			},
-		}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export function ConfirmInput(props: IConfirmInputProps): JSX.Element {
@@ -62,13 +49,19 @@ export function ConfirmInput(props: IConfirmInputProps): JSX.Element {
 		{ isActive }
 	)
 
-	const theme = useComponentTheme<ConfirmInputTheme>('ConfirmInput')
-	const { styles } = theme ?? confirmInputTheme
+	const theme = useComponentTheme<ConfirmInputRenderTheme>('ConfirmInput')
+	const { styles } = theme ?? defaultConfirmInputTheme
 
-	return (
-		<Text {...styles.input({ isFocused: !local.isDisabled })}>
-			{(local.defaultChoice ?? 'confirm') === 'confirm' ? 'Y/n' : 'y/N'}
-		</Text>
+	const wnode = createMemo(() =>
+		renderConfirmInput(
+			{
+				defaultChoice: local.defaultChoice ?? 'confirm',
+				isDisabled: local.isDisabled ?? false,
+			},
+			{ styles }
+		)
 	)
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }
 //#endregion Component

@@ -1,12 +1,13 @@
-import type { ReactNode } from 'react'
-import { Box } from '../Box'
-import { Text } from '../Text'
+import {
+	renderMultiSelect,
+	defaultMultiSelectTheme,
+	type MultiSelectRenderTheme,
+} from '@wolfie/shared'
+import type { Option } from '@wolfie/shared'
 import { useComponentTheme } from '../../theme/theme'
-import type { Option } from '../types'
-import { MultiSelectOption } from './MultiSelectOption'
 import { useMultiSelectState } from './use-multi-select-state'
 import { useMultiSelect } from './use-multi-select'
-import type { Theme } from './theme'
+import { wNodeToReact } from '../../wnode/wnode-to-react'
 
 //#region Types
 export type IMultiSelectProps = {
@@ -80,36 +81,20 @@ export function MultiSelect({
 
 	useMultiSelect({ isDisabled, state })
 
-	const { styles } = useComponentTheme<Theme>('MultiSelect')
+	const theme = useComponentTheme<MultiSelectRenderTheme>('MultiSelect')
+	const { styles } = theme ?? defaultMultiSelectTheme
 
-	return (
-		<Box {...styles.container()}>
-			{state.visibleOptions.map((option) => {
-				let label: ReactNode = option.label
-
-				if (highlightText && option.label.includes(highlightText)) {
-					const index = option.label.indexOf(highlightText)
-
-					label = (
-						<>
-							{option.label.slice(0, index)}
-							<Text {...styles.highlightedText()}>{highlightText}</Text>
-							{option.label.slice(index + highlightText.length)}
-						</>
-					)
-				}
-
-				return (
-					<MultiSelectOption
-						key={option.value}
-						isFocused={!isDisabled && state.focusedValue === option.value}
-						isSelected={state.value.includes(option.value)}
-					>
-						{label}
-					</MultiSelectOption>
-				)
-			})}
-		</Box>
+	return wNodeToReact(
+		renderMultiSelect(
+			{
+				visibleOptions: state.visibleOptions,
+				focusedValue: state.focusedValue,
+				value: state.value,
+				isDisabled,
+				highlightText,
+			},
+			{ styles }
+		)
 	)
 }
 //#endregion Component

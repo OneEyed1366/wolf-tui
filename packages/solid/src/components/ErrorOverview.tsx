@@ -1,10 +1,14 @@
 import * as fs from 'node:fs'
 import { cwd } from 'node:process'
-import { type JSX, For, Show } from 'solid-js'
+import { type JSX, createMemo } from 'solid-js'
 import StackUtils from 'stack-utils'
-import codeExcerpt, { type CodeExcerpt } from 'code-excerpt'
-import { Box } from './Box'
-import { Text } from './Text'
+import codeExcerpt from 'code-excerpt'
+import {
+	renderErrorOverview,
+	type ErrorOverviewData,
+	type ErrorOverviewStackFrame,
+} from '@wolfie/shared'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export interface IErrorOverviewProps {
@@ -32,134 +36,60 @@ const stackUtils = new StackUtils({
  * It parses the error stack, extracts file locations, and shows surrounding code.
  */
 export function ErrorOverview(props: IErrorOverviewProps): JSX.Element {
-	const stack = () =>
-		props.error.stack ? props.error.stack.split('\n').slice(1) : undefined
+	const wnode = createMemo(() => {
+		const { error } = props
+		const stack = error.stack ? error.stack.split('\n').slice(1) : undefined
+		const origin = stack ? stackUtils.parseLine(stack[0]!) : undefined
+		const filePath = cleanupPath(origin?.file)
+		let excerpt: Array<{ line: number; value: string }> | undefined
+		let lineWidth = 0
 
-	const origin = () => {
-		const s = stack()
-		return s ? stackUtils.parseLine(s[0]!) : undefined
-	}
-
-	const filePath = () => cleanupPath(origin()?.file)
-
-	const excerptData = ():
-		| { excerpt: CodeExcerpt[]; lineWidth: number }
-		| undefined => {
-		const fp = filePath()
-		const orig = origin()
-		if (fp && orig?.line && fs.existsSync(fp)) {
-			const sourceCode = fs.readFileSync(fp, 'utf8')
-			const excerpt = codeExcerpt(sourceCode, orig.line)
-			if (excerpt) {
-				let lineWidth = 0
-				for (const { line } of excerpt) {
+		if (filePath && origin?.line && fs.existsSync(filePath)) {
+			const sourceCode = fs.readFileSync(filePath, 'utf8')
+			const raw = codeExcerpt(sourceCode, origin.line)
+			if (raw) {
+				excerpt = raw
+				for (const { line } of raw) {
 					lineWidth = Math.max(lineWidth, String(line).length)
 				}
-				return { excerpt, lineWidth }
 			}
 		}
-		return undefined
-	}
 
-	return (
-		<Box style={{ flexDirection: 'column', padding: 1 }}>
-			<Box>
-				<Text style={{ backgroundColor: 'red', color: 'white' }}> ERROR </Text>
-				<Text> {props.error.message}</Text>
-			</Box>
+		const stackFrames: ErrorOverviewStackFrame[] = error.stack
+			? error.stack
+					.split('\n')
+					.slice(1)
+					.map((line): ErrorOverviewStackFrame => {
+						const parsed = stackUtils.parseLine(line)
+						if (!parsed) return { parsed: false, raw: line }
+						return {
+							parsed: true,
+							fn: parsed.function,
+							file: cleanupPath(parsed.file),
+							line: parsed.line,
+							column: parsed.column,
+						}
+					})
+			: []
 
-			<Show when={origin() && filePath()}>
-				<Box style={{ marginTop: 1 }}>
-					<Text style={{ color: 'gray' }}>
-						{filePath()}:{origin()!.line}:{origin()!.column}
-					</Text>
-				</Box>
-			</Show>
+		const data: ErrorOverviewData = {
+			message: error.message,
+			origin: origin
+				? {
+						filePath: filePath ?? undefined,
+						line: origin.line,
+						column: origin.column,
+					}
+				: undefined,
+			excerpt,
+			lineWidth,
+			stackFrames,
+		}
 
-			<Show when={origin() && excerptData()}>
-				<Box style={{ marginTop: 1, flexDirection: 'column' }}>
-					<For each={excerptData()!.excerpt}>
-						{({ line, value }) => (
-							<Box>
-								<Box style={{ width: excerptData()!.lineWidth + 1 }}>
-									<Text
-										style={{
-											color: line === origin()!.line ? 'white' : 'gray',
-											backgroundColor:
-												line === origin()!.line ? 'red' : undefined,
-										}}
-										aria-label={
-											line === origin()!.line
-												? `Line ${line}, error`
-												: `Line ${line}`
-										}
-									>
-										{String(line).padStart(excerptData()!.lineWidth, ' ')}:
-									</Text>
-								</Box>
-								<Text
-									style={{
-										backgroundColor:
-											line === origin()!.line ? 'red' : undefined,
-										color: line === origin()!.line ? 'white' : undefined,
-									}}
-								>
-									{' ' + value}
-								</Text>
-							</Box>
-						)}
-					</For>
-				</Box>
-			</Show>
+		return renderErrorOverview(data)
+	})
 
-			<Show when={props.error.stack}>
-				<Box style={{ marginTop: 1, flexDirection: 'column' }}>
-					<For
-						each={props.error
-							.stack!.split('\n')
-							.slice(1)
-							.map((line, index) => ({
-								line,
-								index,
-								parsed: stackUtils.parseLine(line),
-							}))}
-					>
-						{({ line, index: _index, parsed }) => (
-							<Show
-								when={parsed}
-								fallback={
-									<Box>
-										<Text style={{ color: 'gray' }}>- </Text>
-										<Text style={{ color: 'gray', fontWeight: 'bold' }}>
-											{line}
-											{'\t '}
-										</Text>
-									</Box>
-								}
-							>
-								<Box>
-									<Text style={{ color: 'gray' }}>- </Text>
-									<Text style={{ color: 'gray', fontWeight: 'bold' }}>
-										{parsed!.function}
-									</Text>
-									<Text
-										style={{ color: 'gray' }}
-										aria-label={`at ${
-											cleanupPath(parsed!.file) ?? ''
-										} line ${parsed!.line} column ${parsed!.column}`}
-									>
-										{' '}
-										({cleanupPath(parsed!.file) ?? ''}:{parsed!.line}:
-										{parsed!.column})
-									</Text>
-								</Box>
-							</Show>
-						)}
-					</For>
-				</Box>
-			</Show>
-		</Box>
-	)
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }
 //#endregion Component
 

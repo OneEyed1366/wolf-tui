@@ -1,10 +1,14 @@
 import { defineComponent, type PropType, type VNode } from 'vue'
-import figures from 'figures'
-import { Box, type BoxProps } from './Box'
-import { Text, type TextProps } from './Text'
+import {
+	renderStatusMessage,
+	defaultStatusMessageTheme,
+	type StatusMessageRenderTheme,
+	type StatusMessageVariant,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
-export type StatusMessageVariant = 'info' | 'success' | 'error' | 'warning'
+export { type StatusMessageVariant }
 
 export interface StatusMessageProps {
 	/**
@@ -17,59 +21,25 @@ export interface StatusMessageProps {
 	 */
 	variant: StatusMessageVariant
 }
-
-export type StatusMessageTheme = {
-	styles: {
-		container: () => Partial<BoxProps>
-		iconContainer: () => Partial<BoxProps>
-		icon: (props: { variant: StatusMessageVariant }) => Partial<TextProps>
-		message: () => Partial<TextProps>
-	}
-	config: (props: { variant: StatusMessageVariant }) => {
-		icon: string
-	}
-}
 //#endregion Types
 
-//#region Theme
-const colorByVariant: Record<StatusMessageVariant, string> = {
-	success: 'green',
-	error: 'red',
-	warning: 'yellow',
-	info: 'blue',
+//#region Helpers
+function extractTextFromSlot(children: VNode[] | undefined): string {
+	if (!children || children.length === 0) return ''
+	const firstChild = children[0]
+	if (!firstChild) return ''
+	if (typeof firstChild === 'string') return firstChild
+	if (typeof firstChild === 'object' && 'children' in firstChild) {
+		const nodeChildren = firstChild.children
+		if (typeof nodeChildren === 'string') return nodeChildren
+		if (Array.isArray(nodeChildren) && nodeChildren.length > 0) {
+			const text = nodeChildren[0]
+			if (typeof text === 'string') return text
+		}
+	}
+	return ''
 }
-
-const iconByVariant: Record<StatusMessageVariant, string> = {
-	success: figures.tick,
-	error: figures.cross,
-	warning: figures.warning,
-	info: figures.info,
-}
-
-export const statusMessageTheme: StatusMessageTheme = {
-	styles: {
-		container: (): Partial<BoxProps> => ({
-			style: {
-				gap: 1,
-			},
-		}),
-		iconContainer: (): Partial<BoxProps> => ({
-			style: {
-				flexShrink: 0,
-			},
-		}),
-		icon: ({ variant }): Partial<TextProps> => ({
-			style: {
-				color: colorByVariant[variant],
-			},
-		}),
-		message: (): Partial<TextProps> => ({}),
-	},
-	config: ({ variant }) => ({
-		icon: iconByVariant[variant],
-	}),
-}
-//#endregion Theme
+//#endregion Helpers
 
 //#region Component
 export const StatusMessage = defineComponent({
@@ -81,25 +51,21 @@ export const StatusMessage = defineComponent({
 		},
 	},
 	setup(props, { slots }) {
+		const { styles, config } = defaultStatusMessageTheme
+
 		return () => {
 			const { variant } = props
-			const { styles, config } = statusMessageTheme
-
-			const result = (
-				<Box {...styles.container()}>
-					<Box {...styles.iconContainer()}>
-						<Text {...styles.icon({ variant })}>
-							{config({ variant }).icon}
-						</Text>
-					</Box>
-
-					<Text {...styles.message()}>{slots.default?.()}</Text>
-				</Box>
+			const message = extractTextFromSlot(slots.default?.())
+			return wNodeToVue(
+				renderStatusMessage({ variant, message }, { styles, config })
 			)
-			return result
 		}
 	},
 })
 //#endregion Component
 
+export {
+	defaultStatusMessageTheme as statusMessageTheme,
+	type StatusMessageRenderTheme as StatusMessageTheme,
+}
 export type { StatusMessageProps as Props, StatusMessageProps as IProps }

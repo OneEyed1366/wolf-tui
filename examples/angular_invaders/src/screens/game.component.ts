@@ -47,9 +47,11 @@ import { BRAND } from '../theme'
 					backgroundColor: brand.bgAccent,
 				}"
 			>
-				<w-alert variant="success" title="Wave Complete!">
-					Excellent work, Commander! Preparing next wave…
-				</w-alert>
+				<w-alert
+					variant="success"
+					title="Wave Complete!"
+					message="Excellent work, Commander! Preparing next wave…"
+				/>
 
 				<w-box [style]="{ marginTop: 2 }">
 					<w-spinner type="dots" />
@@ -126,9 +128,11 @@ import { BRAND } from '../theme'
 				</w-box>
 
 				@if (!isRawModeSupported) {
-					<w-alert variant="warning" title="Warning">
-						Raw mode not supported — input may be limited
-					</w-alert>
+					<w-alert
+						variant="warning"
+						title="Warning"
+						message="Raw mode not supported — input may be limited"
+					/>
 				}
 			</w-box>
 		}

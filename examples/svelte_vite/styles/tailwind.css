@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+@source "../**/*.{svelte,ts}";
+
+@theme {
+	--color-primary-500: oklch(0.623 0.214 259.815);
+	--color-secondary-500: oklch(0.637 0.237 25.331);
+}

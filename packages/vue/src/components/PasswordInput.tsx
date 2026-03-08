@@ -1,8 +1,13 @@
 import { defineComponent, type PropType, type DefineComponent } from 'vue'
-import { Text, type TextProps } from './Text'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import { useComponentTheme } from '../theme'
 import { usePasswordInputState } from '../composables/use-password-input-state'
 import { usePasswordInput } from '../composables/use-password-input'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface PasswordInputProps {
@@ -28,21 +33,7 @@ export interface PasswordInputProps {
 	 */
 	onSubmit?: (value: string) => void
 }
-
-export type PasswordInputTheme = IComponentTheme & {
-	styles: {
-		value: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const passwordInputTheme: PasswordInputTheme = {
-	styles: {
-		value: (): Partial<TextProps> => ({}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export const PasswordInput: DefineComponent<PasswordInputProps> =
@@ -78,14 +69,20 @@ export const PasswordInput: DefineComponent<PasswordInputProps> =
 				state,
 			})
 
-			const theme = useComponentTheme<PasswordInputTheme>('PasswordInput')
-			const { styles } = theme ?? passwordInputTheme
+			const theme = useComponentTheme<TextInputRenderTheme>('PasswordInput')
+			const { styles } = theme ?? defaultTextInputTheme
 
 			return () => {
-				return <Text {...styles.value()}>{inputValue.value}</Text>
+				return wNodeToVue(
+					renderTextInput({ inputValue: inputValue.value }, { styles })
+				)
 			}
 		},
 	})
 //#endregion Component
 
+export {
+	defaultTextInputTheme as passwordInputTheme,
+	type TextInputRenderTheme as PasswordInputTheme,
+}
 export type { PasswordInputProps as Props, PasswordInputProps as IProps }

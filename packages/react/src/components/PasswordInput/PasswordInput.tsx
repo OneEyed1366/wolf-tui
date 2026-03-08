@@ -1,8 +1,12 @@
-import { Text } from '../Text'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
 import { useComponentTheme } from '../../theme/theme'
 import { usePasswordInputState } from './use-password-input-state'
 import { usePasswordInput } from './use-password-input'
-import type { Theme } from './theme'
+import { wNodeToReact } from '../../wnode/wnode-to-react'
 
 export type IPasswordInputProps = {
 	/**
@@ -45,7 +49,8 @@ export function PasswordInput({
 		state,
 	})
 
-	const { styles } = useComponentTheme<Theme>('PasswordInput')
+	const theme = useComponentTheme<TextInputRenderTheme>('PasswordInput')
+	const { styles } = theme ?? defaultTextInputTheme
 
-	return <Text {...styles.value()}>{inputValue}</Text>
+	return wNodeToReact(renderTextInput({ inputValue }, { styles }))
 }
