@@ -262,9 +262,7 @@ function generateCode(
 					? '@wolfie/angular'
 					: options.framework === 'solid'
 						? '@wolfie/solid'
-						: options.framework === 'svelte'
-							? '@wolfie/svelte'
-							: '@wolfie/react/styles'
+						: '@wolfie/react/styles'
 		lines.push(
 			`import { registerStyles, registerTailwindMetadata } from '${pkg}'`
 		)

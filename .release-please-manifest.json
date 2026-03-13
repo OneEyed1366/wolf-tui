@@ -3,7 +3,6 @@
 	"packages/vue": "1.1.0",
 	"packages/angular": "1.1.0",
 	"packages/solid": "1.1.0",
-	"packages/svelte": "1.0.0",
 	"packages/plugin": "1.1.0",
 	"packages/typescript-plugin": "1.0.1",
 	"internal/core": "1.1.0",

@@ -76,7 +76,7 @@ export interface CodeGeneratorOptions {
 		statics?: string[]
 	}
 	/** Framework to import from (default: 'react') */
-	framework?: 'react' | 'vue' | 'angular' | 'solid' | 'svelte'
+	framework?: 'react' | 'vue' | 'angular' | 'solid'
 }
 
 export interface GeneratedOutput {
@@ -106,7 +106,7 @@ export interface VitePluginOptions {
 	/** Inline styles directly in JSX (experimental) */
 	inline?: boolean
 	/** Framework to import from: 'react', 'vue', or 'angular' (default: 'react') */
-	framework?: 'react' | 'vue' | 'angular' | 'solid' | 'svelte'
+	framework?: 'react' | 'vue' | 'angular' | 'solid'
 }
 
 /**

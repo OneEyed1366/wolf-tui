@@ -9,7 +9,6 @@ export type LogCategory =
 	| 'angular'
 	| 'vue'
 	| 'solid'
-	| 'svelte'
 	| 'style'
 	| 'input'
 

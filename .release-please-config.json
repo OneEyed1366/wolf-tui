@@ -7,7 +7,6 @@
 		"packages/vue": { "component": "vue" },
 		"packages/angular": { "component": "angular" },
 		"packages/solid": { "component": "solid" },
-		"packages/svelte": { "component": "svelte" },
 		"packages/plugin": { "component": "plugin" },
 		"packages/typescript-plugin": { "component": "typescript-plugin" },
 		"internal/core": { "component": "core" },
