@@ -65,7 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: wolfie-core-node
-          path: internal/core
+          path: .
 
       - name: Check
         run: pnpm check
