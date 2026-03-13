@@ -1,0 +1,12 @@
+if ! command -v act >/dev/null 2>&1; then
+  echo "act not installed — skipping local CI (install: brew install act)"
+  exit 0
+fi
+
+echo "Running local CI check..."
+act workflow_dispatch -W .github/workflows/local-ci.yml -j ci
+
+if [ $? -ne 0 ]; then
+  echo "Local CI failed. Push blocked."
+  exit 1
+fi
