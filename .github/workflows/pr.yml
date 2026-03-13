@@ -70,5 +70,8 @@ jobs:
           name: wolfie-core-node
           path: .
 
+      - name: Debug - internal/core after download
+        run: ls -la internal/core/ | grep -E '\.node|\.cjs|\.js' || echo "no files"
+
       - name: Check
         run: pnpm check
