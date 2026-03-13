@@ -67,14 +67,5 @@ jobs:
           name: wolfie-core-node
           path: internal/core
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Build
-        run: pnpm build
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Unit tests
-        run: pnpm test
+      - name: Check
+        run: pnpm check

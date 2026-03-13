@@ -19,6 +19,7 @@
 		"benchmark": "npx vite-node",
 		"test:e2e": "vitest run --config e2e/vitest.config.ts",
 		"typecheck": "tsc --build --noEmit",
+		"check": "concurrently --kill-others-on-fail -n lint,build,typecheck 'pnpm lint' 'pnpm build' 'pnpm typecheck' && pnpm test",
 		"prepare": "husky"
 	},
 	"engines": {
@@ -51,6 +52,7 @@
 		"babel-plugin-react-compiler": "^1.0.0",
 		"boxen": "^8.0.1",
 		"chalk": "^5.6.0",
+		"concurrently": "^9.2.1",
 		"cross-env": "^10.1.0",
 		"css-loader": "^7.1.2",
 		"delay": "^7.0.0",
