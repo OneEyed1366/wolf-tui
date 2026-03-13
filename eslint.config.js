@@ -51,6 +51,14 @@ export default tseslint.config(
 		},
 	},
 	{
-		ignores: ['**/build/**', '**/node_modules/**', '**/*.js'],
+		ignores: [
+			'**/build/**',
+			'**/node_modules/**',
+			'**/*.js',
+			'**/*.cjs',
+			'**/*.mjs',
+			'.claude/**',
+			'.worktrees/**',
+		],
 	}
 )

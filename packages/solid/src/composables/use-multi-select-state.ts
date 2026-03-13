@@ -182,9 +182,7 @@ export const useMultiSelectState = ({
 	const [visibleToIndex, setVisibleToIndex] = createSignal(
 		initialState.visibleToIndex
 	)
-	const [previousValue, setPreviousValue] = createSignal(
-		initialState.previousValue
-	)
+	const [, setPreviousValue] = createSignal(initialState.previousValue)
 	const [internalValue, setInternalValue] = createSignal(initialState.value)
 
 	// Controlled mode: derive value from prop; uncontrolled: use internal state

@@ -1,5 +1,3 @@
-import type { DOMElement } from '@wolfie/core'
-import type { Except } from 'type-fest'
 import type { ClassNameValue } from '../../styles/index'
 
 export type IProps = {

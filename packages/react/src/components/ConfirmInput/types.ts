@@ -1,6 +1,3 @@
-import type { IComponentTheme } from '../../theme/theme'
-import type { IProps as TextProps } from '../Text'
-
 //#region Types
 export type IConfirmInputProps = {
 	/**
@@ -36,9 +33,4 @@ export type IConfirmInputProps = {
 	onCancel: () => void
 }
 
-type IConfirmInputTheme = IComponentTheme & {
-	styles: {
-		input: (props: { isFocused: boolean }) => TextProps
-	}
-}
 //#endregion Types
