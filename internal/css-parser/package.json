@@ -25,6 +25,7 @@
 		"node": ">=20"
 	},
 	"scripts": {
+		"prepare": "vite build",
 		"dev": "vite build --watch",
 		"build": "vite build",
 		"test": "vitest run"
