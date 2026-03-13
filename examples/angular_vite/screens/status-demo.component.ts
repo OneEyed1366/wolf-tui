@@ -38,29 +38,30 @@ const PROGRESS_MAX = 100
 		<w-box class="flex-col gap-1 w-full">
 			<!-- Alerts -->
 			<w-text class="font-bold text-white">Alerts</w-text>
-			<w-alert variant="success">Operation completed successfully!</w-alert>
-			<w-alert variant="warning">Check your settings before proceeding</w-alert>
-			<w-alert variant="error">Something went wrong</w-alert>
+			<w-alert variant="success" message="Operation completed successfully!" />
+			<w-alert
+				variant="warning"
+				message="Check your settings before proceeding"
+			/>
+			<w-alert variant="error" message="Something went wrong" />
 
 			<!-- Badges -->
 			<w-text class="font-bold text-white mt-1">Badges</w-text>
 			<w-box class="flex-row gap-2">
-				<w-badge color="green">Active</w-badge>
-				<w-badge color="yellow">Pending</w-badge>
-				<w-badge color="red">Failed</w-badge>
-				<w-badge color="blue">Info</w-badge>
+				<w-badge color="green" label="Active" />
+				<w-badge color="yellow" label="Pending" />
+				<w-badge color="red" label="Failed" />
+				<w-badge color="blue" label="Info" />
 			</w-box>
 
 			<!-- Status Messages -->
 			<w-text class="font-bold text-white mt-1">Status Messages</w-text>
-			<w-status-message variant="success">Build succeeded</w-status-message>
-			<w-status-message variant="error"
-				>Tests failed (3 errors)</w-status-message
-			>
-			<w-status-message variant="warning"
-				>Dependencies outdated</w-status-message
-			>
-			<w-status-message variant="info">Compiling...</w-status-message>
+			<w-status-message variant="success" message="Build succeeded" />
+			<w-status-message variant="error" message="Tests failed (3 errors)" />
+
+			<w-status-message variant="warning" message="Dependencies outdated" />
+
+			<w-status-message variant="info" message="Compiling..." />
 
 			<!-- Spinner -->
 			<w-text class="font-bold text-white mt-1">Spinner</w-text>

@@ -52,17 +52,17 @@ export type { IErrorOverviewProps } from './ErrorOverview'
 //#endregion Display Components
 
 //#region Input Components
-export { TextInput, textInputTheme } from './TextInput'
-export type { ITextInputProps, TextInputTheme } from './TextInput'
+export { TextInput } from './TextInput'
+export type { ITextInputProps } from './TextInput'
 
-export { ConfirmInput, confirmInputTheme } from './ConfirmInput'
-export type { IConfirmInputProps, ConfirmInputTheme } from './ConfirmInput'
+export { ConfirmInput } from './ConfirmInput'
+export type { IConfirmInputProps } from './ConfirmInput'
 
-export { PasswordInput, passwordInputTheme } from './PasswordInput'
-export type { IPasswordInputProps, PasswordInputTheme } from './PasswordInput'
+export { PasswordInput } from './PasswordInput'
+export type { IPasswordInputProps } from './PasswordInput'
 
-export { EmailInput, emailInputTheme } from './EmailInput'
-export type { IEmailInputProps, EmailInputTheme } from './EmailInput'
+export { EmailInput } from './EmailInput'
+export type { IEmailInputProps } from './EmailInput'
 //#endregion Input Components
 
 //#region Selection Components

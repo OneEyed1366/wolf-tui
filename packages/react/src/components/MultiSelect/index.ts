@@ -12,7 +12,4 @@ export {
 	type MultiSelectState,
 } from './use-multi-select-state'
 export { useMultiSelect, type UseMultiSelectProps } from './use-multi-select'
-export {
-	default as multiSelectTheme,
-	type Theme as MultiSelectTheme,
-} from './theme'
+export { multiSelectTheme, type Theme as MultiSelectTheme } from './theme'

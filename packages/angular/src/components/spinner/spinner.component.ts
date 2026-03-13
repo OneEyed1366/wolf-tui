@@ -9,10 +9,13 @@ import {
 	NgZone,
 	inject,
 } from '@angular/core'
-import type { Styles } from '@wolfie/core'
 import spinners, { type SpinnerName } from 'cli-spinners'
-import { BoxComponent } from '../box/box.component'
-import { TextComponent } from '../text/text.component'
+import {
+	renderSpinner,
+	defaultSpinnerTheme,
+	type SpinnerRenderTheme,
+} from '@wolfie/shared'
+import { WNodeOutletComponent } from '../wnode-outlet/wnode-outlet.component'
 
 //#region Types
 export interface SpinnerProps {
@@ -31,20 +34,6 @@ export interface SpinnerProps {
 }
 //#endregion Types
 
-//#region Theme
-const spinnerTheme = {
-	styles: {
-		container: (): Partial<Styles> => ({
-			gap: 1,
-		}),
-		frame: (): Partial<Styles> => ({
-			color: 'blue',
-		}),
-		label: (): Partial<Styles> => ({}),
-	},
-}
-//#endregion Theme
-
 //#region SpinnerComponent
 /**
  * `<w-spinner>` displays an animated loading spinner.
@@ -52,15 +41,8 @@ const spinnerTheme = {
 @Component({
 	selector: 'w-spinner',
 	standalone: true,
-	imports: [BoxComponent, TextComponent],
-	template: `
-		<w-box [style]="containerStyle()">
-			<w-text [style]="frameStyle()">{{ frame() }}</w-text>
-			@if (label) {
-				<w-text [style]="labelStyle()">{{ label }}</w-text>
-			}
-		</w-box>
-	`,
+	imports: [WNodeOutletComponent],
+	template: `<w-wnode-outlet [node]="wnode()" />`,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent implements OnInit, OnDestroy {
@@ -81,14 +63,17 @@ export class SpinnerComponent implements OnInit, OnDestroy {
 	//#endregion Internal State
 
 	//#region Computed Properties
-	readonly containerStyle = computed(() => spinnerTheme.styles.container())
-	readonly frameStyle = computed(() => spinnerTheme.styles.frame())
-	readonly labelStyle = computed(() => spinnerTheme.styles.label())
+	private readonly theme: SpinnerRenderTheme = defaultSpinnerTheme
 
-	readonly frame = computed(() => {
-		const spinner = spinners[this._type()]
-		return spinner.frames[this._frameIndex()] ?? ''
-	})
+	readonly wnode = computed(() =>
+		renderSpinner(
+			{
+				frame: spinners[this._type()].frames[this._frameIndex()] ?? '',
+				label: this.label,
+			},
+			this.theme
+		)
+	)
 	//#endregion Computed Properties
 
 	//#region Lifecycle
@@ -103,7 +88,6 @@ export class SpinnerComponent implements OnInit, OnDestroy {
 
 	ngOnChanges(): void {
 		this._type.set(this.type)
-		// Restart spinner if type changed
 		this.stopSpinner()
 		this.startSpinner()
 	}
@@ -120,7 +104,6 @@ export class SpinnerComponent implements OnInit, OnDestroy {
 					const currentIndex = this._frameIndex()
 					const isLastFrame = currentIndex === spinner.frames.length - 1
 					this._frameIndex.set(isLastFrame ? 0 : currentIndex + 1)
-					// Force immediate change detection for OnPush component
 					this.cdr.detectChanges()
 				})
 			}, spinner.interval)

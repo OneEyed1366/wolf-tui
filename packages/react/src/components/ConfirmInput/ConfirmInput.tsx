@@ -1,26 +1,11 @@
-import { Text } from '../Text'
+import {
+	renderConfirmInput,
+	defaultConfirmInputTheme,
+	type ConfirmInputRenderTheme,
+} from '@wolfie/shared'
 import { useInput } from '../../hooks/use-input'
 import { useComponentTheme } from '../../theme/theme'
-import type { IProps as TextProps } from '../Text'
-import type { IComponentTheme } from '../../theme/theme'
-
-//#region Theme
-type IConfirmInputTheme = IComponentTheme & {
-	styles: {
-		input: (props: { isFocused: boolean }) => TextProps
-	}
-}
-
-export const confirmInputTheme = {
-	styles: {
-		input: ({ isFocused }: { isFocused: boolean }): TextProps => ({
-			style: {
-				color: isFocused ? undefined : 'gray',
-			},
-		}),
-	},
-} satisfies IComponentTheme
-//#endregion Theme
+import { wNodeToReact } from '../../wnode/wnode-to-react'
 
 //#region Component
 export type IConfirmInputProps = {
@@ -85,12 +70,11 @@ export function ConfirmInput({
 		{ isActive: !isDisabled }
 	)
 
-	const { styles } = useComponentTheme<IConfirmInputTheme>('ConfirmInput')
+	const theme = useComponentTheme<ConfirmInputRenderTheme>('ConfirmInput')
+	const { styles } = theme ?? defaultConfirmInputTheme
 
-	return (
-		<Text {...styles.input({ isFocused: !isDisabled })}>
-			{defaultChoice === 'confirm' ? 'Y/n' : 'y/N'}
-		</Text>
+	return wNodeToReact(
+		renderConfirmInput({ defaultChoice, isDisabled }, { styles })
 	)
 }
 //#endregion Component

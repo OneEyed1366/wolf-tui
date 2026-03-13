@@ -1,8 +1,7 @@
 import { type JSX, createSignal } from 'solid-js'
-import figures from 'figures'
+import { renderProgressBar, defaultProgressBarTheme } from '@wolfie/shared'
 import { measureElement } from '@wolfie/core'
-import { Box, type BoxProps } from './Box'
-import { Text, type TextProps } from './Text'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export interface IProgressBarProps {
@@ -13,85 +12,31 @@ export interface IProgressBarProps {
 	 */
 	value: number
 }
-
-export type ProgressBarTheme = {
-	styles: {
-		container: () => Partial<BoxProps>
-		completed: () => Partial<TextProps>
-		remaining: () => Partial<TextProps>
-	}
-	config: () => {
-		completedCharacter: string
-		remainingCharacter: string
-	}
-}
 //#endregion Types
 
-//#region Theme
-export const progressBarTheme: ProgressBarTheme = {
-	styles: {
-		container: (): Partial<BoxProps> => ({
-			style: {
-				flexGrow: 1,
-				minWidth: 0,
-			},
-		}),
-		completed: (): Partial<TextProps> => ({
-			style: {
-				color: 'magenta',
-			},
-		}),
-		remaining: (): Partial<TextProps> => ({
-			style: {
-				color: 'gray',
-			},
-		}),
-	},
-	config: () => ({
-		// Character for rendering a completed bar
-		completedCharacter: figures.square,
-
-		// Character for rendering a remaining bar
-		remainingCharacter: figures.squareLightShade,
-	}),
-}
-//#endregion Theme
+export { defaultProgressBarTheme as progressBarTheme }
 
 //#region Component
 export function ProgressBar(props: IProgressBarProps): JSX.Element {
 	const [width, setWidth] = createSignal(0)
 
-	const { styles, config } = progressBarTheme
+	const refCallback = (el: any) => {
+		if (el) setWidth(measureElement(el).width)
+	}
 
-	return (
-		<Box
-			ref={(el: any) => {
-				if (el) setWidth(measureElement(el).width)
-			}}
-			{...styles.container()}
-		>
-			{(() => {
-				const progress = Math.min(100, Math.max(0, props.value))
-				const complete = Math.round((progress / 100) * width())
-				const remaining = width() - complete
-
-				return (
-					<>
-						{complete > 0 && (
-							<Text {...styles.completed()}>
-								{config().completedCharacter.repeat(complete)}
-							</Text>
-						)}
-						{remaining > 0 && (
-							<Text {...styles.remaining()}>
-								{config().remainingCharacter.repeat(remaining)}
-							</Text>
-						)}
-					</>
-				)
-			})()}
-		</Box>
-	)
+	return (() => {
+		const wnode = renderProgressBar(
+			{ value: props.value, width: width() },
+			defaultProgressBarTheme
+		)
+		return (
+			<wolfie-box ref={refCallback} {...(wnode.props as any)}>
+				{wnode.children.map((child) =>
+					typeof child === 'string' ? child : wNodeToSolid(child)
+				)}
+			</wolfie-box>
+		)
+	}) as unknown as JSX.Element
 }
 //#endregion Component
 

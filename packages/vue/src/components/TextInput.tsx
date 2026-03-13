@@ -1,8 +1,13 @@
 import { defineComponent, type PropType, type DefineComponent } from 'vue'
-import { Text, type TextProps } from './Text'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import { useComponentTheme } from '../theme'
 import { useTextInputState } from '../composables/use-text-input-state'
 import { useTextInput } from '../composables/use-text-input'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface TextInputProps {
@@ -38,21 +43,7 @@ export interface TextInputProps {
 	 */
 	onSubmit?: (value: string) => void
 }
-
-export type TextInputTheme = IComponentTheme & {
-	styles: {
-		value: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const textInputTheme: TextInputTheme = {
-	styles: {
-		value: (): Partial<TextProps> => ({}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export const TextInput: DefineComponent<TextInputProps> = defineComponent({
@@ -97,14 +88,20 @@ export const TextInput: DefineComponent<TextInputProps> = defineComponent({
 			state,
 		})
 
-		const theme = useComponentTheme<TextInputTheme>('TextInput')
-		const { styles } = theme ?? textInputTheme
+		const theme = useComponentTheme<TextInputRenderTheme>('TextInput')
+		const { styles } = theme ?? defaultTextInputTheme
 
 		return () => {
-			return <Text {...styles.value()}>{inputValue.value}</Text>
+			return wNodeToVue(
+				renderTextInput({ inputValue: inputValue.value }, { styles })
+			)
 		}
 	},
 })
 //#endregion Component
 
+export {
+	defaultTextInputTheme as textInputTheme,
+	type TextInputRenderTheme as TextInputTheme,
+}
 export type { TextInputProps as Props, TextInputProps as IProps }

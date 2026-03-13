@@ -1,6 +1,11 @@
-import { type JSX, Show, splitProps } from 'solid-js'
-import { Box } from './Box'
-import { Text } from './Text'
+import { type JSX, splitProps, createMemo } from 'solid-js'
+import {
+	renderAlert,
+	defaultAlertTheme,
+	type AlertRenderTheme,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../theme'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export type IAlertVariant = 'info' | 'success' | 'error' | 'warning'
@@ -12,46 +17,27 @@ export interface IAlertProps {
 }
 //#endregion Types
 
-//#region Constants
-const ICONS: Record<IAlertVariant, string> = {
-	info: 'ℹ',
-	success: '✔',
-	error: '✖',
-	warning: '⚠',
-}
-
-const COLORS: Record<IAlertVariant, string> = {
-	info: 'blue',
-	success: 'green',
-	error: 'red',
-	warning: 'yellow',
-}
-//#endregion Constants
-
 export function Alert(props: IAlertProps): JSX.Element {
 	const [local] = splitProps(props, ['children', 'variant', 'title'])
-	const color = () => COLORS[local.variant]
 
-	return (
-		<Box
-			style={{
-				// WHY: 'round' is the primary border test — exercises all 8 border glyphs
-				borderStyle: 'round',
-				borderColor: color(),
-				flexGrow: 1,
-			}}
-		>
-			{/* Icon column — fixed width, does not shrink */}
-			<Box style={{ flexShrink: 0, marginRight: 1 }}>
-				<Text style={{ color: color() }}>{ICONS[local.variant]}</Text>
-			</Box>
-			{/* Content column — title (optional) above message */}
-			<Box style={{ flexDirection: 'column', flexGrow: 1 }}>
-				<Show when={local.title}>
-					<Text style={{ bold: true }}>{local.title}</Text>
-				</Show>
-				<Text>{local.children}</Text>
-			</Box>
-		</Box>
+	const theme = useComponentTheme<AlertRenderTheme>('Alert')
+	const { styles, config } = theme ?? defaultAlertTheme
+
+	// createMemo tracks reactive reads (local.variant, local.children) so the
+	// WNode tree recomputes when props change.
+	const wnode = createMemo(() =>
+		renderAlert(
+			{
+				variant: local.variant,
+				title: local.title,
+				message: String(local.children ?? ''),
+			},
+			{ styles, config }
+		)
 	)
+
+	// WHY: solid-js JSX.Element type = Node | ... (excludes () => JSX.Element in
+	// this version). The function return IS valid at Solid runtime — insert() treats
+	// () => Element as a reactive FunctionElement. Cast is safe.
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }

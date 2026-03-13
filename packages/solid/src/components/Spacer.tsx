@@ -1,5 +1,7 @@
-import { Box } from './Box'
+import { type JSX } from 'solid-js'
+import { renderSpacer } from '@wolfie/shared'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
-export function Spacer() {
-	return <Box style={{ flexGrow: 1 }} />
+export function Spacer(): JSX.Element {
+	return (() => wNodeToSolid(renderSpacer())) as unknown as JSX.Element
 }

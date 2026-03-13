@@ -1,8 +1,12 @@
-import { Text } from '../Text'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
 import { useComponentTheme } from '../../theme/theme'
 import { useEmailInputState } from './use-email-input-state'
 import { useEmailInput } from './use-email-input'
-import type { Theme } from './theme'
+import { wNodeToReact } from '../../wnode/wnode-to-react'
 
 export type EmailInputProps = {
 	/**
@@ -61,7 +65,8 @@ export function EmailInput({
 		state,
 	})
 
-	const { styles } = useComponentTheme<Theme>('EmailInput')
+	const theme = useComponentTheme<TextInputRenderTheme>('EmailInput')
+	const { styles } = theme ?? defaultTextInputTheme
 
-	return <Text {...styles.value()}>{inputValue}</Text>
+	return wNodeToReact(renderTextInput({ inputValue }, { styles }))
 }

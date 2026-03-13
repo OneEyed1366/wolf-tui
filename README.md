@@ -212,6 +212,54 @@ Features:
 
 See package READMEs for full API documentation.
 
+## Performance
+
+### Incremental Rendering
+
+All adapters use incremental ANSI rendering by default — only changed terminal lines
+are rewritten per frame instead of erasing and redrawing the full screen. For headless
+testing you can disable it:
+
+```ts
+// React
+render(<App />, { incrementalRendering: false })
+
+// Vue / Angular / Solid
+render(App, { incrementalRendering: false })
+```
+
+### React Compiler (automatic memoization)
+
+`@wolfie/react` ships pre-compiled with the [React Compiler](https://react.dev/learn/react-compiler).
+All library components (`Select`, `MultiSelect`, `TextInput`, etc.) are automatically
+memoized — they skip re-renders when props haven't changed.
+
+To apply the same optimization to **your own app components**, add the compiler to
+your Vite config:
+
+```bash
+npm install -D babel-plugin-react-compiler
+```
+
+```ts
+// vite.config.ts
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+	plugins: [
+		react({
+			babel: {
+				plugins: [['babel-plugin-react-compiler', {}]],
+			},
+		}),
+		wolfie('react'),
+	],
+})
+```
+
+> **Requires React 19+.** The compiler statically analyzes component code and inserts
+> fine-grained memo caches — no `React.memo`, `useMemo`, or `useCallback` needed.
+
 ## Development
 
 ```bash

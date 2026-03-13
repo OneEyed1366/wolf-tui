@@ -1,5 +1,5 @@
 export { Alert } from './Alert'
-export { alertTheme } from './theme'
+export { defaultAlertTheme as alertTheme } from '@wolfie/shared'
 export {
 	type IAlertProps as AlertProps,
 	type IAlertVariant as AlertVariant,

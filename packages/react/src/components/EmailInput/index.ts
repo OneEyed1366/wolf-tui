@@ -10,6 +10,6 @@ export {
 	type EmailInputState,
 } from './use-email-input-state'
 export {
-	default as emailInputTheme,
-	type Theme as EmailInputTheme,
-} from './theme'
+	defaultTextInputTheme as emailInputTheme,
+	type TextInputRenderTheme as EmailInputTheme,
+} from '@wolfie/shared'

@@ -1,8 +1,13 @@
-import { type JSX, splitProps } from 'solid-js'
-import { Text, type TextProps } from './Text'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import { type JSX, splitProps, createMemo } from 'solid-js'
 import { usePasswordInputState } from '../composables/use-password-input-state'
 import { usePasswordInput } from '../composables/use-password-input'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../theme'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export interface IPasswordInputProps {
@@ -11,21 +16,7 @@ export interface IPasswordInputProps {
 	onChange?: (value: string) => void
 	onSubmit?: (value: string) => void
 }
-
-export type PasswordInputTheme = IComponentTheme & {
-	styles: {
-		value: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const passwordInputTheme: PasswordInputTheme = {
-	styles: {
-		value: (): Partial<TextProps> => ({}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export function PasswordInput(props: IPasswordInputProps): JSX.Element {
@@ -47,9 +38,13 @@ export function PasswordInput(props: IPasswordInputProps): JSX.Element {
 		state,
 	})
 
-	const theme = useComponentTheme<PasswordInputTheme>('PasswordInput')
-	const { styles } = theme ?? passwordInputTheme
+	const theme = useComponentTheme<TextInputRenderTheme>('PasswordInput')
+	const { styles } = theme ?? defaultTextInputTheme
 
-	return <Text {...styles.value()}>{inputValue()}</Text>
+	const wnode = createMemo(() =>
+		renderTextInput({ inputValue: inputValue() }, { styles })
+	)
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }
 //#endregion Component

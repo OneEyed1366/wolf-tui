@@ -13,6 +13,6 @@ export {
 	type PasswordInputState,
 } from './use-password-input-state'
 export {
-	default as passwordInputTheme,
-	type Theme as PasswordInputTheme,
-} from './theme'
+	defaultTextInputTheme as passwordInputTheme,
+	type TextInputRenderTheme as PasswordInputTheme,
+} from '@wolfie/shared'

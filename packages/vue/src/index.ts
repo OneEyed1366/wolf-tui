@@ -73,6 +73,7 @@ export interface RenderOptions {
 	 * @default process.env['INK_SCREEN_READER'] === 'true'
 	 */
 	isScreenReaderEnabled?: boolean
+	incrementalRendering?: boolean
 }
 
 export type WolfieVueInstance = {
@@ -123,7 +124,9 @@ class WolfieVue {
 			: rawLayoutTree
 		this.rootNode = createNode('wolfie-root' as ElementNames, this.layoutTree)
 
-		this.log = logUpdate.create(this.stdout)
+		this.log = logUpdate.create(this.stdout, {
+			incremental: options.incrementalRendering ?? true,
+		})
 		this.eventEmitter = new EventEmitter()
 		this.lastTerminalWidth = this.getTerminalWidth()
 

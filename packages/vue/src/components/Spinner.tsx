@@ -1,8 +1,12 @@
 import { defineComponent, type PropType } from 'vue'
 import type { SpinnerName } from 'cli-spinners'
-import { Box, type BoxProps } from './Box'
-import { Text, type TextProps } from './Text'
 import { useSpinner, type UseSpinnerProps } from '../composables/use-spinner'
+import {
+	renderSpinner,
+	defaultSpinnerTheme,
+	type SpinnerRenderTheme,
+} from '@wolfie/shared'
+import { wNodeToVue } from '../wnode/wnode-to-vue'
 
 //#region Types
 export interface SpinnerProps extends UseSpinnerProps {
@@ -11,33 +15,7 @@ export interface SpinnerProps extends UseSpinnerProps {
 	 */
 	label?: string
 }
-
-export type SpinnerTheme = {
-	styles: {
-		container: () => Partial<BoxProps>
-		frame: () => Partial<TextProps>
-		label: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const spinnerTheme: SpinnerTheme = {
-	styles: {
-		container: (): Partial<BoxProps> => ({
-			style: {
-				gap: 1,
-			},
-		}),
-		frame: (): Partial<TextProps> => ({
-			style: {
-				color: 'blue',
-			},
-		}),
-		label: (): Partial<TextProps> => ({}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export const Spinner = defineComponent({
@@ -54,21 +32,22 @@ export const Spinner = defineComponent({
 	},
 	setup(props) {
 		const spinnerResult = useSpinner({ type: props.type })
+		const { styles } = defaultSpinnerTheme
 
 		return () => {
-			const { label } = props
-			const { styles } = spinnerTheme
-
-			const result = (
-				<Box {...styles.container()}>
-					<Text {...styles.frame()}>{spinnerResult.frame}</Text>
-					{label && <Text {...styles.label()}>{label}</Text>}
-				</Box>
+			return wNodeToVue(
+				renderSpinner(
+					{ frame: spinnerResult.frame, label: props.label },
+					{ styles }
+				)
 			)
-			return result
 		}
 	},
 })
 //#endregion Component
 
+export {
+	defaultSpinnerTheme as spinnerTheme,
+	type SpinnerRenderTheme as SpinnerTheme,
+}
 export type { SpinnerProps as Props, SpinnerProps as IProps }

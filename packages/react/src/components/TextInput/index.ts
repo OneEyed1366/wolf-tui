@@ -10,6 +10,6 @@ export {
 	type TextInputState,
 } from './use-text-input-state'
 export {
-	default as textInputTheme,
-	type Theme as TextInputTheme,
-} from './theme'
+	defaultTextInputTheme as textInputTheme,
+	type TextInputRenderTheme as TextInputTheme,
+} from '@wolfie/shared'

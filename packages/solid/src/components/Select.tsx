@@ -1,10 +1,13 @@
-import { type JSX, For, splitProps } from 'solid-js'
-import { Box } from './Box'
-import { Text } from './Text'
-import { SelectOption, selectTheme, type SelectTheme } from './SelectOption'
+import { type JSX, splitProps, createMemo } from 'solid-js'
+import {
+	renderSelect,
+	defaultSelectTheme,
+	type SelectRenderTheme,
+} from '@wolfie/shared'
 import { useComponentTheme } from '../theme'
 import { useSelectState } from '../composables/use-select-state'
 import { useSelect } from '../composables/use-select'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 import type { Option } from '@wolfie/shared'
 
 //#region Types
@@ -72,43 +75,29 @@ export function Select(props: ISelectProps): JSX.Element {
 
 	useSelect({ isDisabled: () => local.isDisabled, state })
 
-	const theme = useComponentTheme<SelectTheme>('Select')
-	const { styles } = theme ?? selectTheme
+	const theme = useComponentTheme<SelectRenderTheme>('Select')
+	const { styles } = theme ?? defaultSelectTheme
 
-	return (
-		<Box {...styles.container()}>
-			<For each={state.visibleOptions()}>
-				{(option) => {
-					const isFocused =
-						!local.isDisabled && state.focusedValue() === option.value
-					const isSelected = state.value() === option.value
-
-					let label: JSX.Element = <>{option.label}</>
-
-					if (
-						local.highlightText &&
-						option.label.includes(local.highlightText)
-					) {
-						const idx = option.label.indexOf(local.highlightText)
-						label = (
-							<>
-								{option.label.slice(0, idx)}
-								<Text {...styles.highlightedText()}>{local.highlightText}</Text>
-								{option.label.slice(idx + local.highlightText.length)}
-							</>
-						)
-					}
-
-					return (
-						<SelectOption isFocused={isFocused} isSelected={isSelected}>
-							{label}
-						</SelectOption>
-					)
-				}}
-			</For>
-		</Box>
+	// All signal reads (state.visibleOptions(), state.focusedValue(), state.value())
+	// are inside createMemo — recomputes on every navigation key press.
+	const wnode = createMemo(() =>
+		renderSelect(
+			{
+				visibleOptions: state.visibleOptions(),
+				focusedValue: state.focusedValue(),
+				value: state.value(),
+				isDisabled: local.isDisabled ?? false,
+				highlightText: local.highlightText,
+			},
+			{ styles }
+		)
 	)
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }
 //#endregion Component
 
-export { selectTheme, type SelectTheme }
+export {
+	defaultSelectTheme as selectTheme,
+	type SelectRenderTheme as SelectTheme,
+}

@@ -33,24 +33,24 @@ function createWolfieStyleInjector(includeTheme: boolean): EnvironmentInjector {
 
 describe('renderWolfie — THEME_CONTEXT provision', () => {
 	// -------------------------------------------------------------------------
-	// Regression: the three components below all call inject(THEME_CONTEXT) in
-	// their constructors.  renderWolfie used to create a null-parent injector
-	// without listing THEME_CONTEXT explicitly, so Angular's providedIn:'root'
-	// resolution failed — NullInjectorError: No provider for InjectionToken
-	// WolfieTheme.
+	// Regression: ProgressBarComponent calls inject(THEME_CONTEXT) in its body.
+	// renderWolfie used to create a null-parent injector without listing
+	// THEME_CONTEXT explicitly, so Angular's providedIn:'root' resolution failed
+	// — NullInjectorError: No provider for InjectionToken WolfieTheme.
+	//
+	// Note: AlertComponent and BadgeComponent were migrated to WNode render
+	// functions and no longer inject THEME_CONTEXT — they instantiate without it.
 	// -------------------------------------------------------------------------
 
-	it('AlertComponent — instantiates in null-parent injector when THEME_CONTEXT is provided', () => {
-		// RED before fix: empty injector → NullInjectorError in constructor
-		// GREEN after fix: THEME_CONTEXT explicitly in providers → no throw
-		const injector = createWolfieStyleInjector(/* includeTheme: */ true)
+	it('AlertComponent — instantiates without THEME_CONTEXT (uses shared render fn)', () => {
+		const injector = createWolfieStyleInjector(/* includeTheme: */ false)
 		expect(() =>
 			runInInjectionContext(injector, () => new AlertComponent())
 		).not.toThrow()
 	})
 
-	it('BadgeComponent — instantiates in null-parent injector when THEME_CONTEXT is provided', () => {
-		const injector = createWolfieStyleInjector(/* includeTheme: */ true)
+	it('BadgeComponent — instantiates without THEME_CONTEXT (uses shared render fn)', () => {
+		const injector = createWolfieStyleInjector(/* includeTheme: */ false)
 		expect(() =>
 			runInInjectionContext(injector, () => new BadgeComponent())
 		).not.toThrow()
@@ -72,14 +72,6 @@ describe('renderWolfie — THEME_CONTEXT provision', () => {
 		expect(() =>
 			runInInjectionContext(injector, () => new ProgressBarComponent())
 		).not.toThrow()
-	})
-
-	it('AlertComponent — throws NullInjectorError without THEME_CONTEXT (documents the bug)', () => {
-		// This test is always green — it documents why the fix is needed.
-		const injector = createWolfieStyleInjector(/* includeTheme: */ false)
-		expect(() =>
-			runInInjectionContext(injector, () => new AlertComponent())
-		).toThrow(/NullInjectorError/)
 	})
 
 	it('user-supplied THEME_CONTEXT via options.providers overrides default', () => {

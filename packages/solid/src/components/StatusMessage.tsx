@@ -1,6 +1,11 @@
-import { type JSX, splitProps } from 'solid-js'
-import { Box } from './Box'
-import { Text } from './Text'
+import { type JSX, splitProps, createMemo } from 'solid-js'
+import {
+	renderStatusMessage,
+	defaultStatusMessageTheme,
+	type StatusMessageRenderTheme,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../theme'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export type IStatusMessageVariant = 'info' | 'success' | 'error' | 'warning'
@@ -11,34 +16,18 @@ export interface IStatusMessageProps {
 }
 //#endregion Types
 
-//#region Constants
-const ICONS: Record<IStatusMessageVariant, string> = {
-	info: 'ℹ',
-	success: '✔',
-	error: '✖',
-	warning: '⚠',
-}
-
-const COLORS: Record<IStatusMessageVariant, string> = {
-	info: 'blue',
-	success: 'green',
-	error: 'red',
-	warning: 'yellow',
-}
-//#endregion Constants
-
 export function StatusMessage(props: IStatusMessageProps): JSX.Element {
 	const [local] = splitProps(props, ['children', 'variant'])
 
-	return (
-		// WHY: gap:1 = one terminal column between icon and message text
-		<Box style={{ gap: 1 }}>
-			<Box style={{ flexShrink: 0 }}>
-				<Text style={{ color: COLORS[local.variant] }}>
-					{ICONS[local.variant]}
-				</Text>
-			</Box>
-			<Text>{local.children}</Text>
-		</Box>
+	const theme = useComponentTheme<StatusMessageRenderTheme>('StatusMessage')
+	const { styles, config } = theme ?? defaultStatusMessageTheme
+
+	const wnode = createMemo(() =>
+		renderStatusMessage(
+			{ variant: local.variant, message: String(local.children ?? '') },
+			{ styles, config }
+		)
 	)
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }

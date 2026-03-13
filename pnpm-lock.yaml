@@ -991,6 +991,9 @@ importers:
       es-toolkit:
         specifier: ^1.39.10
         version: 1.44.0
+      figures:
+        specifier: ^6.1.0
+        version: 6.1.0
 
   internal/spec:
     dependencies:

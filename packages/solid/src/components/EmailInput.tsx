@@ -1,8 +1,13 @@
-import { type JSX, splitProps } from 'solid-js'
-import { Text, type TextProps } from './Text'
-import { useComponentTheme, type IComponentTheme } from '../theme'
+import { type JSX, splitProps, createMemo } from 'solid-js'
 import { useEmailInputState } from '../composables/use-email-input-state'
 import { useEmailInput } from '../composables/use-email-input'
+import {
+	renderTextInput,
+	defaultTextInputTheme,
+	type TextInputRenderTheme,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../theme'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 
 //#region Types
 export interface IEmailInputProps {
@@ -13,21 +18,7 @@ export interface IEmailInputProps {
 	onChange?: (value: string) => void
 	onSubmit?: (value: string) => void
 }
-
-export type EmailInputTheme = IComponentTheme & {
-	styles: {
-		value: () => Partial<TextProps>
-	}
-}
 //#endregion Types
-
-//#region Theme
-export const emailInputTheme: EmailInputTheme = {
-	styles: {
-		value: (): Partial<TextProps> => ({}),
-	},
-}
-//#endregion Theme
 
 //#region Component
 export function EmailInput(props: IEmailInputProps): JSX.Element {
@@ -53,9 +44,13 @@ export function EmailInput(props: IEmailInputProps): JSX.Element {
 		state,
 	})
 
-	const theme = useComponentTheme<EmailInputTheme>('EmailInput')
-	const { styles } = theme ?? emailInputTheme
+	const theme = useComponentTheme<TextInputRenderTheme>('EmailInput')
+	const { styles } = theme ?? defaultTextInputTheme
 
-	return <Text {...styles.value()}>{inputValue()}</Text>
+	const wnode = createMemo(() =>
+		renderTextInput({ inputValue: inputValue() }, { styles })
+	)
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }
 //#endregion Component

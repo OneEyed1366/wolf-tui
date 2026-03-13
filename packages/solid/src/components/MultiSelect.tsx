@@ -1,13 +1,13 @@
-import { type JSX, For, splitProps } from 'solid-js'
-import { Box } from './Box'
+import { type JSX, splitProps, createMemo } from 'solid-js'
 import {
-	MultiSelectOption,
-	multiSelectTheme,
-	type MultiSelectTheme,
-} from './MultiSelectOption'
+	renderMultiSelect,
+	defaultMultiSelectTheme,
+	type MultiSelectRenderTheme,
+} from '@wolfie/shared'
 import { useComponentTheme } from '../theme'
 import { useMultiSelectState } from '../composables/use-multi-select-state'
 import { useMultiSelect } from '../composables/use-multi-select'
+import { wNodeToSolid } from '../wnode/wnode-to-solid'
 import type { Option } from '@wolfie/shared'
 
 //#region Types
@@ -77,26 +77,26 @@ export function MultiSelect(props: IMultiSelectProps): JSX.Element {
 
 	useMultiSelect({ isDisabled: () => local.isDisabled, state })
 
-	const theme = useComponentTheme<MultiSelectTheme>('MultiSelect')
-	const { styles } = theme ?? multiSelectTheme
+	const theme = useComponentTheme<MultiSelectRenderTheme>('MultiSelect')
+	const { styles } = theme ?? defaultMultiSelectTheme
 
-	return (
-		<Box {...styles.container()}>
-			<For each={state.visibleOptions()}>
-				{(option) => (
-					<MultiSelectOption
-						isFocused={
-							!local.isDisabled && state.focusedValue() === option.value
-						}
-						isSelected={state.value().includes(option.value)}
-					>
-						{option.label}
-					</MultiSelectOption>
-				)}
-			</For>
-		</Box>
+	const wnode = createMemo(() =>
+		renderMultiSelect(
+			{
+				visibleOptions: state.visibleOptions(),
+				focusedValue: state.focusedValue(),
+				value: state.value(),
+				isDisabled: local.isDisabled ?? false,
+			},
+			{ styles }
+		)
 	)
+
+	return (() => wNodeToSolid(wnode())) as unknown as JSX.Element
 }
 //#endregion Component
 
-export { multiSelectTheme, type MultiSelectTheme }
+export {
+	defaultMultiSelectTheme as multiSelectTheme,
+	type MultiSelectRenderTheme as MultiSelectTheme,
+}

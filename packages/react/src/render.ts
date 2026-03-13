@@ -128,7 +128,7 @@ const render = (
 		exitOnCtrlC: true,
 		patchConsole: true,
 		maxFps: 30,
-		incrementalRendering: false,
+		incrementalRendering: true,
 		...getOptions(options),
 		layoutTree,
 	}

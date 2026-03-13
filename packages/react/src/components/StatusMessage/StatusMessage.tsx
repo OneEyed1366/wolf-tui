@@ -1,11 +1,15 @@
 import { type ReactNode } from 'react'
-import { type IProps as BoxProps, Box } from '../Box'
-import { type IProps as TextProps, Text } from '../Text'
-import { useComponentTheme, type IComponentTheme } from '../../theme/theme'
-import figures from 'figures'
+import {
+	renderStatusMessage,
+	defaultStatusMessageTheme,
+	type StatusMessageRenderTheme,
+	type StatusMessageVariant,
+} from '@wolfie/shared'
+import { useComponentTheme } from '../../theme/theme'
+import { wNodeToReact } from '../../wnode/wnode-to-react'
 
 //#region Types
-export type IStatusMessageVariant = 'info' | 'success' | 'error' | 'warning'
+export type IStatusMessageVariant = StatusMessageVariant
 
 export type IStatusMessageProps = {
 	/**
@@ -18,77 +22,17 @@ export type IStatusMessageProps = {
 	 */
 	variant: IStatusMessageVariant
 }
-
-type IStatusMessageTheme = {
-	styles: {
-		container: () => Partial<BoxProps>
-		iconContainer: () => Partial<BoxProps>
-		icon: (props: { variant: IStatusMessageVariant }) => Partial<TextProps>
-		message: () => Partial<TextProps>
-	}
-	config: (props: { variant: IStatusMessageVariant }) => {
-		icon: string
-	}
-}
 //#endregion Types
-
-//#region Theme
-const colorByVariant: Record<IStatusMessageVariant, string> = {
-	success: 'green',
-	error: 'red',
-	warning: 'yellow',
-	info: 'blue',
-}
-
-const iconByVariant: Record<IStatusMessageVariant, string> = {
-	success: figures.tick,
-	error: figures.cross,
-	warning: figures.warning,
-	info: figures.info,
-}
-
-export const statusMessageTheme = {
-	styles: {
-		container: (): Partial<BoxProps> => ({
-			style: {
-				gap: 1,
-			},
-		}),
-		iconContainer: (): Partial<BoxProps> => ({
-			style: {
-				flexShrink: 0,
-			},
-		}),
-		icon: ({
-			variant,
-		}: {
-			variant: IStatusMessageVariant
-		}): Partial<TextProps> => ({
-			style: {
-				color: colorByVariant[variant],
-			},
-		}),
-		message: (): Partial<TextProps> => ({}),
-	},
-	config: ({ variant }: { variant: IStatusMessageVariant }) => ({
-		icon: iconByVariant[variant],
-	}),
-} satisfies IComponentTheme
-//#endregion Theme
 
 //#region Component
 export function StatusMessage({ children, variant }: IStatusMessageProps) {
-	const { styles, config } =
-		useComponentTheme<IStatusMessageTheme>('StatusMessage')
+	const theme = useComponentTheme<StatusMessageRenderTheme>('StatusMessage')
+	const { styles, config } = theme ?? defaultStatusMessageTheme
 
-	return (
-		<Box {...styles.container()}>
-			<Box {...styles.iconContainer()}>
-				<Text {...styles.icon({ variant })}>{config({ variant }).icon}</Text>
-			</Box>
+	const message = String(children ?? '')
 
-			<Text {...styles.message()}>{children}</Text>
-		</Box>
+	return wNodeToReact(
+		renderStatusMessage({ variant, message }, { styles, config })
 	)
 }
 //#endregion Component
