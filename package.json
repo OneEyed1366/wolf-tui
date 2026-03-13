@@ -19,7 +19,7 @@
 		"benchmark": "npx vite-node",
 		"test:e2e": "vitest run --config e2e/vitest.config.ts",
 		"typecheck": "tsc --build --noEmit",
-		"check": "concurrently --kill-others-on-fail -n lint,build,typecheck 'pnpm lint' 'pnpm build' 'pnpm typecheck' && pnpm test",
+		"check": "concurrently --kill-others-on-fail -n lint,build 'pnpm lint' 'pnpm build' && pnpm typecheck && pnpm test",
 		"prepare": "husky"
 	},
 	"engines": {
