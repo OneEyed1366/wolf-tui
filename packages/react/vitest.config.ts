@@ -16,7 +16,8 @@ export default defineConfig({
 		environment: 'node',
 		testTimeout: 30000,
 		include: ['test/**/*.{ts,tsx}'],
-		exclude: ['test/helpers/**', 'test/fixtures/**'],
+		exclude: ['test/helpers/**', 'test/fixtures/**', 'test/setup.ts'],
+		setupFiles: ['./test/setup.ts'],
 		pool: 'forks',
 		poolOptions: {
 			forks: { singleFork: true },
