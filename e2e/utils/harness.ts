@@ -116,6 +116,7 @@ export async function createApp(
 				stderr: stderr as unknown as NodeJS.WriteStream,
 				debug: false,
 				maxFps: 30,
+				incrementalRendering: false,
 			})
 			unmountFn = () => instance.unmount()
 			break
@@ -137,6 +138,7 @@ export async function createApp(
 				debug: false,
 				maxFps: 30,
 				exitOnCtrlC: false,
+				incrementalRendering: false,
 			})
 			unmountFn = () => instance.unmount()
 			break
@@ -152,6 +154,7 @@ export async function createApp(
 				stderr: stderr as unknown as NodeJS.WriteStream,
 				debug: false,
 				maxFps: 30,
+				incrementalRendering: false,
 			})
 			unmountFn = () => instance.unmount()
 			break
