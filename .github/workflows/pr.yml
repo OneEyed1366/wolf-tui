@@ -71,7 +71,9 @@ jobs:
           path: .
 
       - name: Debug - internal/core after download
-        run: ls -la internal/core/ | grep -E '\.node|\.cjs|\.js' || echo "no files"
+        run: |
+          echo "=== internal/core/ ===" && ls -la internal/core/
+          echo "=== find .node .cjs ===" && find . \( -name "*.node" -o -name "index.cjs" \) 2>/dev/null | head -20
 
       - name: Check
         run: pnpm check
