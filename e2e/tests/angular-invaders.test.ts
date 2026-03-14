@@ -72,9 +72,9 @@ describe(APP_NAME, () => {
 	//#region Game Screen
 	it('captures game screen', async () => {
 		app.sendKey(KEYS.ESCAPE)
-		await app.delay(300)
+		await app.delay(1000)
 		app.sendKey(KEYS.ENTER)
-		await app.delay(500)
+		await app.delay(2000)
 
 		const frame = app.getFrame()
 		const plain = stripAnsi(frame)
