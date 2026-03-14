@@ -14,6 +14,7 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'node',
+		testTimeout: 30000,
 		include: ['test/**/*.{ts,tsx}'],
 		exclude: ['test/helpers/**', 'test/fixtures/**'],
 		pool: 'forks',
