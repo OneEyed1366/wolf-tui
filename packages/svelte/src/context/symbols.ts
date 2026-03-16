@@ -7,4 +7,10 @@ export const FOCUS_CTX = Symbol('wolfie:focus')
 export const ACCESSIBILITY_CTX = Symbol('wolfie:accessibility')
 export const BACKGROUND_CTX = Symbol('wolfie:background')
 export const THEME_CTX = Symbol('wolfie:theme')
+
+//#region List Context Symbols
+export const UL_DEPTH_CTX = Symbol('wolfie:ul-depth')
+export const UL_MARKER_CTX = Symbol('wolfie:ul-marker')
+export const OL_COUNTER_CTX = Symbol('wolfie:ol-counter')
+//#endregion List Context Symbols
 //#endregion Context Symbols

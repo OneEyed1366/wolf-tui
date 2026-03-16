@@ -693,6 +693,14 @@ export { useMultiSelect } from './composables/use-multi-select.js'
 export type { UseMultiSelectProps } from './composables/use-multi-select.js'
 //#endregion Composable Exports
 
+//#region Component Exports
+export * from './components/index.js'
+//#endregion Component Exports
+
+//#region WNode Bridge Exports
+export { wNodeToSvelte, mountWNode } from './wnode/wnode-to-svelte.js'
+//#endregion WNode Bridge Exports
+
 //#region Renderer Re-exports
 export { patchGlobals, restoreGlobals } from './renderer/wolfie-document.js'
 export {
@@ -702,5 +710,6 @@ export {
 	WolfieDocumentFragment,
 	setNodeOpsConfig,
 } from './renderer/wolfie-element.js'
+export { wolfieProps } from './renderer/wolfie-action.js'
 export { initLayoutTreeRecursively } from './renderer/init-layout-tree.js'
 //#endregion Renderer Re-exports
