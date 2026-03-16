@@ -16,9 +16,12 @@ export default defineConfig({
 	plugins: [svelte({ compilerOptions: { css: 'external' } }), wolfie('svelte')],
 	css: { postcss: resolve(__dirname, 'postcss.config.cjs') },
 	resolve: { conditions: ['browser', 'development'] },
-	// vite-node (dev mode) must process @wolfie/svelte through Vite's pipeline
-	// so its `import from "svelte"` resolves with browser conditions (not server build).
+	// vite-node runs in SSR mode — needs separate resolve config for SSR.
+	// Without this, svelte resolves to index-server.js ("mount() not available").
 	ssr: {
+		resolve: {
+			conditions: ['browser', 'development', 'import', 'module'],
+		},
 		noExternal: ['@wolfie/svelte', 'svelte'],
 	},
 	build: {
