@@ -164,15 +164,78 @@ export function patchGlobals(patchConfig: PatchConfig): void {
 
 	const noop = () => {}
 
+	//#region Template HTML Parser
+	// Minimal HTML parser for Svelte's compiled template fragments.
+	// Svelte sends simple HTML: <!---> comments, <wolfie-*> self-closing or
+	// paired elements, and bare text. No attributes need to be parsed.
+	function parseHTMLIntoFragment(
+		parent: WolfieDocumentFragment,
+		html: string
+	): void {
+		let i = 0
+		const stack: (WolfieDocumentFragment | WolfieElement)[] = [parent]
+
+		function currentParent() {
+			return stack[stack.length - 1]!
+		}
+
+		while (i < html.length) {
+			if (html.startsWith('<!--', i)) {
+				// Comment node
+				const end = html.indexOf('-->', i + 4)
+				const text = end >= 0 ? html.slice(i + 4, end) : ''
+				const comment = new WolfieComment(text)
+				currentParent().appendChild(comment)
+				i = end >= 0 ? end + 3 : html.length
+			} else if (html.startsWith('</', i)) {
+				// Closing tag
+				const end = html.indexOf('>', i + 2)
+				i = end >= 0 ? end + 1 : html.length
+				if (stack.length > 1) stack.pop()
+			} else if (html[i] === '<') {
+				// Opening tag
+				const tagEnd = html.indexOf('>', i + 1)
+				if (tagEnd < 0) break
+				const tagContent = html.slice(i + 1, tagEnd)
+				const selfClosing = tagContent.endsWith('/')
+				const tagName = (selfClosing ? tagContent.slice(0, -1) : tagContent)
+					.split(/[\s/]/)[0]!
+					.toLowerCase()
+
+				const normalized = tagName.startsWith('wolfie-')
+					? tagName
+					: `wolfie-${tagName}`
+				const el = new WolfieElement(normalized)
+				currentParent().appendChild(el)
+
+				if (!selfClosing) {
+					stack.push(el)
+				}
+				i = tagEnd + 1
+			} else {
+				// Text content
+				const nextTag = html.indexOf('<', i)
+				const text = nextTag >= 0 ? html.slice(i, nextTag) : html.slice(i)
+				if (text) {
+					const textNode = new WolfieText(text)
+					currentParent().appendChild(textNode)
+				}
+				i = nextTag >= 0 ? nextTag : html.length
+			}
+		}
+	}
+	//#endregion Template HTML Parser
+
 	const wolfieDocument = {
 		createElement(tag: string): WolfieElement | WolfieDocumentFragment {
-			// Template compat — Svelte may use <template> for cloneNode patterns
+			// Template compat — Svelte uses <template> for fragment-from-HTML
 			if (tag === 'template') {
 				const frag = new WolfieDocumentFragment()
-				// Template needs innerHTML setter + content getter
 				Object.defineProperty(frag, 'innerHTML', {
-					set(_html: string) {
-						// Template innerHTML in Svelte tree mode is unused — stub
+					set(html: string) {
+						// Parse simple HTML from Svelte templates into wolfie nodes.
+						// Svelte sends: <!----> comments, <wolfie-*> elements, text.
+						parseHTMLIntoFragment(frag, html)
 					},
 					get() {
 						return ''
@@ -191,7 +254,14 @@ export function patchGlobals(patchConfig: PatchConfig): void {
 			return new WolfieElement(normalized)
 		},
 
-		createElementNS(_ns: string | null, tag: string): WolfieElement {
+		createElementNS(
+			_ns: string | null,
+			tag: string
+		): WolfieElement | WolfieDocumentFragment {
+			// Template compat — same handling as createElement
+			if (tag === 'template') {
+				return wolfieDocument.createElement('template')
+			}
 			const normalized = tag.startsWith('wolfie-') ? tag : `wolfie-${tag}`
 			return new WolfieElement(normalized)
 		},
@@ -267,7 +337,16 @@ export function patchGlobals(patchConfig: PatchConfig): void {
 	g['Text'] = WText
 	g['Comment'] = WComment
 	g['window'] = wolfieWindow
-	g['navigator'] = { userAgent: 'wolfie' }
+	try {
+		g['navigator'] = { userAgent: 'wolfie' }
+	} catch {
+		// navigator is read-only in some Node.js environments
+		Object.defineProperty(globalThis, 'navigator', {
+			value: { userAgent: 'wolfie' },
+			writable: true,
+			configurable: true,
+		})
+	}
 	g['requestAnimationFrame'] = (cb: () => void) => setTimeout(cb, 16)
 	g['cancelAnimationFrame'] = (id: ReturnType<typeof setTimeout>) =>
 		clearTimeout(id)
@@ -296,7 +375,15 @@ export function restoreGlobals(): void {
 	g['Text'] = saved.Text
 	g['Comment'] = saved.Comment
 	g['window'] = saved.window
-	g['navigator'] = saved.navigator
+	try {
+		g['navigator'] = saved.navigator
+	} catch {
+		Object.defineProperty(globalThis, 'navigator', {
+			value: saved.navigator,
+			writable: true,
+			configurable: true,
+		})
+	}
 	g['requestAnimationFrame'] = saved.requestAnimationFrame
 	g['cancelAnimationFrame'] = saved.cancelAnimationFrame
 	g['customElements'] = saved.customElements

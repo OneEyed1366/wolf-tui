@@ -20,7 +20,7 @@
 	},
 	"scripts": {
 		"dev": "vite build --watch",
-		"build": "vite build",
+		"build": "vite build && node scripts/postbuild.cjs",
 		"prepare": "npm run build"
 	},
 	"files": [
@@ -34,11 +34,13 @@
 		"auto-bind": "^5.0.1",
 		"cli-boxes": "^3.0.0",
 		"cli-cursor": "^4.0.0",
+		"clsx": "^2.1.1",
 		"cli-spinners": "^3.4.0",
 		"figures": "^6.1.0",
 		"cli-truncate": "^5.1.1",
 		"code-excerpt": "^4.0.0",
 		"es-toolkit": "^1.39.10",
+		"esm-env": "^1.2.2",
 		"indent-string": "^5.0.0",
 		"is-in-ci": "^2.0.0",
 		"patch-console": "^2.0.0",

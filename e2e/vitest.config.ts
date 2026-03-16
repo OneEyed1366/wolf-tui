@@ -9,6 +9,9 @@ export default defineConfig({
 		poolOptions: {
 			forks: {
 				singleFork: true,
+				// Svelte requires 'browser' export condition to resolve to client build.
+				// Without this, `import { mount } from 'svelte'` resolves to index-server.js.
+				execArgv: ['--conditions=browser'],
 			},
 		},
 		testTimeout: 30_000,

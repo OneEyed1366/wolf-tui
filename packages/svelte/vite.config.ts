@@ -31,8 +31,9 @@ export default defineConfig({
 			external: (id) => {
 				if (id.startsWith('node:')) return true
 				if (id.startsWith('.') || id.startsWith('/')) return false
-				// Bundle svelte into the package (Node resolves to server build which breaks reactivity)
-				if (id === 'svelte' || id.startsWith('svelte/')) return false
+				// Externalize everything including svelte.
+				// Consumers must use --conditions=browser so Node resolves
+				// svelte to its client build (not server SSR).
 				return true
 			},
 		},

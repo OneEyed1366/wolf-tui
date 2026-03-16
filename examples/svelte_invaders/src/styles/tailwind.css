@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@source "../**/*.svelte";
+@source "../**/*.ts";
+
+@theme {
+	--color-alien-top: oklch(0.7 0.25 145);
+	--color-alien-mid: oklch(0.75 0.2 200);
+	--color-alien-bot: oklch(0.65 0.22 30);
+	--color-player: oklch(0.8 0.18 120);
+	--color-bullet-player: oklch(0.9 0.15 90);
+	--color-bullet-alien: oklch(0.75 0.3 25);
+	--color-shield: oklch(0.6 0.15 180);
+	--color-hud: oklch(0.85 0.1 60);
+	--color-game-border: oklch(0.4 0.1 270);
+}

@@ -68,6 +68,9 @@ importers:
       '@wolfie/solid':
         specifier: workspace:*
         version: link:packages/solid
+      '@wolfie/svelte':
+        specifier: workspace:*
+        version: link:packages/svelte
       '@wolfie/vue':
         specifier: workspace:*
         version: link:packages/vue
@@ -646,6 +649,43 @@ importers:
       webpack-cli:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.105.4)
+
+  examples/svelte_invaders:
+    dependencies:
+      '@wolfie/svelte':
+        specifier: workspace:*
+        version: link:../../packages/svelte
+      svelte:
+        specifier: ^5.0.0
+        version: 5.53.12
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^5.0.0
+        version: 5.1.1(svelte@5.53.12)(vite@6.4.1(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(yaml@2.8.2))
+      '@tailwindcss/postcss':
+        specifier: ^4.1.18
+        version: 4.2.1
+      '@wolfie/plugin':
+        specifier: workspace:*
+        version: link:../../packages/plugin
+      '@wolfie/typescript-plugin':
+        specifier: workspace:*
+        version: link:../../packages/typescript-plugin
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.8
+      tailwindcss:
+        specifier: ~4.1.18
+        version: 4.1.18
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+      vite:
+        specifier: ^6.0.7
+        version: 6.4.1(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(yaml@2.8.2)
+      vite-node:
+        specifier: ^3.0.4
+        version: 3.2.4(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(yaml@2.8.2)
 
   examples/vue_esbuild:
     dependencies:
@@ -1325,12 +1365,18 @@ importers:
       cli-truncate:
         specifier: ^5.1.1
         version: 5.2.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       code-excerpt:
         specifier: ^4.0.0
         version: 4.0.0
       es-toolkit:
         specifier: ^1.39.10
         version: 1.45.1
+      esm-env:
+        specifier: ^1.2.2
+        version: 1.2.2
       figures:
         specifier: ^6.1.0
         version: 6.1.0

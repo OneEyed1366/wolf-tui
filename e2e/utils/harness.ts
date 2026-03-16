@@ -1,9 +1,11 @@
 import { EventEmitter } from 'events'
 import { createRequire } from 'module'
 import { resolve } from 'path'
+import { fork } from 'child_process'
+import { createInterface } from 'readline'
 
 //#region Types
-type Framework = 'react' | 'vue' | 'angular' | 'solid'
+type Framework = 'react' | 'vue' | 'angular' | 'solid' | 'svelte'
 
 interface FakeStdout extends EventEmitter {
 	columns: number
@@ -158,6 +160,103 @@ export async function createApp(
 			})
 			unmountFn = () => instance.unmount()
 			break
+		}
+		case 'svelte': {
+			// Svelte requires --conditions=browser so Node resolves svelte to client build.
+			// Vitest's transform pipeline doesn't propagate export conditions, so we
+			// spawn a separate Node process with the flag and communicate via IPC.
+			const loaderPath = resolve(__dirname, 'svelte-loader.mjs')
+			const child = fork(loaderPath, [JSON.stringify({ cols, rows })], {
+				execArgv: ['--conditions=browser'],
+				stdio: ['pipe', 'pipe', 'inherit', 'ipc'],
+			})
+
+			// Wait for 'ready' signal from loader
+			const rl = createInterface({ input: child.stdout! })
+			let lastFrame = ''
+			const allFrames: string[] = []
+			const frameCounter = 0
+
+			const sendCmd = (
+				cmd: Record<string, unknown>
+			): Promise<Record<string, unknown>> => {
+				return new Promise((resolve) => {
+					const handler = (line: string) => {
+						try {
+							const resp = JSON.parse(line)
+							rl.off('line', handler)
+							resolve(resp)
+						} catch {
+							/* skip non-JSON lines */
+						}
+					}
+					rl.on('line', handler)
+					child.stdin!.write(JSON.stringify(cmd) + '\n')
+				})
+			}
+
+			// Wait for ready
+			await new Promise<void>((resolve) => {
+				const handler = (line: string) => {
+					try {
+						const resp = JSON.parse(line)
+						if (resp.ready) {
+							rl.off('line', handler)
+							resolve()
+						}
+					} catch {
+						/* skip non-JSON lines */
+					}
+				}
+				rl.on('line', handler)
+			})
+
+			// Bridge: translate AppInstance methods to IPC commands
+			const svelteStdout = createFakeStdout(cols, rows)
+
+			const refreshFrame = async () => {
+				const resp = await sendCmd({ type: 'getFrame' })
+				if (resp.frame) {
+					lastFrame = resp.frame as string
+					svelteStdout.write(lastFrame)
+				}
+			}
+
+			// Initial frame
+			await refreshFrame()
+
+			unmountFn = () => {
+				child.stdin!.write(JSON.stringify({ type: 'unmount' }) + '\n')
+				setTimeout(() => child.kill(), 500)
+			}
+
+			// Override return to use IPC-based methods
+			const svelteDelay = (ms: number) =>
+				new Promise<void>((r) => setTimeout(r, ms))
+			return {
+				sendKey: (key: string) => {
+					child.stdin!.write(JSON.stringify({ type: 'sendKey', key }) + '\n')
+				},
+				sendKeys: async (keys: string[], delayMs = 100) => {
+					for (const key of keys) {
+						child.stdin!.write(JSON.stringify({ type: 'sendKey', key }) + '\n')
+						await svelteDelay(delayMs)
+					}
+				},
+				getFrame: () => {
+					// Sync read — return last known frame.
+					// Tests should call delay() before getFrame() to allow rendering.
+					return lastFrame
+				},
+				getAllFrames: () => allFrames,
+				frameCount: () => frameCounter,
+				delay: async (ms: number) => {
+					await svelteDelay(ms)
+					await refreshFrame()
+				},
+				unmount: unmountFn,
+				stdout: svelteStdout,
+			}
 		}
 	}
 
