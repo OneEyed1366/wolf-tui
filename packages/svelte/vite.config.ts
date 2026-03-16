@@ -24,9 +24,11 @@ export default defineConfig({
 				'styles/index': resolve(__dirname, 'src/styles/index.ts'),
 			},
 			output: {
-				preserveModules: true,
-				preserveModulesRoot: 'src',
+				// Cannot use preserveModules — it outputs *.svelte.js files that
+				// downstream vite-plugin-svelte tries to re-compile ("$ is reserved").
+				// Single bundle avoids this and keeps exports clean.
 				entryFileNames: '[name].js',
+				chunkFileNames: '_chunks/[name]-[hash].js',
 			},
 			external: (id) => {
 				if (id.startsWith('node:')) return true

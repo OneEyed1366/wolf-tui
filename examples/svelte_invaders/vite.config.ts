@@ -16,6 +16,11 @@ export default defineConfig({
 	plugins: [svelte({ compilerOptions: { css: 'external' } }), wolfie('svelte')],
 	css: { postcss: resolve(__dirname, 'postcss.config.cjs') },
 	resolve: { conditions: ['browser', 'development'] },
+	// vite-node (dev mode) must process @wolfie/svelte through Vite's pipeline
+	// so its `import from "svelte"` resolves with browser conditions (not server build).
+	ssr: {
+		noExternal: ['@wolfie/svelte', 'svelte'],
+	},
 	build: {
 		target: 'node18',
 		lib: {
