@@ -1,0 +1,28 @@
+{
+	"name": "@examples/svelte-vite",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "vite build",
+		"start": "node --conditions=browser dist/index.js",
+		"example": "vite build && node --conditions=browser dist/index.js"
+	},
+	"dependencies": {
+		"@wolfie/svelte": "workspace:*",
+		"svelte": "^5.0.0"
+	},
+	"devDependencies": {
+		"@wolfie/plugin": "workspace:*",
+		"@wolfie/typescript-plugin": "workspace:*",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@tailwindcss/postcss": "^4.1.18",
+		"less": "^4.5.1",
+		"postcss": "^8.5.6",
+		"sass": "^1.97.3",
+		"stylus": "^0.64.0",
+		"tailwindcss": "~4.1.18",
+		"typescript": "^5.8.3",
+		"vite": "^6.0.7"
+	}
+}

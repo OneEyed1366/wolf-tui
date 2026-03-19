@@ -24,6 +24,10 @@
 		"./rollup": {
 			"types": "./build/rollup.d.ts",
 			"default": "./build/rollup.js"
+		},
+		"./svelte": {
+			"types": "./build/svelte.d.ts",
+			"default": "./build/svelte.js"
 		}
 	},
 	"engines": {

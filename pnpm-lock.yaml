@@ -650,6 +650,52 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.105.4)
 
+  examples/svelte_esbuild:
+    dependencies:
+      '@wolfie/svelte':
+        specifier: workspace:*
+        version: link:../../packages/svelte
+      svelte:
+        specifier: ^5.0.0
+        version: 5.53.12
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: ^4.1.18
+        version: 4.2.1
+      '@wolfie/plugin':
+        specifier: workspace:*
+        version: link:../../packages/plugin
+      '@wolfie/typescript-plugin':
+        specifier: workspace:*
+        version: link:../../packages/typescript-plugin
+      esbuild:
+        specifier: ^0.24.0
+        version: 0.24.2
+      esbuild-svelte:
+        specifier: ^0.9.4
+        version: 0.9.4(esbuild@0.24.2)(svelte@5.53.12)
+      less:
+        specifier: ^4.5.1
+        version: 4.6.2
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.8
+      sass:
+        specifier: ^1.97.3
+        version: 1.98.0
+      stylus:
+        specifier: ^0.64.0
+        version: 0.64.0
+      svelte-preprocess:
+        specifier: ^6.0.0
+        version: 6.0.3(@babel/core@7.29.0)(less@4.6.2)(postcss@8.5.8)(sass@1.98.0)(stylus@0.64.0)(svelte@5.53.12)(typescript@5.9.3)
+      tailwindcss:
+        specifier: ~4.1.18
+        version: 4.1.18
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+
   examples/svelte_invaders:
     dependencies:
       '@wolfie/svelte':
@@ -686,6 +732,92 @@ importers:
       vite-node:
         specifier: ^3.0.4
         version: 3.2.4(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(yaml@2.8.2)
+
+  examples/svelte_vite:
+    dependencies:
+      '@wolfie/svelte':
+        specifier: workspace:*
+        version: link:../../packages/svelte
+      svelte:
+        specifier: ^5.0.0
+        version: 5.53.12
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^5.0.0
+        version: 5.1.1(svelte@5.53.12)(vite@6.4.1(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(yaml@2.8.2))
+      '@tailwindcss/postcss':
+        specifier: ^4.1.18
+        version: 4.2.1
+      '@wolfie/plugin':
+        specifier: workspace:*
+        version: link:../../packages/plugin
+      '@wolfie/typescript-plugin':
+        specifier: workspace:*
+        version: link:../../packages/typescript-plugin
+      less:
+        specifier: ^4.5.1
+        version: 4.6.2
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.8
+      sass:
+        specifier: ^1.97.3
+        version: 1.98.0
+      stylus:
+        specifier: ^0.64.0
+        version: 0.64.0
+      tailwindcss:
+        specifier: ~4.1.18
+        version: 4.1.18
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+      vite:
+        specifier: ^6.0.7
+        version: 6.4.1(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(yaml@2.8.2)
+
+  examples/svelte_webpack:
+    dependencies:
+      '@wolfie/svelte':
+        specifier: workspace:*
+        version: link:../../packages/svelte
+      svelte:
+        specifier: ^5.0.0
+        version: 5.53.12
+    devDependencies:
+      '@wolfie/plugin':
+        specifier: workspace:*
+        version: link:../../packages/plugin
+      '@wolfie/typescript-plugin':
+        specifier: workspace:*
+        version: link:../../packages/typescript-plugin
+      less:
+        specifier: ^4.5.1
+        version: 4.6.2
+      sass:
+        specifier: ^1.97.3
+        version: 1.98.0
+      stylus:
+        specifier: ^0.64.0
+        version: 0.64.0
+      svelte-loader:
+        specifier: ^3.2.4
+        version: 3.2.4(svelte@5.53.12)
+      svelte-preprocess:
+        specifier: ^6.0.0
+        version: 6.0.3(@babel/core@7.29.0)(less@4.6.2)(postcss@8.5.8)(sass@1.98.0)(stylus@0.64.0)(svelte@5.53.12)(typescript@5.9.3)
+      ts-loader:
+        specifier: ^9.5.0
+        version: 9.5.4(typescript@5.9.3)(webpack@5.105.4)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+      webpack:
+        specifier: ^5.91.0
+        version: 5.105.4(esbuild@0.24.2)(webpack-cli@6.0.1)
+      webpack-cli:
+        specifier: ^6.0.0
+        version: 6.0.1(webpack@5.105.4)
 
   examples/vue_esbuild:
     dependencies:
@@ -4641,6 +4773,13 @@ packages:
       esbuild: '>=0.20'
       solid-js: '>= 1.0'
 
+  esbuild-svelte@0.9.4:
+    resolution: {integrity: sha512-v/a0GjkKN06nal2QLluxjk2GXsei3fdtjIuHRa6pVnri5rQBZ6pj4a2WwjLfRojgRsLwDHl4xSeZ1BeUHsqQrw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      esbuild: '>=0.17.0'
+      svelte: '>=4.2.1 <6'
+
   esbuild@0.24.2:
     resolution: {integrity: sha512-+9egpBW8I3CD5XPe0n6BfT5fxLzxrlDzqydF3aviG+9ni1lDC/OvMHcxqEFV0+LANZG5R1bFMWfUrjVsdwxJvA==}
     engines: {node: '>=18'}
@@ -6273,6 +6412,57 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  svelte-dev-helper@1.1.9:
+    resolution: {integrity: sha512-oU+Xv7Dl4kRU2kdFjsoPLfJfnt5hUhsFUZtuzI3Ku/f2iAFZqBoEuXOqK3N9ngD4dxQOmN4OKWPHVi3NeAeAfQ==}
+
+  svelte-hmr@0.14.12:
+    resolution: {integrity: sha512-4QSW/VvXuqVcFZ+RhxiR8/newmwOCTlbYIezvkeN6302YFRE8cXy0naamHcjz8Y9Ce3ITTZtrHrIL0AGfyo61w==}
+    engines: {node: ^12.20 || ^14.13.1 || >= 16}
+    peerDependencies:
+      svelte: '>=3.19.0'
+
+  svelte-loader@3.2.4:
+    resolution: {integrity: sha512-e0HdDnkYH/MDx4/IfTSka5AOFg9yYJcPuoZJB5x0l60fkHjVjNvrrxr+rJegDG9J7ZymmdHt00/hdLw+QF299w==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0-next.0 || ^5.0.0-next.1
+
+  svelte-preprocess@6.0.3:
+    resolution: {integrity: sha512-PLG2k05qHdhmRG7zR/dyo5qKvakhm8IJ+hD2eFRQmMLHp7X3eJnjeupUtvuRpbNiF31RjVw45W+abDwHEmP5OA==}
+    engines: {node: '>= 18.0.0'}
+    peerDependencies:
+      '@babel/core': ^7.10.2
+      coffeescript: ^2.5.1
+      less: ^3.11.3 || ^4.0.0
+      postcss: ^7 || ^8
+      postcss-load-config: '>=3'
+      pug: ^3.0.0
+      sass: ^1.26.8
+      stylus: '>=0.55'
+      sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
+      svelte: ^4.0.0 || ^5.0.0-next.100 || ^5.0.0
+      typescript: ^5.0.0
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      coffeescript:
+        optional: true
+      less:
+        optional: true
+      postcss:
+        optional: true
+      postcss-load-config:
+        optional: true
+      pug:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      typescript:
+        optional: true
 
   svelte@5.53.12:
     resolution: {integrity: sha512-4x/uk4rQe/d7RhfvS8wemTfNjQ0bJbKvamIzRBfTe2eHHjzBZ7PZicUQrC2ryj83xxEacfA1zHKd1ephD1tAxA==}
@@ -9973,6 +10163,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  esbuild-svelte@0.9.4(esbuild@0.24.2)(svelte@5.53.12):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      esbuild: 0.24.2
+      svelte: 5.53.12
+
   esbuild@0.24.2:
     optionalDependencies:
       '@esbuild/aix-ppc64': 0.24.2
@@ -11707,6 +11903,30 @@ snapshots:
       has-flag: 4.0.0
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  svelte-dev-helper@1.1.9: {}
+
+  svelte-hmr@0.14.12(svelte@5.53.12):
+    dependencies:
+      svelte: 5.53.12
+
+  svelte-loader@3.2.4(svelte@5.53.12):
+    dependencies:
+      loader-utils: 2.0.4
+      svelte: 5.53.12
+      svelte-dev-helper: 1.1.9
+      svelte-hmr: 0.14.12(svelte@5.53.12)
+
+  svelte-preprocess@6.0.3(@babel/core@7.29.0)(less@4.6.2)(postcss@8.5.8)(sass@1.98.0)(stylus@0.64.0)(svelte@5.53.12)(typescript@5.9.3):
+    dependencies:
+      svelte: 5.53.12
+    optionalDependencies:
+      '@babel/core': 7.29.0
+      less: 4.6.2
+      postcss: 8.5.8
+      sass: 1.98.0
+      stylus: 0.64.0
+      typescript: 5.9.3
 
   svelte@5.53.12:
     dependencies:

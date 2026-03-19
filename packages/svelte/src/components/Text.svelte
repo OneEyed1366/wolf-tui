@@ -9,12 +9,14 @@
 
 	let {
 		style,
+		class: classProp,
 		className,
 		children,
 		'aria-label': ariaLabel,
 		'aria-hidden': ariaHidden,
 	}: {
 		style?: Styles
+		class?: ClassNameValue
 		className?: ClassNameValue
 		children?: Snippet
 		'aria-label'?: string
@@ -25,7 +27,7 @@
 	const inheritedBg = getContext<(() => string | undefined) | undefined>(BACKGROUND_CTX)
 
 	let effectiveStyles = $derived({
-		...resolveClassName(className),
+		...resolveClassName(classProp ?? className),
 		...(style ?? {}),
 	} satisfies Styles)
 

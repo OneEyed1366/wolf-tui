@@ -15,6 +15,63 @@ import {
 	tailwind,
 } from '@wolfie/css-parser'
 
+//#region Svelte Style Extraction (webpack)
+
+/**
+ * Extract `<style>` block from a Svelte component and process through wolfie CSS pipeline.
+ * Used during webpack scan phase to register styles before module processing.
+ */
+async function extractAndRegisterSvelteStyles(
+	filePath: string,
+	content: string,
+	framework: Framework
+): Promise<void> {
+	const styleRegex = /<style([^>]*)>([\s\S]*?)<\/style>/i
+	const match = styleRegex.exec(content)
+	if (!match) return
+
+	const attrs = match[1] || ''
+	const styleContent = (match[2] || '').trim()
+	if (!styleContent) return
+
+	const langMatch = attrs.match(/lang=["']?(\w+)["']?/)
+	const rawLang = langMatch?.[1] || 'css'
+	const lang = (
+		rawLang === 'sass' || rawLang === 'scss'
+			? 'scss'
+			: rawLang === 'styl' || rawLang === 'stylus'
+				? 'stylus'
+				: rawLang === 'less'
+					? 'less'
+					: 'css'
+	) satisfies 'css' | 'scss' | 'less' | 'stylus'
+
+	try {
+		const compileResult = await compile(styleContent, lang, filePath)
+		const styles = parseCSS(compileResult.css, {
+			filename: filePath,
+			camelCaseClasses: false,
+		})
+
+		// Generate JS that registers styles — webpack transform will inline this
+		const jsCode = generateJavaScript(styles, {
+			mode: 'global',
+			camelCaseClasses: false,
+			metadata: compileResult.metadata,
+			framework,
+		})
+
+		// Store for later injection via transform hook
+		svelteStyleCache.set(filePath, jsCode)
+	} catch {
+		// Ignore compile errors during scan
+	}
+}
+
+const svelteStyleCache = new Map<string, string>()
+
+//#endregion Svelte Style Extraction (webpack)
+
 //#region Types
 
 export type Framework = 'react' | 'vue' | 'angular' | 'solid' | 'svelte'
@@ -81,12 +138,17 @@ export const unpluginFactory: UnpluginFactory<[Framework, WolfieOptions?]> = (
 						absolute: true,
 					}
 				)
+				const isSvelte = framework === 'svelte'
 				for (const file of sourceFiles) {
 					try {
 						const content = readFileSync(file, 'utf-8')
 						const candidates = scanCandidates(content)
 						if (candidates.size > 0) {
 							tailwind.addCandidates(candidates)
+						}
+						// Extract and register <style> blocks from .svelte files
+						if (isSvelte && file.endsWith('.svelte')) {
+							await extractAndRegisterSvelteStyles(file, content, framework)
 						}
 					} catch {
 						// ignore unreadable files
@@ -107,11 +169,28 @@ export const unpluginFactory: UnpluginFactory<[Framework, WolfieOptions?]> = (
 			// Skip virtual modules and node_modules
 			if (id.startsWith('\x00') || id.includes('node_modules')) return false
 			if (options.exclude?.test(id)) return false
+
+			// For Svelte: intercept svelte-loader's CSS virtual modules
+			// Format: Component.svelte.0.css (emitted by svelte-loader with emitCss)
+			if (framework === 'svelte' && /\.svelte\.\d+\.css/.test(id)) {
+				return true
+			}
+
 			if (options.include) return options.include.test(id)
 			return CSS_EXTENSIONS_RE.test(id)
 		},
 
 		async transform(code, id) {
+			// For svelte-loader CSS virtual modules, return pre-cached style registration
+			if (framework === 'svelte' && /\.svelte\.\d+\.css/.test(id)) {
+				const svelteFilePath = id.replace(/\.\d+\.css$/, '')
+				const cached = svelteStyleCache.get(svelteFilePath)
+				if (cached) {
+					return { code: cached, map: null }
+				}
+				// Fallback: process the CSS code directly
+			}
+
 			const cleanId = id.split('?')[0]!
 			const lang = detectLanguage(cleanId)
 

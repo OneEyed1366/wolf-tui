@@ -97,6 +97,46 @@ function findCoreNativeDir(root: string): string | null {
 
 //#endregion Native Bindings
 
+//#region Svelte SFC Style Extraction
+
+const SVELTE_FAKE_CSS_RE = /\.esbuild-svelte-fake-css$/
+
+/**
+ * Extract the `<style>` block from a Svelte component file.
+ * Returns the raw CSS/SCSS/LESS/Stylus content and detected lang.
+ */
+function extractSvelteStyle(svelteFilePath: string): {
+	content: string
+	lang: 'css' | 'scss' | 'less' | 'stylus'
+} | null {
+	if (!existsSync(svelteFilePath)) return null
+	const source = readFileSync(svelteFilePath, 'utf-8')
+
+	const styleRegex = /<style([^>]*)>([\s\S]*?)<\/style>/i
+	const match = styleRegex.exec(source)
+	if (!match) return null
+
+	const attrs = match[1] || ''
+	const styleContent = (match[2] || '').trim()
+	if (!styleContent) return null
+
+	const langMatch = attrs.match(/lang=["']?(\w+)["']?/)
+	const rawLang = langMatch?.[1] || 'css'
+	const lang = (
+		rawLang === 'sass' || rawLang === 'scss'
+			? 'scss'
+			: rawLang === 'styl' || rawLang === 'stylus'
+				? 'stylus'
+				: rawLang === 'less'
+					? 'less'
+					: 'css'
+	) satisfies 'css' | 'scss' | 'less' | 'stylus'
+
+	return { content: styleContent, lang }
+}
+
+//#endregion Svelte SFC Style Extraction
+
 function extractVueStyle(path: string): string | null {
 	// Match unplugin-vue virtual path format: file.vue?vue&type=style&index=0...
 	const match = path.match(/^(.*\.vue)\?.*index=(\d+)/)
@@ -277,18 +317,36 @@ export default ${JSON.stringify(classNameMap)}`
 
 			// Phase 1: Pre-scan source files to push candidates to Tailwind
 			// Include .html for Angular templates
-			const sourceFiles = await glob('**/*.{tsx,jsx,ts,js,vue,html}', {
+			const sourceFiles = await glob('**/*.{tsx,jsx,ts,js,vue,svelte,html}', {
 				cwd: rootDir,
 				ignore: ['**/node_modules/**', '**/dist/**', '**/build/**'],
 				absolute: true,
 			})
 
+			const isSvelte = framework === 'svelte'
 			for (const file of sourceFiles) {
 				try {
 					const source = readFileSync(file, 'utf-8')
 					const candidates = scanCandidates(source)
 					if (candidates.size > 0) {
 						tailwind.addCandidates(candidates)
+					}
+					// Extract and register <style> blocks from .svelte files
+					// Scan-based approach — works regardless of plugin order
+					if (isSvelte && file.endsWith('.svelte')) {
+						const styleBlock = extractSvelteStyle(file)
+						if (styleBlock) {
+							const compileResult = await compile(
+								styleBlock.content,
+								styleBlock.lang,
+								file
+							)
+							const styles = parseCSS(compileResult.css, {
+								filename: file,
+								camelCaseClasses: camelCase,
+							})
+							Object.assign(globalStylesMap, styles)
+						}
 					}
 				} catch {
 					// Ignore files that can't be read
@@ -351,6 +409,56 @@ export default ${JSON.stringify(classNameMap)}`
 						return null
 					}
 				})
+			}
+
+			// Phase 3b: Intercept Svelte SFC external CSS (esbuild-svelte fake-css modules)
+			// esbuild-svelte creates .esbuild-svelte-fake-css virtual modules for <style> blocks.
+			// We intercept them in our own namespace and process through the wolfie CSS pipeline.
+			if (framework === 'svelte') {
+				build.onResolve({ filter: SVELTE_FAKE_CSS_RE }, (args) => {
+					return { path: args.path, namespace: 'wolfie-svelte-css' }
+				})
+
+				build.onLoad(
+					{ filter: SVELTE_FAKE_CSS_RE, namespace: 'wolfie-svelte-css' },
+					async (args) => {
+						// .esbuild-svelte-fake-css path maps back to the .svelte file
+						const svelteFilePath = args.path.replace(
+							'.esbuild-svelte-fake-css',
+							'.svelte'
+						)
+
+						const styleBlock = extractSvelteStyle(svelteFilePath)
+						if (!styleBlock) {
+							return { contents: 'export default {}', loader: 'js' }
+						}
+
+						// Compile preprocessor and parse through wolfie CSS pipeline
+						const compileResult = await compile(
+							styleBlock.content,
+							styleBlock.lang,
+							svelteFilePath
+						)
+						const styles = parseCSS(compileResult.css, {
+							filename: svelteFilePath,
+							camelCaseClasses: camelCase,
+						})
+
+						Object.assign(globalStylesMap, styles)
+
+						// Generate JS that registers styles in wolfie runtime
+						const code = `import { registerStyles } from '@wolfie/svelte'
+const styles = ${JSON.stringify(styles)}
+registerStyles(styles)
+export default styles`
+
+						return {
+							contents: code,
+							loader: 'js',
+							resolveDir: dirname(svelteFilePath),
+						}
+					}
+				)
 			}
 
 			// Phase 4: Handle CSS/preprocessor files directly

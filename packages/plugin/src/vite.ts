@@ -131,10 +131,10 @@ function createNativeBindingsPlugin(): Plugin {
  * // Vite + Vue
  * plugins: [vue(), wolfie('vue')]
  */
-export function wolfie(
+export async function wolfie(
 	framework: Framework,
 	options: WolfieOptions = {}
-): Plugin | Plugin[] {
+): Promise<Plugin | Plugin[]> {
 	const {
 		include = CSS_EXTENSIONS_RE,
 		exclude,
@@ -337,13 +337,20 @@ export function wolfie(
 		return plugins
 	}
 
-	// Non-Vue: return main plugin, optionally with native bindings
+	// For Svelte, add SFC style handling (intercepts ?svelte&type=style)
+	if (framework === 'svelte') {
+		// Dynamic import — tree-shaken for non-Svelte consumers
+		const { createSvelteSfcPlugin } = await import('./svelte-sfc.js')
+		plugins.push(createSvelteSfcPlugin())
+	}
+
+	// Main CSS transform plugin
 	plugins.push(mainPlugin)
 	if (nativeBindings) {
 		plugins.push(createNativeBindingsPlugin())
 	}
 
-	return plugins.length === 1 ? mainPlugin : plugins
+	return plugins.length === 1 ? plugins[0]! : plugins
 }
 
 export default wolfie

@@ -42,6 +42,7 @@
 
 	let {
 		style,
+		class: classProp,
 		className,
 		children,
 		'aria-label': ariaLabel,
@@ -50,6 +51,7 @@
 		'aria-state': ariaState,
 	}: {
 		style?: Styles
+		class?: ClassNameValue
 		className?: ClassNameValue
 		children?: Snippet
 		'aria-label'?: string
@@ -72,7 +74,7 @@
 
 	let resolvedStyle = $derived({
 		...defaultBoxStyles,
-		...resolveClassName(className),
+		...resolveClassName(classProp ?? className),
 		...(style ?? {}),
 	})
 

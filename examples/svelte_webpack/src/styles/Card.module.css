@@ -1,0 +1,12 @@
+/* CSS Module for scoped card styling */
+.card {
+	border-style: double;
+	border-color: cyan;
+	padding: 2;
+}
+
+.cardTitle {
+	color: cyan;
+	font-weight: bold;
+	text-decoration: underline;
+}

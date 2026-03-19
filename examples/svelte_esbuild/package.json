@@ -1,0 +1,29 @@
+{
+	"name": "@examples/svelte-esbuild",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "node build.mjs",
+		"start": "node --conditions=browser dist/index.js",
+		"example": "node build.mjs && node --conditions=browser dist/index.js"
+	},
+	"dependencies": {
+		"@wolfie/svelte": "workspace:*",
+		"svelte": "^5.0.0"
+	},
+	"devDependencies": {
+		"@wolfie/plugin": "workspace:*",
+		"@wolfie/typescript-plugin": "workspace:*",
+		"@tailwindcss/postcss": "^4.1.18",
+		"esbuild": "^0.24.0",
+		"esbuild-svelte": "^0.9.4",
+		"less": "^4.5.1",
+		"postcss": "^8.5.6",
+		"sass": "^1.97.3",
+		"stylus": "^0.64.0",
+		"svelte-preprocess": "^6.0.0",
+		"tailwindcss": "~4.1.18",
+		"typescript": "^5.8.3"
+	}
+}
