@@ -62,6 +62,8 @@
 		} else if (key.return) {
 			const opt = MENU_OPTIONS[selectedIndex]
 			if (opt) handleSelect(opt.value)
+		} else if (input === 'q' || key.escape) {
+			quit()
 		}
 	})
 </script>
