@@ -4,9 +4,9 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite-node src/index.ts",
+		"dev": "vite build && node --conditions=browser dist/index.js",
 		"build": "vite build",
-		"start": "node dist/index.js"
+		"start": "node --conditions=browser dist/index.js"
 	},
 	"dependencies": {
 		"@wolfie/svelte": "workspace:*",

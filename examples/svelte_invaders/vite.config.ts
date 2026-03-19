@@ -13,9 +13,25 @@ const nodeBuiltins = [
 
 export default defineConfig({
 	root: __dirname,
-	plugins: [svelte({ compilerOptions: { css: 'external' } }), wolfie('svelte')],
+	plugins: [
+		svelte({
+			compilerOptions: { css: 'external' },
+			// vite-node runs in SSR mode → Svelte compiles with generate:'server'
+			// → $state in .svelte.ts modules loses reactivity (no signals, plain vars).
+			// Force client compilation so cross-module $state works reactively.
+			dynamicCompileOptions() {
+				return { generate: 'client' }
+			},
+		}),
+		wolfie('svelte'),
+	],
 	css: { postcss: resolve(__dirname, 'postcss.config.cjs') },
 	resolve: { conditions: ['browser', 'development'] },
+	// Prevent vite from pre-bundling svelte — avoids dual-runtime where
+	// pre-bundled active_effect diverges from SSR-transformed module state.
+	optimizeDeps: {
+		exclude: ['svelte', '@wolfie/svelte'],
+	},
 	// vite-node runs in SSR mode — needs separate resolve config for SSR.
 	// Without this, svelte resolves to index-server.js ("mount() not available").
 	ssr: {
