@@ -2,7 +2,7 @@
 
 <!-- TODO: Add logo -->
 
-**Build beautiful TUI apps with React, Vue, Angular, or SolidJS**
+**Build beautiful TUI apps with React, Vue, Angular, SolidJS, or Svelte**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green)](https://nodejs.org/)
@@ -11,7 +11,7 @@
 
 ## What is wolf-tui?
 
-wolf-tui is a framework-agnostic Terminal User Interface (TUI) library that lets you build interactive command-line applications using familiar web component syntax. Write your CLI apps with React, Vue, Angular, or SolidJS using JSX/template syntax, Flexbox/Grid layouts, and CSS-like styling.
+wolf-tui is a framework-agnostic Terminal User Interface (TUI) library that lets you build interactive command-line applications using familiar web component syntax. Write your CLI apps with React, Vue, Angular, SolidJS, or Svelte using JSX/template syntax, Flexbox/Grid layouts, and CSS-like styling.
 
 ## Credits
 
@@ -19,7 +19,7 @@ This project started as a fork of [Ink](https://github.com/vadimdemedes/ink) by 
 
 ## Features
 
-- **Multi-framework** — React 19+, Vue 3.5+, Angular 17+, SolidJS 1.9+
+- **Multi-framework** — React 19+, Vue 3.5+, Angular 17+, SolidJS 1.9+, Svelte 5+
 - **Modern layout** — Flexbox & CSS Grid via Taffy engine
 - **Rich styling** — Tailwind CSS (v3 & v4), SCSS, LESS, Stylus, CSS Modules
 - **Tree-shakeable** — Only bundle what you use; tested with esbuild, Vite, webpack
@@ -36,6 +36,7 @@ This project started as a fork of [Ink](https://github.com/vadimdemedes/ink) by 
 | **Vue**     | SFC (`.vue`) and JSX/TSX support, Composition API                        |
 | **Angular** | Signals (`signal`, `computed`, `effect`), OnPush change detection        |
 | **Solid**   | Fine-grained reactivity, `createSignal`/`createMemo`, universal renderer |
+| **Svelte**  | Svelte 5 runes (`$state`, `$derived`, `$effect`), SFC `.svelte` syntax   |
 
 ## Quick Start
 
@@ -119,6 +120,30 @@ function App() {
 render(App, { stdout: process.stdout, stdin: process.stdin })
 ```
 
+### Svelte
+
+```bash
+npm install @wolfie/svelte @wolfie/plugin chalk
+```
+
+```svelte
+<!-- App.svelte -->
+<script>
+import { Box, Text } from '@wolfie/svelte'
+</script>
+
+<Box style={{ flexDirection: 'column', padding: 1 }}>
+	<Text style={{ color: 'green', fontWeight: 'bold' }}>Hello from wolf-tui!</Text>
+</Box>
+```
+
+```ts
+import { render } from '@wolfie/svelte'
+import App from './App.svelte'
+
+render(App)
+```
+
 ## Packages
 
 | Package                                                           | Description                                | Version |
@@ -128,6 +153,7 @@ render(App, { stdout: process.stdout, stdin: process.stdin })
 | [@wolfie/vue](packages/vue/README.md)                             | Vue 3 adapter                              | 1.1.0   |
 | [@wolfie/angular](packages/angular/README.md)                     | Angular adapter                            | 1.1.0   |
 | [@wolfie/solid](packages/solid/README.md)                         | SolidJS adapter                            | 1.1.0   |
+| [@wolfie/svelte](packages/svelte/README.md)                       | Svelte 5 adapter                           | 1.0.0   |
 | [@wolfie/plugin](packages/plugin/README.md)                       | Build plugin (Vite/esbuild/webpack/Rollup) | 1.1.0   |
 | [@wolfie/typescript-plugin](packages/typescript-plugin/README.md) | TypeScript plugin for CSS module types     | 1.0.1   |
 | [@wolfie/css-parser](internal/css-parser/README.md)               | CSS/SCSS/LESS/Stylus parser                | 0.1.0   |
@@ -287,6 +313,7 @@ pnpm dev
 | @wolfie/vue     | Stable (1.1.0) |
 | @wolfie/angular | Stable (1.1.0) |
 | @wolfie/solid   | Stable (1.1.0) |
+| @wolfie/svelte  | Stable (1.0.0) |
 | Taffy migration | Complete       |
 
 ## Contributing

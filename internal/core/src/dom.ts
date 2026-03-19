@@ -143,7 +143,6 @@ export const appendChildNode = (
 	}
 
 	childNode.parentNode = node
-	// WHY: log after parentNode is set so the event reflects the final state
 	logger.log({
 		ts: performance.now(),
 		cat: 'dom',
