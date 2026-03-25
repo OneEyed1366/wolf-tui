@@ -11,7 +11,7 @@ export default defineConfig({
 		outDir: 'build',
 		minify: false,
 		rollupOptions: {
-			external: ['typescript', /^@wolfie\//],
+			external: ['typescript', /^@wolf-tui\//],
 		},
 	},
 	plugins: [

@@ -29,7 +29,7 @@ async function getBundleEsbuild(code: string) {
 			{
 				name: 'resolve-wolfie-react',
 				setup(build) {
-					build.onResolve({ filter: /^@wolfie\/react$/ }, () => {
+					build.onResolve({ filter: /^@wolf-tui\/react$/ }, () => {
 						return { path: REACT_ENTRY }
 					})
 				},

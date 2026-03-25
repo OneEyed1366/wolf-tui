@@ -28,7 +28,7 @@ export default defineConfig({
 		exclude: ['test/helpers/**'],
 		server: {
 			deps: {
-				// Inline @wolfie workspace packages so Vite transforms their source
+				// Inline @wolf-tui workspace packages so Vite transforms their source
 				inline: [/@wolf-tui/],
 			},
 		},

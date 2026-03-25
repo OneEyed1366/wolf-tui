@@ -28,7 +28,7 @@ async function getBundleEsbuild(code: string) {
 			{
 				name: 'resolve-wolfie-vue',
 				setup(build) {
-					build.onResolve({ filter: /^@wolfie\/vue$/ }, () => {
+					build.onResolve({ filter: /^@wolf-tui\/vue$/ }, () => {
 						return { path: VUE_ENTRY }
 					})
 				},
