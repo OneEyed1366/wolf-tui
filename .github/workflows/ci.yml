@@ -132,12 +132,27 @@ jobs:
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
       paths_released: ${{ steps.release.outputs.paths_released }}
+      pr_number: ${{ steps.release.outputs.pr && fromJSON(steps.release.outputs.pr).number || '' }}
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           config-file: .release-please-config.json
           manifest-file: .release-please-manifest.json
+
+  auto-merge-release:
+    name: Auto-merge release PR
+    needs: release
+    if: needs.release.outputs.pr_number != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Enable auto-merge
+        run: gh pr merge ${{ needs.release.outputs.pr_number }} --auto --squash --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   publish:
     name: Publish to npm
