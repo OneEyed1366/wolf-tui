@@ -8,5 +8,5 @@
 	"internal/core": "1.2.1",
 	"internal/css-parser": "1.2.1",
 	"internal/shared": "1.2.1",
-	"packages/svelte": "1.0.0"
+	"packages/svelte": "1.0.1"
 }
