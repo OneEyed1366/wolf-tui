@@ -162,7 +162,7 @@ jobs:
           PR_NUMBER=$(gh pr list --repo "${{ github.repository }}" --head "release-please--branches--master" --json number --jq '.[0].number')
           if [ -n "$PR_NUMBER" ]; then
             echo "Enabling auto-merge on release PR #$PR_NUMBER"
-            gh pr merge "$PR_NUMBER" --auto --squash --repo "${{ github.repository }}"
+            gh pr merge "$PR_NUMBER" --squash --repo "${{ github.repository }}"
           else
             echo "No release PR found, skipping"
           fi
