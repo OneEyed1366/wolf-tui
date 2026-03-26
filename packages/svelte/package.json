@@ -29,6 +29,7 @@
 	"dependencies": {
 		"@wolf-tui/core": "workspace:*",
 		"@wolf-tui/shared": "workspace:*",
+		"chalk": "^5.0.0",
 		"ansi-escapes": "^7.2.0",
 		"ansi-styles": "^6.2.1",
 		"auto-bind": "^5.0.1",
@@ -57,7 +58,6 @@
 		"vite-plugin-dts": "^4.5.0"
 	},
 	"peerDependencies": {
-		"chalk": "^5.0.0",
 		"svelte": "^5.0.0"
 	},
 	"publishConfig": {
