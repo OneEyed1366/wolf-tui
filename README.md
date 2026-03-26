@@ -33,7 +33,7 @@ Pick your framework:
 ### React
 
 ```bash
-npm install @wolf-tui/react @wolf-tui/plugin chalk
+npm install @wolf-tui/react && npm install -D @wolf-tui/plugin
 ```
 
 ```tsx
@@ -54,7 +54,7 @@ render(<App />)
 <summary><b>Vue</b></summary>
 
 ```bash
-npm install @wolf-tui/vue @wolf-tui/plugin chalk
+npm install @wolf-tui/vue && npm install -D @wolf-tui/plugin
 ```
 
 ```vue
@@ -82,7 +82,7 @@ render(App)
 <summary><b>Angular</b></summary>
 
 ```bash
-npm install @wolf-tui/angular @wolf-tui/plugin chalk
+npm install @wolf-tui/angular && npm install -D @wolf-tui/plugin
 ```
 
 ```typescript
@@ -114,7 +114,7 @@ renderWolfie(AppComponent)
 <summary><b>SolidJS</b></summary>
 
 ```bash
-npm install @wolf-tui/solid @wolf-tui/plugin chalk solid-js
+npm install @wolf-tui/solid && npm install -D @wolf-tui/plugin
 ```
 
 ```tsx
@@ -137,7 +137,7 @@ render(App, { stdout: process.stdout, stdin: process.stdin })
 <summary><b>Svelte</b></summary>
 
 ```bash
-npm install @wolf-tui/svelte @wolf-tui/plugin chalk svelte
+npm install @wolf-tui/svelte && npm install -D @wolf-tui/plugin
 ```
 
 ```svelte
