@@ -10,7 +10,25 @@ import {
 	selector: 'app-root',
 	standalone: true,
 	imports: [BoxComponent, TextComponent],
-<% if (vars.cssImport) { %>
+<% if (vars.cssFlavor === 'tailwind') { %>
+	template: `
+		<w-box class="flex-col border-round border-cyan px-2 py-1 gap-1 w-[40]">
+			<w-box class="justify-center">
+				<w-text class="font-bold text-cyan">wolf-tui</w-text>
+			</w-box>
+
+			<w-box [class]="'justify-center border-single px-2 ' + borderColor()">
+				<w-text [class]="'font-bold ' + textColor()">{{ count() }}</w-text>
+			</w-box>
+
+			<w-box class="justify-around">
+				<w-text class="text-green">↑ up</w-text>
+				<w-text class="text-red">↓ down</w-text>
+				<w-text class="text-gray">q quit</w-text>
+			</w-box>
+		</w-box>
+	`,
+<% } else if (vars.cssImport) { %>
 	template: `
 		<w-box class="counter">
 			<w-box class="title">
@@ -70,7 +88,14 @@ import {
 })
 export class AppComponent {
 	count = signal(0)
-<% if (vars.cssImport) { %>
+<% if (vars.cssFlavor === 'tailwind') { %>
+	borderColor = computed(() =>
+		this.count() > 0 ? 'border-green' : this.count() < 0 ? 'border-red' : 'border-white'
+	)
+	textColor = computed(() =>
+		this.count() > 0 ? 'text-green' : this.count() < 0 ? 'text-red' : 'text-white'
+	)
+<% } else if (vars.cssImport) { %>
 	displayClass = computed(() =>
 		this.count() > 0
 			? 'display display-positive'

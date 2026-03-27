@@ -4,7 +4,7 @@ import { TEMPLATE_FILES } from '../../paths'
 
 export const tailwindLayer: ILayer = {
 	id: 'css:tailwind',
-	templateVars: { cssImport: './styles/tailwind.css' },
+	templateVars: { cssImport: './styles/tailwind.css', cssFlavor: 'tailwind' },
 	packageJson: {
 		devDependencies: {
 			'@tailwindcss/postcss': '^4.1.18',

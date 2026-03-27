@@ -1,4 +1,43 @@
-<% if (vars.cssImport) { %>
+<% if (vars.cssFlavor === 'tailwind') { %>
+<template>
+	<Box class="flex-col border-round border-cyan px-2 py-1 gap-1 w-[40]">
+		<Box class="justify-center">
+			<Text class="font-bold text-cyan">wolf-tui</Text>
+		</Box>
+
+		<Box :class="`justify-center border-single px-2 ${borderColor}`">
+			<Text :class="`font-bold ${textColor}`">{{ count }}</Text>
+		</Box>
+
+		<Box class="justify-around">
+			<Text class="text-green">↑ up</Text>
+			<Text class="text-red">↓ down</Text>
+			<Text class="text-gray">q quit</Text>
+		</Box>
+	</Box>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { Box, Text, useInput, useApp } from '@wolf-tui/vue'
+
+const count = ref(0)
+const { exit } = useApp()
+
+const borderColor = computed(() =>
+	count.value > 0 ? 'border-green' : count.value < 0 ? 'border-red' : 'border-white'
+)
+const textColor = computed(() =>
+	count.value > 0 ? 'text-green' : count.value < 0 ? 'text-red' : 'text-white'
+)
+
+useInput((input, key) => {
+	if (key.upArrow) count.value++
+	if (key.downArrow) count.value--
+	if (input === 'q') exit()
+})
+</script>
+<% } else if (vars.cssImport) { %>
 <template>
 	<Box class="counter">
 		<Box class="title">

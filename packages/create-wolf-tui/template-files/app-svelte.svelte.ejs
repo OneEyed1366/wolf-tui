@@ -3,7 +3,14 @@
 
 	let count = $state(0)
 	const { exit } = useApp()
-<% if (vars.cssImport) { %>
+<% if (vars.cssFlavor === 'tailwind') { %>
+	const borderColor = $derived(
+		count > 0 ? 'border-green' : count < 0 ? 'border-red' : 'border-white'
+	)
+	const textColor = $derived(
+		count > 0 ? 'text-green' : count < 0 ? 'text-red' : 'text-white'
+	)
+<% } else if (vars.cssImport) { %>
 	const displayClass = $derived(
 		count > 0
 			? 'display display-positive'
@@ -22,7 +29,23 @@
 		if (input === 'q') exit()
 	})
 </script>
-<% if (vars.cssImport) { %>
+<% if (vars.cssFlavor === 'tailwind') { %>
+<Box className="flex-col border-round border-cyan px-2 py-1 gap-1 w-[40]">
+	<Box className="justify-center">
+		<Text className="font-bold text-cyan">wolf-tui</Text>
+	</Box>
+
+	<Box className={`justify-center border-single px-2 ${borderColor}`}>
+		<Text className={`font-bold ${textColor}`}>{count}</Text>
+	</Box>
+
+	<Box className="justify-around">
+		<Text className="text-green">↑ up</Text>
+		<Text className="text-red">↓ down</Text>
+		<Text className="text-gray">q quit</Text>
+	</Box>
+</Box>
+<% } else if (vars.cssImport) { %>
 <Box className="counter">
 	<Box className="title">
 		<Text className="label">wolf-tui</Text>
