@@ -1,2 +1,10 @@
 /* <%= vars.brandName %> + wolf-tui counter styles (Tailwind) */
 @import "tailwindcss";
+@source "../**/*.<%= vars.entryExt %>";
+@source "../**/*.svelte";
+@source "../**/*.vue";
+@source "../**/*.html";
+
+@theme {
+	--color-brand: <%= vars.brandColor %>;
+}
