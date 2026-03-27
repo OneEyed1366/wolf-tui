@@ -1,0 +1,9 @@
+import 'zone.js'
+import '@angular/compiler'
+<% if (vars.cssImport) { %>
+import '<%= vars.cssImport %>'
+<% } %>
+import { renderWolfie } from '@wolf-tui/angular'
+import { AppComponent } from './app.component'
+
+renderWolfie(AppComponent, { exitOnCtrlC: true })

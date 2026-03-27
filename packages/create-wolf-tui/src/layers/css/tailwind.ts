@@ -4,6 +4,7 @@ import { TEMPLATE_FILES } from '../../paths'
 
 export const tailwindLayer: ILayer = {
 	id: 'css:tailwind',
+	templateVars: { cssImport: './styles/tailwind.css' },
 	packageJson: {
 		devDependencies: {
 			'@tailwindcss/postcss': '^4.1.18',
@@ -18,8 +19,8 @@ export const tailwindLayer: ILayer = {
 			source: resolve(TEMPLATE_FILES, 'postcss.config.cjs'),
 		},
 		'src/styles/tailwind.css': {
-			type: 'generated',
-			content: '@import "tailwindcss";\n',
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'app.tailwind.css.ejs'),
 		},
 	},
 }

@@ -1,0 +1,7 @@
+import { render } from '@wolf-tui/vue'
+<% if (vars.cssImport) { %>
+import '<%= vars.cssImport %>'
+<% } %>
+import App from './App.vue'
+
+render(App)

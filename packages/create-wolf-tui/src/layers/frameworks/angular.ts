@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir } from '../../paths'
+import { starterDir, TEMPLATE_FILES } from '../../paths'
 
 const STARTER = starterDir('angular')
 
@@ -27,7 +27,12 @@ export const angularLayer: ILayer = {
 		'rxjs',
 		'@wolf-tui/angular',
 	],
-	templateVars: { entryExt: 'ts', entryFile: 'main.ts' },
+	templateVars: {
+		entryExt: 'ts',
+		entryFile: 'main.ts',
+		brandColor: '#DD0031',
+		brandName: 'Angular',
+	},
 	tsconfig: {
 		compilerOptions: {
 			experimentalDecorators: true,
@@ -35,7 +40,10 @@ export const angularLayer: ILayer = {
 		},
 	},
 	files: {
-		'src/main.ts': { type: 'static', source: resolve(STARTER, 'main.ts') },
+		'src/main.ts': {
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'entry-angular.ts.ejs'),
+		},
 		'src/app.component.ts': {
 			type: 'static',
 			source: resolve(STARTER, 'app.component.ts'),

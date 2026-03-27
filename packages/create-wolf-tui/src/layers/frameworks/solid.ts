@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir } from '../../paths'
+import { starterDir, TEMPLATE_FILES } from '../../paths'
 
 const STARTER = starterDir('solid')
 
@@ -14,12 +14,20 @@ export const solidLayer: ILayer = {
 		},
 	},
 	externals: ['solid-js', '@wolf-tui/solid'],
-	templateVars: { entryExt: 'tsx', entryFile: 'index.tsx' },
+	templateVars: {
+		entryExt: 'tsx',
+		entryFile: 'index.tsx',
+		brandColor: '#2C4F7C',
+		brandName: 'Solid',
+	},
 	tsconfig: {
 		compilerOptions: { jsx: 'preserve', jsxImportSource: 'solid-js' },
 	},
 	files: {
-		'src/index.tsx': { type: 'static', source: resolve(STARTER, 'index.tsx') },
+		'src/index.tsx': {
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'entry-solid.tsx.ejs'),
+		},
 		'src/App.tsx': { type: 'static', source: resolve(STARTER, 'App.tsx') },
 	},
 }

@@ -1,0 +1,52 @@
+// <%= vars.brandName %> + wolf-tui counter styles
+
+brand = <%= vars.brandColor %>
+positive = #3fb950
+negative = #f85149
+
+.counter
+	flex-direction column
+	border-style round
+	border-color brand
+	padding 1 2
+	gap 1
+	width 40
+
+.title
+	justify-content center
+
+	.label
+		font-weight bold
+		color brand
+
+.display
+	justify-content center
+	border-style single
+	padding 0 2
+
+.display-positive
+	border-color positive
+	color positive
+	font-weight bold
+
+.display-negative
+	border-color negative
+	color negative
+	font-weight bold
+
+.display-zero
+	border-color white
+	color white
+	font-weight bold
+
+.controls
+	justify-content space-around
+
+.key-up
+	color positive
+
+.key-down
+	color negative
+
+.key-quit
+	color gray

@@ -1,0 +1,7 @@
+import { render } from '@wolf-tui/svelte'
+<% if (vars.cssImport) { %>
+import '<%= vars.cssImport %>'
+<% } %>
+import App from './App.svelte'
+
+render(App)

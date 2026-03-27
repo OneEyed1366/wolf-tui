@@ -1,0 +1,7 @@
+import { render } from '@wolf-tui/solid'
+<% if (vars.cssImport) { %>
+import '<%= vars.cssImport %>'
+<% } %>
+import App from './App'
+
+render(App)

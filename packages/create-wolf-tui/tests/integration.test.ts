@@ -96,7 +96,7 @@ describe('compose integration', () => {
 		const pkg = result.packageJson as Record<string, Record<string, string>>
 
 		expect(pkg['devDependencies']).toHaveProperty('sass')
-		expect(result.files.has('src/styles/components.scss')).toBe(true)
+		expect(result.files.has('src/styles/app.scss')).toBe(true)
 	})
 
 	it('adds tailwind deps and postcss config', async () => {

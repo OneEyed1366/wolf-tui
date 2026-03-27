@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir } from '../../paths'
+import { starterDir, TEMPLATE_FILES } from '../../paths'
 
 const STARTER = starterDir('vue')
 
@@ -17,12 +17,20 @@ export const vueLayer: ILayer = {
 		},
 	},
 	externals: ['vue', '@wolf-tui/vue'],
-	templateVars: { entryExt: 'ts', entryFile: 'index.ts' },
+	templateVars: {
+		entryExt: 'ts',
+		entryFile: 'index.ts',
+		brandColor: '#42B883',
+		brandName: 'Vue',
+	},
 	tsconfig: {
 		compilerOptions: { jsx: 'preserve' },
 	},
 	files: {
-		'src/index.ts': { type: 'static', source: resolve(STARTER, 'index.ts') },
+		'src/index.ts': {
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'entry-vue.ts.ejs'),
+		},
 		'src/App.vue': { type: 'static', source: resolve(STARTER, 'App.vue') },
 	},
 }

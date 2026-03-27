@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir } from '../../paths'
+import { starterDir, TEMPLATE_FILES } from '../../paths'
 
 const STARTER = starterDir('react')
 
@@ -19,12 +19,20 @@ export const reactLayer: ILayer = {
 		'react/jsx-dev-runtime',
 		'@wolf-tui/react',
 	],
-	templateVars: { entryExt: 'tsx', entryFile: 'index.tsx' },
+	templateVars: {
+		entryExt: 'tsx',
+		entryFile: 'index.tsx',
+		brandColor: '#61DAFB',
+		brandName: 'React',
+	},
 	tsconfig: {
 		compilerOptions: { jsx: 'react-jsx' },
 	},
 	files: {
-		'src/index.tsx': { type: 'static', source: resolve(STARTER, 'index.tsx') },
+		'src/index.tsx': {
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'entry-react.tsx.ejs'),
+		},
 		'src/App.tsx': { type: 'static', source: resolve(STARTER, 'App.tsx') },
 	},
 }
