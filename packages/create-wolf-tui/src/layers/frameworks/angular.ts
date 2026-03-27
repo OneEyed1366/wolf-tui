@@ -1,9 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir, TEMPLATE_FILES } from '../../paths'
-
-const STARTER = starterDir('angular')
+import { TEMPLATE_FILES } from '../../paths'
 
 export const angularLayer: ILayer = {
 	id: 'framework:angular',
@@ -45,8 +43,8 @@ export const angularLayer: ILayer = {
 			source: resolve(TEMPLATE_FILES, 'entry-angular.ts.ejs'),
 		},
 		'src/app.component.ts': {
-			type: 'static',
-			source: resolve(STARTER, 'app.component.ts'),
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'app-angular.ts.ejs'),
 		},
 	},
 }

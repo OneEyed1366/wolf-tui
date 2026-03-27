@@ -1,9 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir, TEMPLATE_FILES } from '../../paths'
-
-const STARTER = starterDir('svelte')
+import { TEMPLATE_FILES } from '../../paths'
 
 export const svelteLayer: ILayer = {
 	id: 'framework:svelte',
@@ -31,8 +29,8 @@ export const svelteLayer: ILayer = {
 			source: resolve(TEMPLATE_FILES, 'entry-svelte.ts.ejs'),
 		},
 		'src/App.svelte': {
-			type: 'static',
-			source: resolve(STARTER, 'App.svelte'),
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'app-svelte.svelte.ejs'),
 		},
 	},
 }

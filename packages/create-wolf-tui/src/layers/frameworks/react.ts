@@ -1,9 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir, TEMPLATE_FILES } from '../../paths'
-
-const STARTER = starterDir('react')
+import { TEMPLATE_FILES } from '../../paths'
 
 export const reactLayer: ILayer = {
 	id: 'framework:react',
@@ -33,7 +31,10 @@ export const reactLayer: ILayer = {
 			type: 'template',
 			source: resolve(TEMPLATE_FILES, 'entry-react.tsx.ejs'),
 		},
-		'src/App.tsx': { type: 'static', source: resolve(STARTER, 'App.tsx') },
+		'src/App.tsx': {
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'app-react.tsx.ejs'),
+		},
 	},
 }
 

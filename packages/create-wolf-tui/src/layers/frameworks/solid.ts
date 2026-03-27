@@ -1,9 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir, TEMPLATE_FILES } from '../../paths'
-
-const STARTER = starterDir('solid')
+import { TEMPLATE_FILES } from '../../paths'
 
 export const solidLayer: ILayer = {
 	id: 'framework:solid',
@@ -28,7 +26,10 @@ export const solidLayer: ILayer = {
 			type: 'template',
 			source: resolve(TEMPLATE_FILES, 'entry-solid.tsx.ejs'),
 		},
-		'src/App.tsx': { type: 'static', source: resolve(STARTER, 'App.tsx') },
+		'src/App.tsx': {
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'app-solid.tsx.ejs'),
+		},
 	},
 }
 

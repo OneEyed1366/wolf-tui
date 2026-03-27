@@ -1,9 +1,7 @@
 import { resolve } from 'node:path'
 import type { ILayer } from '../../types'
 import { VERSIONS } from '../../versions.gen'
-import { starterDir, TEMPLATE_FILES } from '../../paths'
-
-const STARTER = starterDir('vue')
+import { TEMPLATE_FILES } from '../../paths'
 
 export const vueLayer: ILayer = {
 	id: 'framework:vue',
@@ -31,7 +29,10 @@ export const vueLayer: ILayer = {
 			type: 'template',
 			source: resolve(TEMPLATE_FILES, 'entry-vue.ts.ejs'),
 		},
-		'src/App.vue': { type: 'static', source: resolve(STARTER, 'App.vue') },
+		'src/App.vue': {
+			type: 'template',
+			source: resolve(TEMPLATE_FILES, 'app-vue.vue.ejs'),
+		},
 	},
 }
 
