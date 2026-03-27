@@ -11,11 +11,43 @@ export default function App() {
 		if (input === 'q') exit()
 	})
 
+	const color = count > 0 ? 'green' : count < 0 ? 'red' : 'white'
+
 	return (
-		<Box flexDirection="column" padding={1}>
-			<Text bold>wolf-tui Counter</Text>
-			<Text>Count: {count}</Text>
-			<Text dimColor>↑/↓ to change, q to quit</Text>
+		<Box
+			style={{
+				flexDirection: 'column',
+				borderStyle: 'round',
+				borderColor: 'cyan',
+				paddingLeft: 2,
+				paddingRight: 2,
+				paddingTop: 1,
+				paddingBottom: 1,
+				gap: 1,
+				width: 40,
+			}}
+		>
+			<Box style={{ justifyContent: 'center' }}>
+				<Text style={{ fontWeight: 'bold', color: 'cyan' }}>wolf-tui</Text>
+			</Box>
+
+			<Box
+				style={{
+					justifyContent: 'center',
+					borderStyle: 'single',
+					borderColor: color,
+					paddingLeft: 2,
+					paddingRight: 2,
+				}}
+			>
+				<Text style={{ fontWeight: 'bold', color }}>{count}</Text>
+			</Box>
+
+			<Box style={{ justifyContent: 'space-around' }}>
+				<Text style={{ color: 'green' }}>↑ up</Text>
+				<Text style={{ color: 'red' }}>↓ down</Text>
+				<Text style={{ color: 'gray' }}>q quit</Text>
+			</Box>
 		</Box>
 	)
 }
