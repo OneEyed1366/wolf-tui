@@ -3,6 +3,12 @@ name: CI
 on:
   push:
     branches: [master]
+  workflow_dispatch:
+    inputs:
+      force_publish:
+        description: 'Force publish all packages to npm'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -218,7 +224,7 @@ jobs:
   publish:
     name: Publish to npm
     needs: [release, collect-native]
-    if: needs.release.outputs.releases_created == 'true'
+    if: needs.release.outputs.releases_created == 'true' || github.event.inputs.force_publish == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
