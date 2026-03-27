@@ -1,6 +1,6 @@
 {
 	"name": "@wolf-tui/svelte",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Svelte 5 adapter for Wolfie",
 	"license": "MIT",
 	"type": "module",

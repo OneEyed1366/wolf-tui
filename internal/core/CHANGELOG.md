@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.3.0...core@v1.3.1) (2026-03-27)
+
+
+### Bug Fixes
+
+* cross-platform native builds + lazy-load CSS preprocessors ([#10](https://github.com/OneEyed1366/wolf-tui/issues/10)) ([e019f4e](https://github.com/OneEyed1366/wolf-tui/commit/e019f4e5977d0d44de03309680a92cf1fae3d8b4))
+
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.2.1...core@v1.3.0) (2026-03-26)
 
 ### Features
