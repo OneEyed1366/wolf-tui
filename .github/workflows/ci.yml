@@ -9,6 +9,14 @@ on:
         description: 'Force publish all packages to npm'
         type: boolean
         default: false
+      skip_checks:
+        description: 'Skip lint / build / typecheck / test'
+        type: boolean
+        default: false
+      skip_e2e:
+        description: 'Skip E2E tests (Playwright)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -16,6 +24,7 @@ permissions:
 jobs:
   checks:
     name: lint / build / typecheck / test
+    if: github.event.inputs.skip_checks != 'true'
     needs: collect-native
     runs-on: ubuntu-latest
     steps:
@@ -137,6 +146,7 @@ jobs:
 
   e2e:
     name: E2E tests (Playwright)
+    if: github.event.inputs.skip_e2e != 'true' && github.event.inputs.skip_checks != 'true'
     needs: [checks, collect-native]
     runs-on: ubuntu-latest
     steps:
@@ -185,7 +195,8 @@ jobs:
 
   release:
     name: Release Please
-    needs: [checks, e2e]
+    needs: [checks, e2e, collect-native]
+    if: ${{ !cancelled() && (needs.checks.result == 'success' || needs.checks.result == 'skipped') && (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
