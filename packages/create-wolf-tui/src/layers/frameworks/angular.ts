@@ -11,7 +11,7 @@ export const angularLayer: ILayer = {
 		dependencies: {
 			'@wolf-tui/angular': VERSIONS['@wolf-tui/angular'] ?? '^1.3.0',
 			'@angular/compiler': '^19.0.0',
-			'zone.js': '^0.16.0',
+			'zone.js': '~0.15.0',
 		},
 		devDependencies: {
 			'@angular/common': '^19.0.0',
