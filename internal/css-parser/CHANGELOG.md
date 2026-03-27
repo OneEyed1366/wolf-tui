@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.3.2...css-parser@v1.3.3) (2026-03-27)
+
+
+### Bug Fixes
+
+* **css-parser:** lazy-load tailwindcss alongside sass/less/stylus ([4a12974](https://github.com/OneEyed1366/wolf-tui/commit/4a1297470d85a9dfa63aae9f393e9bf1facbc9e2))
+
 ## [1.3.2](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.3.1...css-parser@v1.3.2) (2026-03-27)
 
 

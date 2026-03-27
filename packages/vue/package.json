@@ -1,6 +1,6 @@
 {
 	"name": "@wolf-tui/vue",
-	"version": "1.3.3",
+	"version": "1.3.4",
 	"description": "Vue 3 adapter for Wolfie",
 	"license": "MIT",
 	"type": "module",

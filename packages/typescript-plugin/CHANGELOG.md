@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.4](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.1.2...typescript-plugin@v1.1.4) (2026-03-27)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/css-parser bumped to 1.3.3
+
 ## [1.1.2](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.1.1...typescript-plugin@v1.1.2) (2026-03-27)
 
 
