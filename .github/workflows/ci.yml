@@ -3,6 +3,20 @@ name: CI
 on:
   push:
     branches: [master]
+  workflow_dispatch:
+    inputs:
+      force_publish:
+        description: 'Force publish all packages to npm'
+        type: boolean
+        default: false
+      skip_checks:
+        description: 'Skip lint / build / typecheck / test'
+        type: boolean
+        default: false
+      skip_e2e:
+        description: 'Skip E2E tests (Playwright)'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -10,6 +24,7 @@ permissions:
 jobs:
   checks:
     name: lint / build / typecheck / test
+    if: inputs.skip_checks != true
     needs: collect-native
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +66,7 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            generate_cjs: true
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             cross: true
@@ -89,11 +105,20 @@ jobs:
         working-directory: internal/core
         run: pnpm build:rust --target ${{ matrix.target }} ${{ matrix.cross && '--use-napi-cross' || '' }}
 
-      - name: Upload native bindings
+      - name: Generate index.cjs
+        if: matrix.generate_cjs
+        run: cp internal/core/index.js internal/core/index.cjs
+
+      - name: List bindings
+        run: ls -la internal/core/*.node
+
+      - name: Upload combined bindings
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.target }}
-          path: internal/core/*.node
+          path: |
+            internal/core/*.node
+            ${{ matrix.generate_cjs && 'internal/core/index.cjs' || '' }}
           if-no-files-found: error
 
   collect-native:
@@ -110,11 +135,8 @@ jobs:
           pattern: bindings-*
           merge-multiple: true
 
-      - name: Generate index.cjs
-        run: cp internal/core/index.js internal/core/index.cjs
-
       - name: List bindings
-        run: ls -la internal/core/*.node
+        run: ls -la internal/core/*.node internal/core/index.cjs
 
       - name: Upload combined bindings
         uses: actions/upload-artifact@v4
@@ -127,6 +149,7 @@ jobs:
 
   e2e:
     name: E2E tests (Playwright)
+    if: inputs.skip_e2e != true && inputs.skip_checks != true
     needs: [checks, collect-native]
     runs-on: ubuntu-latest
     steps:
@@ -175,7 +198,8 @@ jobs:
 
   release:
     name: Release Please
-    needs: [checks, e2e]
+    needs: [checks, e2e, collect-native]
+    if: ${{ !cancelled() && (needs.checks.result == 'success' || needs.checks.result == 'skipped') && (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -213,8 +237,8 @@ jobs:
 
   publish:
     name: Publish to npm
-    needs: [release, collect-native]
-    if: needs.release.outputs.releases_created == 'true'
+    needs: [release, collect-native, checks]
+    if: ${{ always() && !cancelled() && (needs.release.outputs.releases_created == 'true' || inputs.force_publish) }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -235,7 +259,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
-      - name: Download native bindings
+      - name: Download combined native bindings
         uses: actions/download-artifact@v4
         with:
           name: wolfie-core-node
@@ -245,8 +269,41 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-output
+        continue-on-error: true
 
-      - name: Publish packages
+      - name: Build packages (if checks were skipped)
+        if: needs.checks.result == 'skipped'
+        run: pnpm build
+
+      - name: Move binaries into platform packages
+        working-directory: internal/core
+        run: |
+          for f in *.node; do
+            # wolfie-layout.darwin-arm64.node → darwin-arm64
+            platform="${f#wolfie-layout.}"
+            platform="${platform%.node}"
+            if [ -d "npm/$platform" ]; then
+              cp "$f" "npm/$platform/$f"
+              echo "Copied $f → npm/$platform/"
+            fi
+          done
+
+      - name: List platform packages
+        run: ls -la internal/core/npm/*/
+
+      - name: Publish platform packages
+        working-directory: internal/core
+        run: |
+          for dir in npm/*/; do
+            if [ -f "$dir/package.json" ]; then
+              echo "Publishing $dir..."
+              npm publish "$dir" --access public || true
+            fi
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish workspace packages
         run: pnpm -r publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
