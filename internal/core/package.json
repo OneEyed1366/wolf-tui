@@ -32,11 +32,11 @@
 		"build": "vite build",
 		"test": "vitest run",
 		"build:rust": "napi build --platform --release",
-		"build:full": "napi build --platform --release && vite build"
+		"build:full": "napi build --platform --release && vite build",
+		"prepublishOnly": "napi prepublish -t npm"
 	},
 	"files": [
 		"build",
-		"*.node",
 		"*.cjs",
 		"layout.js",
 		"layout.d.ts",

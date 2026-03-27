@@ -242,15 +242,38 @@ jobs:
       - name: Download native bindings
         uses: actions/download-artifact@v4
         with:
-          name: wolfie-core-node
           path: internal/core
+          pattern: bindings-*
+          merge-multiple: true
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-output
 
-      - name: Publish packages
+      - name: Generate index.cjs
+        run: cp internal/core/index.js internal/core/index.cjs
+
+      - name: Move binaries into platform packages
+        working-directory: internal/core
+        run: npx napi artifacts --npm-dir npm
+
+      - name: List platform packages
+        run: ls -la internal/core/npm/*/
+
+      - name: Publish platform packages
+        working-directory: internal/core
+        run: |
+          for dir in npm/*/; do
+            if [ -f "$dir/package.json" ]; then
+              echo "Publishing $dir..."
+              npm publish "$dir" --access public || true
+            fi
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish workspace packages
         run: pnpm -r publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
