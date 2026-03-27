@@ -4,9 +4,55 @@
 
 import * as path from 'node:path'
 import { readFileSync, existsSync, lstatSync } from 'node:fs'
-import * as sass from 'sass'
-import less from 'less'
-import stylus from 'stylus'
+// Lazy-loaded preprocessors: only imported when actually needed.
+// This avoids crashing when sass/less/stylus aren't installed.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _sass: any = null
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _less: any = null
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _stylus: any = null
+
+async function getSass() {
+	if (!_sass) {
+		try {
+			_sass = await import('sass')
+		} catch {
+			throw new Error(
+				'sass is required for .scss/.sass files. Install it: npm i -D sass'
+			)
+		}
+	}
+	return _sass
+}
+
+async function getLess() {
+	if (!_less) {
+		try {
+			const mod = await import('less')
+			_less = mod.default ?? mod
+		} catch {
+			throw new Error(
+				'less is required for .less files. Install it: npm i -D less'
+			)
+		}
+	}
+	return _less
+}
+
+async function getStylus() {
+	if (!_stylus) {
+		try {
+			const mod = await import('stylus')
+			_stylus = mod.default ?? mod
+		} catch {
+			throw new Error(
+				'stylus is required for .styl files. Install it: npm i -D stylus'
+			)
+		}
+	}
+	return _stylus
+}
 import { createRequire } from 'node:module'
 import { parseCSS } from './parser'
 import type { ParsedStyles, IPreprocessorType, CSSParserOptions } from './types'
@@ -208,16 +254,14 @@ export async function compileScss(
 	source: string,
 	filePath?: string
 ): Promise<PreprocessorResult> {
+	const sass = await getSass()
 	const result = sass.compileString(source, {
 		loadPaths: filePath ? [path.dirname(filePath)] : [],
 		syntax: filePath?.endsWith('.sass') ? 'indented' : 'scss',
 	})
 	return {
 		css: result.css,
-		sourceMap: (result as any).map
-			? JSON.stringify((result as any).map)
-			: undefined,
-		watchFiles: result.loadedUrls.map((url) => url.pathname),
+		watchFiles: result.loadedUrls.map((url: URL) => url.pathname),
 	}
 }
 
@@ -231,6 +275,7 @@ export async function compileLess(
 	source: string,
 	filePath?: string
 ): Promise<PreprocessorResult> {
+	const less = await getLess()
 	const result = await less.render(source, {
 		filename: filePath,
 		paths: filePath ? [path.dirname(filePath)] : [],
@@ -246,10 +291,11 @@ export async function compileLess(
 
 //#region Stylus Compilation
 
-export function compileStylus(
+export async function compileStylus(
 	source: string,
 	filePath?: string
 ): Promise<PreprocessorResult> {
+	const stylus = await getStylus()
 	return new Promise((resolve, reject) => {
 		const compiler = stylus(source)
 		if (filePath) {

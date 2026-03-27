@@ -2,17 +2,15 @@
 
 ## [1.1.0](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.0.3...typescript-plugin@v1.1.0) (2026-03-26)
 
-
 ### Features
 
-* move chalk to auto-installed dependency ([84cf659](https://github.com/OneEyed1366/wolf-tui/commit/84cf659471ed8c96699720666cd860acdddc616a))
-
+- move chalk to auto-installed dependency ([84cf659](https://github.com/OneEyed1366/wolf-tui/commit/84cf659471ed8c96699720666cd860acdddc616a))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * dependencies
-    * @wolf-tui/css-parser bumped to 1.3.0
+- The following workspace dependencies were updated
+  - dependencies
+    - @wolf-tui/css-parser bumped to 1.3.0
 
 ## [1.0.3](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.0.2...typescript-plugin@v1.0.3) (2026-03-25)
 

@@ -2,17 +2,15 @@
 
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.2.1...shared@v1.3.0) (2026-03-26)
 
-
 ### Features
 
-* move chalk to auto-installed dependency ([84cf659](https://github.com/OneEyed1366/wolf-tui/commit/84cf659471ed8c96699720666cd860acdddc616a))
-
+- move chalk to auto-installed dependency ([84cf659](https://github.com/OneEyed1366/wolf-tui/commit/84cf659471ed8c96699720666cd860acdddc616a))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * peerDependencies
-    * @wolf-tui/core bumped to 1.3.0
+- The following workspace dependencies were updated
+  - peerDependencies
+    - @wolf-tui/core bumped to 1.3.0
 
 ## [1.2.1](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.2.0...shared@v1.2.1) (2026-03-25)
 
