@@ -1,0 +1,26 @@
+import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
+<% if (framework === 'react') { %>
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+<% } %>
+<% if (framework === 'vue') { %>
+import vue from 'eslint-plugin-vue'
+<% } %>
+<% if (framework === 'svelte') { %>
+import svelte from 'eslint-plugin-svelte'
+<% } %>
+
+export default tseslint.config(
+	js.configs.recommended,
+	...tseslint.configs.recommended,
+<% if (framework === 'vue') { %>
+	...vue.configs['flat/recommended'],
+<% } %>
+<% if (framework === 'svelte') { %>
+	...svelte.configs['flat/recommended'],
+<% } %>
+	{
+		ignores: ['dist/', 'build/', 'node_modules/'],
+	},
+)

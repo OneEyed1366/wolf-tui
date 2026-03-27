@@ -2,10 +2,9 @@
 
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.2.1...core@v1.3.0) (2026-03-26)
 
-
 ### Features
 
-* move chalk to auto-installed dependency ([84cf659](https://github.com/OneEyed1366/wolf-tui/commit/84cf659471ed8c96699720666cd860acdddc616a))
+- move chalk to auto-installed dependency ([84cf659](https://github.com/OneEyed1366/wolf-tui/commit/84cf659471ed8c96699720666cd860acdddc616a))
 
 ## [1.2.1](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.2.0...core@v1.2.1) (2026-03-25)
 
