@@ -24,7 +24,7 @@ permissions:
 jobs:
   checks:
     name: lint / build / typecheck / test
-    if: github.event.inputs.skip_checks != 'true'
+    if: inputs.skip_checks != true
     needs: collect-native
     runs-on: ubuntu-latest
     steps:
@@ -146,7 +146,7 @@ jobs:
 
   e2e:
     name: E2E tests (Playwright)
-    if: github.event.inputs.skip_e2e != 'true' && github.event.inputs.skip_checks != 'true'
+    if: inputs.skip_e2e != true && inputs.skip_checks != true
     needs: [checks, collect-native]
     runs-on: ubuntu-latest
     steps:
@@ -235,7 +235,7 @@ jobs:
   publish:
     name: Publish to npm
     needs: [release, collect-native]
-    if: needs.release.outputs.releases_created == 'true' || github.event.inputs.force_publish == 'true'
+    if: needs.release.outputs.releases_created == 'true' || inputs.force_publish == true
     runs-on: ubuntu-latest
     permissions:
       contents: read
