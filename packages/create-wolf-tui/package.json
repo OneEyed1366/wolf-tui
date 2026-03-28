@@ -20,7 +20,8 @@
 		"build": "unbuild",
 		"dev": "unbuild --watch",
 		"test": "vitest run",
-		"bake-versions": "tsx scripts/bake-versions.ts"
+		"bake-versions": "tsx scripts/bake-versions.ts",
+		"scaffold": "tsx bin/index.ts"
 	},
 	"dependencies": {
 		"@clack/prompts": "^0.9.1",

@@ -1,8 +1,11 @@
 import 'zone.js'
 import '@angular/compiler'
-<% if (vars.cssImport) { %>
+<%_ if (vars.tailwindImport) { _%>
+import '<%= vars.tailwindImport %>'
+<%_ } _%>
+<%_ if (vars.cssImport) { _%>
 import '<%= vars.cssImport %>'
-<% } %>
+<%_ } _%>
 import { renderWolfie } from '@wolf-tui/angular'
 import { AppComponent } from './app.component'
 

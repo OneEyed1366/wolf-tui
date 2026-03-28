@@ -182,7 +182,7 @@ import { sassLayer } from './layers/css/sass'
 import { lessLayer } from './layers/css/less'
 import { stylusLayer } from './layers/css/stylus'
 import { lintLayer } from './layers/lint'
-import type { Framework, Bundler, CssPreset } from './types'
+import type { Framework, Bundler, CssPreprocessor } from './types'
 
 const frameworkLayers: Record<Framework, ILayer> = {
 	react: reactLayer,
@@ -198,8 +198,7 @@ const bundlerLayers: Record<Bundler, ILayer> = {
 	esbuild: esbuildLayer,
 }
 
-const cssLayers: Record<CssPreset, ILayer> = {
-	tailwind: tailwindLayer,
+const preprocessorLayers: Record<CssPreprocessor, ILayer> = {
 	sass: sassLayer,
 	less: lessLayer,
 	stylus: stylusLayer,
@@ -221,9 +220,11 @@ export function collectLayers(config: IProjectConfig): ILayer[] {
 	const interaction = getInteraction(config.framework, config.bundler)
 	if (interaction) layers.push(interaction)
 
-	for (const preset of config.css) {
-		const cssLayer = cssLayers[preset]
-		if (cssLayer) layers.push(cssLayer)
+	if (config.tailwind) layers.push(tailwindLayer)
+
+	if (config.cssPreprocessor) {
+		const prepLayer = preprocessorLayers[config.cssPreprocessor]
+		if (prepLayer) layers.push(prepLayer)
 	}
 
 	if (config.lint) {

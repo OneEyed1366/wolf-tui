@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { compose } from '../src/composer'
+import { parseFlags } from '../src/cli'
 import type { IProjectConfig } from '../src/types'
 
 function makeConfig(overrides: Partial<IProjectConfig>): IProjectConfig {
@@ -7,7 +8,7 @@ function makeConfig(overrides: Partial<IProjectConfig>): IProjectConfig {
 		name: 'test-app',
 		framework: 'react',
 		bundler: 'vite',
-		css: [],
+		tailwind: false,
 		lint: false,
 		git: false,
 		install: false,
@@ -91,8 +92,8 @@ describe('compose integration', () => {
 		).toThrow('Solid')
 	})
 
-	it('adds sass devDep when css includes sass', async () => {
-		const result = await compose(makeConfig({ css: ['sass'] }))
+	it('adds sass devDep when cssPreprocessor is sass', async () => {
+		const result = await compose(makeConfig({ cssPreprocessor: 'sass' }))
 		const pkg = result.packageJson as Record<string, Record<string, string>>
 
 		expect(pkg['devDependencies']).toHaveProperty('sass')
@@ -100,13 +101,43 @@ describe('compose integration', () => {
 	})
 
 	it('adds tailwind deps and postcss config', async () => {
-		const result = await compose(makeConfig({ css: ['tailwind'] }))
+		const result = await compose(makeConfig({ tailwind: true }))
 		const pkg = result.packageJson as Record<string, Record<string, string>>
 
 		expect(pkg['devDependencies']).toHaveProperty('tailwindcss')
 		expect(pkg['devDependencies']).toHaveProperty('@tailwindcss/postcss')
 		expect(result.files.has('postcss.config.cjs')).toBe(true)
 		expect(result.files.has('src/styles/tailwind.css')).toBe(true)
+	})
+
+	it('tailwind + sass coexist without cssImport conflict', async () => {
+		const result = await compose(
+			makeConfig({ tailwind: true, cssPreprocessor: 'sass' })
+		)
+		const pkg = result.packageJson as Record<string, Record<string, string>>
+
+		// Both deps present
+		expect(pkg['devDependencies']).toHaveProperty('tailwindcss')
+		expect(pkg['devDependencies']).toHaveProperty('sass')
+
+		// Both files present
+		expect(result.files.has('src/styles/tailwind.css')).toBe(true)
+		expect(result.files.has('src/styles/app.scss')).toBe(true)
+		expect(result.files.has('postcss.config.cjs')).toBe(true)
+
+		// Entry imports both
+		const entry = result.files.get('src/index.tsx')!
+		expect(entry).toContain('./styles/tailwind.css')
+		expect(entry).toContain('./styles/app.scss')
+	})
+
+	it('no CSS selected → inline styles template', async () => {
+		const result = await compose(makeConfig({}))
+		const app = result.files.get('src/App.tsx')!
+
+		// Should use inline style objects, not className
+		expect(app).toContain('style={{')
+		expect(app).toContain("borderStyle: 'round'")
 	})
 
 	it('adds eslint when lint is true', async () => {
@@ -206,5 +237,29 @@ describe('compose integration', () => {
 		)['scripts']
 		expect(scripts['start']).toContain('dist/index.js')
 		expect(scripts['start']).not.toContain('.cjs')
+	})
+})
+
+describe('parseFlags — CSS handling', () => {
+	it('--css tailwind → tailwind in parts', () => {
+		const flags = parseFlags(['--css', 'tailwind'])
+		expect(flags.css).toBe('tailwind')
+	})
+
+	it('--css sass → sass in parts, no tailwind', () => {
+		const flags = parseFlags(['--css', 'sass'])
+		expect(flags.css).toBe('sass')
+		expect(flags.css!.includes('tailwind')).toBe(false)
+	})
+
+	it('--css tailwind,sass → both', () => {
+		const flags = parseFlags(['--css', 'tailwind,sass'])
+		expect(flags.css!.includes('tailwind')).toBe(true)
+		expect(flags.css!.includes('sass')).toBe(true)
+	})
+
+	it('no --css → css is undefined', () => {
+		const flags = parseFlags(['--framework', 'react'])
+		expect(flags.css).toBeUndefined()
 	})
 })

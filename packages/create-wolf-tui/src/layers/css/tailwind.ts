@@ -5,7 +5,7 @@ import { TEMPLATE_FILES } from '../../paths'
 export const tailwindLayer: ILayer = {
 	id: 'css:tailwind',
 	templateVars: {
-		cssImport: './styles/tailwind.css',
+		tailwindImport: './styles/tailwind.css',
 		cssFlavor: 'tailwind',
 		/**
 		 * Tailwind utility class mappings for wolf-tui terminal properties.

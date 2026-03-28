@@ -7,5 +7,6 @@ export type {
 	Framework,
 	Bundler,
 	CssPreset,
+	CssPreprocessor,
 } from './types'
 export { isSupported, SUPPORTED_MATRIX } from './matrix'

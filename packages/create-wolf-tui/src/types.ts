@@ -3,6 +3,7 @@
 export type Framework = 'react' | 'vue' | 'angular' | 'solid' | 'svelte'
 export type Bundler = 'vite' | 'webpack' | 'esbuild'
 export type CssPreset = 'tailwind' | 'sass' | 'less' | 'stylus'
+export type CssPreprocessor = 'sass' | 'less' | 'stylus'
 
 //#endregion Framework & Bundler
 
@@ -55,7 +56,8 @@ export interface IProjectConfig {
 	name: string
 	framework: Framework
 	bundler: Bundler
-	css: CssPreset[]
+	tailwind: boolean
+	cssPreprocessor?: CssPreprocessor
 	lint: boolean
 	git: boolean
 	install: boolean

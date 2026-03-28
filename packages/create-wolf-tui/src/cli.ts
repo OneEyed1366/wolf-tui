@@ -3,13 +3,17 @@ import {
 	outro,
 	text,
 	select,
-	multiselect,
 	confirm,
 	cancel,
 	isCancel,
 	spinner,
 } from '@clack/prompts'
-import type { IProjectConfig, Framework, Bundler, CssPreset } from './types'
+import type {
+	IProjectConfig,
+	Framework,
+	Bundler,
+	CssPreprocessor,
+} from './types'
 import { isSupported, getBundlerOptions, getBlockedMessage } from './matrix'
 import {
 	detectPackageManager,
@@ -103,7 +107,11 @@ export async function runCli(argv: string[]): Promise<void> {
 		name = result || 'my-wolf-app'
 	}
 
-	const targetDir = resolve(process.cwd(), name)
+	// INIT_CWD is set by npm/pnpm/yarn during `run` scripts — it preserves
+	// the original cwd before the package manager changes directory.
+	// Falls back to process.cwd() for direct invocation (npm create wolf-tui).
+	const baseCwd = process.env['INIT_CWD'] || process.cwd()
+	const targetDir = resolve(baseCwd, name)
 	// Use just the directory name for package.json name, not full path
 	const projectName = name.includes('/') ? name.split('/').pop()! : name
 
@@ -168,26 +176,45 @@ export async function runCli(argv: string[]): Promise<void> {
 		bundler = result as Bundler
 	}
 
-	// CSS preprocessors
-	let css: CssPreset[] = []
+	// CSS: Tailwind (y/n) + Preprocessor (single select)
+	// When --css flag is provided, parse it fully — no interactive prompts.
+	// --css tailwind       → tailwind only
+	// --css sass           → sass only
+	// --css tailwind,sass  → both
+	// (no --css)           → prompt interactively (unless --yes → defaults)
+	let tailwind = false
+	let cssPreprocessor: CssPreprocessor | undefined
+
 	if (flags.css) {
-		css = flags.css.split(',').filter(Boolean) as CssPreset[]
+		const parts = flags.css.split(',').filter(Boolean)
+		tailwind = parts.includes('tailwind')
+		cssPreprocessor = parts.find(
+			(p): p is CssPreprocessor =>
+				p === 'sass' || p === 'less' || p === 'stylus'
+		)
 	} else if (!flags.yes) {
-		const result = await multiselect({
-			message: 'CSS preprocessors? (space to select, enter to confirm)',
-			options: [
-				{ value: 'tailwind', label: 'Tailwind (PostCSS)' },
-				{ value: 'sass', label: 'Sass' },
-				{ value: 'less', label: 'Less' },
-				{ value: 'stylus', label: 'Stylus' },
-			],
-			required: false,
-		})
-		if (isCancel(result)) {
+		const twResult = await confirm({ message: 'Add Tailwind CSS?' })
+		if (isCancel(twResult)) {
 			cancel('Cancelled.')
 			process.exit(0)
 		}
-		css = (result ?? []) as CssPreset[]
+		tailwind = twResult
+
+		const prepResult = await select({
+			message: 'CSS preprocessor?',
+			options: [
+				{ value: 'none', label: 'None' },
+				{ value: 'sass', label: 'Sass / SCSS' },
+				{ value: 'less', label: 'Less' },
+				{ value: 'stylus', label: 'Stylus' },
+			],
+		})
+		if (isCancel(prepResult)) {
+			cancel('Cancelled.')
+			process.exit(0)
+		}
+		cssPreprocessor =
+			prepResult === 'none' ? undefined : (prepResult as CssPreprocessor)
 	}
 
 	// Lint
@@ -243,7 +270,8 @@ export async function runCli(argv: string[]): Promise<void> {
 		name: projectName,
 		framework,
 		bundler,
-		css,
+		tailwind,
+		cssPreprocessor,
 		lint,
 		git,
 		install,
