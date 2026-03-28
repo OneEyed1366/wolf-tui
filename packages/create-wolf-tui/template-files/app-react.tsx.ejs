@@ -11,23 +11,23 @@ export default function App() {
 		if (input === 'q') exit()
 	})
 <% if (vars.cssFlavor === 'tailwind') { %>
-	const borderColor = count > 0 ? 'border-green' : count < 0 ? 'border-red' : 'border-white'
-	const textColor = count > 0 ? 'text-green' : count < 0 ? 'text-red' : 'text-white'
+	const borderColor = count > 0 ? '<%= vars.tw.borderPositive %>' : count < 0 ? '<%= vars.tw.borderNegative %>' : '<%= vars.tw.borderNeutral %>'
+	const textColor = count > 0 ? '<%= vars.tw.colorPositive %>' : count < 0 ? '<%= vars.tw.colorNegative %>' : '<%= vars.tw.colorNeutral %>'
 
 	return (
-		<Box className="flex-col border-round border-cyan px-2 py-1 gap-1 w-[40]">
+		<Box className="flex-col <%= vars.tw.outerBorder %> <%= vars.tw.borderBrand %> px-2 py-1 gap-1 w-[40]">
 			<Box className="justify-center">
-				<Text className="font-bold text-cyan">wolf-tui</Text>
+				<Text className="font-bold <%= vars.tw.colorBrand %>">wolf-tui</Text>
 			</Box>
 
-			<Box className={`justify-center border-single px-2 ${borderColor}`}>
+			<Box className={`justify-center <%= vars.tw.innerBorder %> px-2 ${borderColor}`}>
 				<Text className={`font-bold ${textColor}`}>{count}</Text>
 			</Box>
 
 			<Box className="justify-around">
-				<Text className="text-green">↑ up</Text>
-				<Text className="text-red">↓ down</Text>
-				<Text className="text-gray">q quit</Text>
+				<Text className="<%= vars.tw.colorPositive %>">↑ up</Text>
+				<Text className="<%= vars.tw.colorNegative %>">↓ down</Text>
+				<Text className="<%= vars.tw.colorMuted %>">q quit</Text>
 			</Box>
 		</Box>
 	)

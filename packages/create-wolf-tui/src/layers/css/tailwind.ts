@@ -4,7 +4,33 @@ import { TEMPLATE_FILES } from '../../paths'
 
 export const tailwindLayer: ILayer = {
 	id: 'css:tailwind',
-	templateVars: { cssImport: './styles/tailwind.css', cssFlavor: 'tailwind' },
+	templateVars: {
+		cssImport: './styles/tailwind.css',
+		cssFlavor: 'tailwind',
+		/**
+		 * Tailwind utility class mappings for wolf-tui terminal properties.
+		 * Uses arbitrary value syntax [property:value] for terminal-specific styles
+		 * and [color] for ANSI named colors (Tailwind doesn't ship them by default).
+		 *
+		 * Examples in templates:
+		 *   <Box className="<%= vars.tw.outerBorder %> <%= vars.tw.borderBrand %> px-2">
+		 *   <Text className="font-bold <%= vars.tw.colorBrand %>">title</Text>
+		 *   <Text className={count > 0 ? '<%= vars.tw.colorPositive %>' : '<%= vars.tw.colorNegative %>'}>
+		 */
+		tw: {
+			outerBorder: '[border-style:round]',
+			innerBorder: '[border-style:single]',
+			colorBrand: 'text-[cyan]',
+			borderBrand: 'border-[cyan]',
+			colorPositive: 'text-[green]',
+			colorNegative: 'text-[red]',
+			colorNeutral: 'text-[white]',
+			colorMuted: 'text-[gray]',
+			borderPositive: 'border-[green]',
+			borderNegative: 'border-[red]',
+			borderNeutral: 'border-[white]',
+		},
+	},
 	configPatches: [
 		{
 			target: 'vite.config.ts',
