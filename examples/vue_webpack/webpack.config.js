@@ -34,6 +34,7 @@ export default {
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
+				options: { isServerBuild: false },
 			},
 			{
 				test: /\.ts$/,
@@ -43,6 +44,19 @@ export default {
 					transpileOnly: true, // Disable type checking to avoid SSR slot type errors
 				},
 				exclude: /node_modules/,
+			},
+			{
+				test: /\.css$/,
+				use: [
+					{
+						loader: 'postcss-loader',
+						options: {
+							postcssOptions: {
+								config: path.resolve(__dirname, 'postcss.config.cjs'),
+							},
+						},
+					},
+				],
 			},
 		],
 	},
@@ -57,28 +71,9 @@ export default {
 	],
 	externals: [
 		({ request }, callback) => {
-			const externals = [
-				'vue',
-				'@wolf-tui/core',
-				'@wolf-tui/css-parser',
-				'ansi-escapes',
-				'ansi-styles',
-				'auto-bind',
-				'cli-boxes',
-				'cli-cursor',
-				'cli-truncate',
-				'code-excerpt',
-				'es-toolkit',
-				'indent-string',
-				'is-in-ci',
-				'patch-console',
-				'signal-exit',
-				'stack-utils',
-				'type-fest',
-				'wrap-ansi',
-			]
 			if (
-				externals.some((e) => request?.startsWith(e)) ||
+				request?.startsWith('vue') ||
+				request?.startsWith('@wolf-tui/') ||
 				request?.startsWith('node:')
 			) {
 				return callback(null, `import ${request}`)
@@ -86,5 +81,4 @@ export default {
 			callback()
 		},
 	],
-	externalsType: 'module',
 }

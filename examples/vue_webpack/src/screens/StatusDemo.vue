@@ -2,9 +2,9 @@
 	<Box class="flex-col gap-1 w-full">
 		<!-- Alerts -->
 		<Text class="font-bold text-white">Alerts</Text>
-		<Alert type="success">Operation completed successfully!</Alert>
-		<Alert type="warning">Check your settings before proceeding</Alert>
-		<Alert type="error">Something went wrong</Alert>
+		<Alert variant="success">Operation completed successfully!</Alert>
+		<Alert variant="warning">Check your settings before proceeding</Alert>
+		<Alert variant="error">Something went wrong</Alert>
 
 		<!-- Badges -->
 		<Text class="font-bold text-white mt-1">Badges</Text>
@@ -17,10 +17,10 @@
 
 		<!-- Status Messages -->
 		<Text class="font-bold text-white mt-1">Status Messages</Text>
-		<StatusMessage type="success">Build succeeded</StatusMessage>
-		<StatusMessage type="error">Tests failed (3 errors)</StatusMessage>
-		<StatusMessage type="warning">Dependencies outdated</StatusMessage>
-		<StatusMessage type="info">Compiling...</StatusMessage>
+		<StatusMessage variant="success">Build succeeded</StatusMessage>
+		<StatusMessage variant="error">Tests failed (3 errors)</StatusMessage>
+		<StatusMessage variant="warning">Dependencies outdated</StatusMessage>
+		<StatusMessage variant="info">Compiling...</StatusMessage>
 
 		<!-- Spinner -->
 		<Text class="font-bold text-white mt-1">Spinner</Text>
