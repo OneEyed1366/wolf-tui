@@ -38,6 +38,24 @@ export const tailwindLayer: ILayer = {
 			content: "css: { postcss: resolve(__dirname, 'postcss.config.cjs') },",
 			mode: 'add',
 		},
+		{
+			target: 'webpack.config.js',
+			slot: 'rulesSlot',
+			content: `{
+				test: /\\.css$/,
+				use: [
+					{
+						loader: 'postcss-loader',
+						options: {
+							postcssOptions: {
+								config: path.resolve(__dirname, 'postcss.config.cjs'),
+							},
+						},
+					},
+				],
+			},`,
+			mode: 'add',
+		},
 	],
 	packageJson: {
 		devDependencies: {
@@ -45,6 +63,7 @@ export const tailwindLayer: ILayer = {
 			postcss: '^8.5.6',
 			tailwindcss: '~4.1.18',
 			autoprefixer: '^10.4.23',
+			'postcss-loader': '^8.1.1',
 		},
 	},
 	files: {

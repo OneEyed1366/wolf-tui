@@ -3,10 +3,18 @@ import type { ILayer } from '../../types'
 // Reference: examples/vue_webpack/webpack.config.js
 export const vueWebpackInteraction: ILayer = {
 	id: 'interaction:vue-webpack',
+	templateVars: {
+		webpackModule: true,
+		outputExt: 'js',
+	},
 	packageJson: {
 		devDependencies: {
 			'vue-loader': '^17.4.2',
 			'vue-template-compiler': '^2.7.16',
+		},
+		scripts: {
+			start: 'node dist/index.js',
+			dev: 'webpack && node dist/index.js',
 		},
 	},
 	configPatches: [
@@ -23,6 +31,7 @@ import webpack from 'webpack'`,
 			content: `{
 				test: /\\.vue$/,
 				loader: 'vue-loader',
+				options: { isServerBuild: false },
 			},
 			{
 				test: /\\.tsx?$/,
@@ -47,6 +56,23 @@ import webpack from 'webpack'`,
 			__VUE_PROD_HYDRATION_MISMATCH_DETAILS__: JSON.stringify(false),
 		}),`,
 			mode: 'add',
+		},
+		{
+			target: 'webpack.config.js',
+			slot: 'externalsOverride',
+			content: `externals: [
+		({ request }, callback) => {
+			if (
+				request?.startsWith('vue') ||
+				request?.startsWith('@wolf-tui/') ||
+				request?.startsWith('node:')
+			) {
+				return callback(null, \`import \${request}\`)
+			}
+			callback()
+		},
+	],`,
+			mode: 'override',
 		},
 	],
 }
