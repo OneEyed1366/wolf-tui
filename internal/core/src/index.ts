@@ -31,6 +31,7 @@ export {
 	resolveViewportUnits,
 	parseNumericValue,
 	expandStyles,
+	normalizeStyleKeys,
 } from './styles'
 export { default as parseKeypress, nonAlphanumericKeys } from './parse-keypress'
 export { default as measureElement } from './measure-element'

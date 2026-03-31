@@ -1,6 +1,6 @@
 import { logger } from './logger'
 import { type LayoutTree } from './layout-types'
-import { type IStyles } from './styles'
+import { type IStyles, normalizeStyleKeys } from './styles'
 import { type IOutputTransformer } from './render-node-to-output'
 
 type IWolfieNode = {
@@ -320,7 +320,7 @@ export const setAttribute = (
 }
 
 export const setStyle = (node: DOMNode, style: IStyles): void => {
-	node.style = style
+	node.style = normalizeStyleKeys(style)
 }
 
 export const createTextNode = (text: string): TextNode => {
