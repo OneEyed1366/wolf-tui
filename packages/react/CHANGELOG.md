@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.5](https://github.com/OneEyed1366/wolf-tui/compare/react@v1.3.4...react@v1.3.5) (2026-03-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * devDependencies
+    * @wolf-tui/plugin bumped to 1.3.5
+
 ## [1.3.4](https://github.com/OneEyed1366/wolf-tui/compare/react@v1.3.2...react@v1.3.4) (2026-03-27)
 
 
