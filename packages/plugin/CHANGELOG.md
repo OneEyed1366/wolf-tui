@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.3.4...plugin@v1.3.5) (2026-03-31)
+
+
+### Bug Fixes
+
+* **plugin:** remove process.exit(1) from esbuild native banner fallback ([4645411](https://github.com/OneEyed1366/wolf-tui/commit/4645411bbcb12d930f48acf9237b676ab593407a))
+
 ## [1.3.4](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.3.2...plugin@v1.3.4) (2026-03-27)
 
 
