@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.6](https://github.com/OneEyed1366/wolf-tui/compare/svelte@v1.1.5...svelte@v1.1.6) (2026-03-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/core bumped to 1.4.0
+
 ## [1.1.5](https://github.com/OneEyed1366/wolf-tui/compare/svelte@v1.1.4...svelte@v1.1.5) (2026-03-31)
 
 

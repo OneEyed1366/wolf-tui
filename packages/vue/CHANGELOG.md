@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.6](https://github.com/OneEyed1366/wolf-tui/compare/vue@v1.3.5...vue@v1.3.6) (2026-03-31)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/core bumped to 1.4.0
+
 ## [1.3.5](https://github.com/OneEyed1366/wolf-tui/compare/vue@v1.3.4...vue@v1.3.5) (2026-03-31)
 
 
