@@ -48,7 +48,6 @@ const __dirname = __dirname_fn(__filename);
 const __nativeCandidates = ["wolfie-core.${platform}-${arch}.node","wolfie-core.${platform}-${arch}-gnu.node","wolfie-core.${platform}-${arch}-musl.node"];
 const __nativePath = __nativeCandidates.find(f => __existsSync(__join(__dirname, "native/" + f)));
 if (__nativePath) { process.env.NAPI_RS_NATIVE_LIBRARY_PATH = __join(__dirname, "native/" + __nativePath); }
-else { console.error("Native binding not found for ${platform} ${arch}"); process.exit(1); }
 `
 	}
 
@@ -59,7 +58,6 @@ const __fs = require("fs");
 const __nativeCandidates = ["wolfie-core.${platform}-${arch}.node","wolfie-core.${platform}-${arch}-gnu.node","wolfie-core.${platform}-${arch}-musl.node"];
 const __nativePath = __nativeCandidates.find(f => __fs.existsSync(__path.join(__dirname, "native/" + f)));
 if (__nativePath) { process.env.NAPI_RS_NATIVE_LIBRARY_PATH = __path.join(__dirname, "native/" + __nativePath); }
-else { console.error("Native binding not found for ${platform} ${arch}"); process.exit(1); }
 `
 }
 
