@@ -1,6 +1,6 @@
 {
 	"name": "@wolf-tui/shared",
-	"version": "1.3.3",
+	"version": "1.3.4",
 	"description": "Shared framework-agnostic logic for wolfie adapters",
 	"license": "MIT",
 	"type": "module",
@@ -28,7 +28,7 @@
 		"figures": "^6.1.0"
 	},
 	"peerDependencies": {
-		"@wolf-tui/core": "workspace:*",
+		"@wolf-tui/core": "workspace:^",
 		"chalk": "^5.0.0"
 	},
 	"peerDependenciesMeta": {

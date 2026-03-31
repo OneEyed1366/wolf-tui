@@ -2,33 +2,29 @@
 
 ## [1.3.5](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.3.4...plugin@v1.3.5) (2026-03-31)
 
-
 ### Bug Fixes
 
-* **plugin:** remove process.exit(1) from esbuild native banner fallback ([4645411](https://github.com/OneEyed1366/wolf-tui/commit/4645411bbcb12d930f48acf9237b676ab593407a))
+- **plugin:** remove process.exit(1) from esbuild native banner fallback ([4645411](https://github.com/OneEyed1366/wolf-tui/commit/4645411bbcb12d930f48acf9237b676ab593407a))
 
 ## [1.3.4](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.3.2...plugin@v1.3.4) (2026-03-27)
 
-
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * dependencies
-    * @wolf-tui/css-parser bumped to 1.3.3
+- The following workspace dependencies were updated
+  - dependencies
+    - @wolf-tui/css-parser bumped to 1.3.3
 
 ## [1.3.2](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.3.1...plugin@v1.3.2) (2026-03-27)
 
-
 ### Bug Fixes
 
-* **core:** cross-platform native bindings + lazy CSS preprocessors ([#12](https://github.com/OneEyed1366/wolf-tui/issues/12)) ([a11cd48](https://github.com/OneEyed1366/wolf-tui/commit/a11cd484ac298b1e0b6774beaf23a6a323098318))
-
+- **core:** cross-platform native bindings + lazy CSS preprocessors ([#12](https://github.com/OneEyed1366/wolf-tui/issues/12)) ([a11cd48](https://github.com/OneEyed1366/wolf-tui/commit/a11cd484ac298b1e0b6774beaf23a6a323098318))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * dependencies
-    * @wolf-tui/css-parser bumped to 1.3.2
+- The following workspace dependencies were updated
+  - dependencies
+    - @wolf-tui/css-parser bumped to 1.3.2
 
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.2.1...plugin@v1.3.0) (2026-03-26)
 

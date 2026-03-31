@@ -2,24 +2,21 @@
 
 ## [1.3.3](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.3.2...css-parser@v1.3.3) (2026-03-27)
 
-
 ### Bug Fixes
 
-* **css-parser:** lazy-load tailwindcss alongside sass/less/stylus ([4a12974](https://github.com/OneEyed1366/wolf-tui/commit/4a1297470d85a9dfa63aae9f393e9bf1facbc9e2))
+- **css-parser:** lazy-load tailwindcss alongside sass/less/stylus ([4a12974](https://github.com/OneEyed1366/wolf-tui/commit/4a1297470d85a9dfa63aae9f393e9bf1facbc9e2))
 
 ## [1.3.2](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.3.1...css-parser@v1.3.2) (2026-03-27)
 
-
 ### Bug Fixes
 
-* **core:** cross-platform native bindings + lazy CSS preprocessors ([#12](https://github.com/OneEyed1366/wolf-tui/issues/12)) ([a11cd48](https://github.com/OneEyed1366/wolf-tui/commit/a11cd484ac298b1e0b6774beaf23a6a323098318))
-
+- **core:** cross-platform native bindings + lazy CSS preprocessors ([#12](https://github.com/OneEyed1366/wolf-tui/issues/12)) ([a11cd48](https://github.com/OneEyed1366/wolf-tui/commit/a11cd484ac298b1e0b6774beaf23a6a323098318))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * peerDependencies
-    * @wolf-tui/core bumped to 1.3.2
+- The following workspace dependencies were updated
+  - peerDependencies
+    - @wolf-tui/core bumped to 1.3.2
 
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.2.1...css-parser@v1.3.0) (2026-03-26)
 

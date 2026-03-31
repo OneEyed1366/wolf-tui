@@ -1130,7 +1130,7 @@ importers:
   internal/shared:
     dependencies:
       '@wolf-tui/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       chalk:
         specifier: ^5.0.0
@@ -1167,7 +1167,7 @@ importers:
   packages/angular:
     dependencies:
       '@wolf-tui/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../internal/core
       '@wolf-tui/shared':
         specifier: workspace:*
@@ -1295,7 +1295,7 @@ importers:
         specifier: '>=19.0.0'
         version: 19.2.14
       '@wolf-tui/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../internal/core
       '@wolf-tui/shared':
         specifier: workspace:*
@@ -1386,7 +1386,7 @@ importers:
   packages/solid:
     dependencies:
       '@wolf-tui/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../internal/core
       '@wolf-tui/shared':
         specifier: workspace:*
@@ -1468,7 +1468,7 @@ importers:
   packages/svelte:
     dependencies:
       '@wolf-tui/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../internal/core
       '@wolf-tui/shared':
         specifier: workspace:*
@@ -1572,7 +1572,7 @@ importers:
   packages/vue:
     dependencies:
       '@wolf-tui/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../internal/core
       '@wolf-tui/shared':
         specifier: workspace:*
