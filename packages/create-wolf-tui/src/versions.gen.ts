@@ -7,7 +7,7 @@ export const VERSIONS: Record<string, string> = {
 	'@wolf-tui/svelte': '^1.1.5',
 	'@wolf-tui/plugin': '^1.3.6',
 	'@wolf-tui/typescript-plugin': '^1.1.4',
-	'@wolf-tui/core': '^1.3.3',
+	'@wolf-tui/core': '^1.3.4',
 	'@wolf-tui/shared': '^1.3.3',
 	'@wolf-tui/css-parser': '^1.3.5',
 } as const
