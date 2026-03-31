@@ -416,6 +416,34 @@ const expandSpacing = (
 	return result
 }
 
+//#region Style Key Normalization
+
+/**
+ * Convert kebab-case CSS keys to camelCase.
+ * Returns the original object unchanged if all keys are already camelCase (fast path).
+ */
+export const normalizeStyleKeys = (style: IStyles): IStyles => {
+	let needsNormalization = false
+	for (const key in style) {
+		if (key.includes('-')) {
+			needsNormalization = true
+			break
+		}
+	}
+	if (!needsNormalization) return style
+
+	const result: IStyles = {}
+	for (const [key, value] of Object.entries(style)) {
+		const camelKey = key.includes('-')
+			? key.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())
+			: key
+		;(result as Record<string, unknown>)[camelKey] = value
+	}
+	return result
+}
+
+//#endregion Style Key Normalization
+
 /**
  * Expand a Styles object by resolving shorthands.
  */
@@ -545,7 +573,7 @@ const toDimension = (
  * Pure conversion function - no side effects
  */
 export const toLayoutStyle = (style: IStyles): LayoutStyle => {
-	const expanded = expandStyles(style)
+	const expanded = expandStyles(normalizeStyleKeys(style))
 	const result: LayoutStyle = {}
 
 	// Position
