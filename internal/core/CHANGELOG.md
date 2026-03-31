@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.3.2...core@v1.4.0) (2026-03-31)
+
+
+### Features
+
+* **core:** normalize kebab-case style keys to camelCase at runtime ([b17abe6](https://github.com/OneEyed1366/wolf-tui/commit/b17abe68f08eb83da67db111598f2fcad5d39f29))
+
 ## [1.3.2](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.3.1...core@v1.3.2) (2026-03-27)
 
 ### Bug Fixes
