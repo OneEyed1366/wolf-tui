@@ -11,12 +11,9 @@ export const svelteLayer: ILayer = {
 			svelte: '^5.0.0',
 		},
 	},
-	externals: [
-		'svelte',
-		'svelte/internal',
-		'svelte/internal/client',
-		'@wolf-tui/svelte',
-	],
+	// NOTE: No explicit externals here — each interaction layer (esbuild/vite/webpack)
+	// provides its own external handling. Explicit externals + packages:'external'
+	// causes esbuild to tree-shake Svelte component imports (Box, Text) from templates.
 	templateVars: {
 		entryExt: 'ts',
 		entryFile: 'index.ts',

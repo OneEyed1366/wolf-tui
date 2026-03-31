@@ -11,7 +11,11 @@ export const solidLayer: ILayer = {
 			'solid-js': '^1.9.0',
 		},
 	},
-	externals: ['solid-js', '@wolf-tui/solid'],
+	externals: [
+		'@wolf-tui/solid',
+		'@wolf-tui/solid/renderer',
+		'@wolf-tui/solid/styles',
+	],
 	templateVars: {
 		entryExt: 'tsx',
 		entryFile: 'index.tsx',

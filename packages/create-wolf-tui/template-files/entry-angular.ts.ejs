@@ -9,4 +9,6 @@ import '<%= vars.cssImport %>'
 import { renderWolfie } from '@wolf-tui/angular'
 import { AppComponent } from './app.component'
 
-renderWolfie(AppComponent, { exitOnCtrlC: true })
+renderWolfie(AppComponent, { exitOnCtrlC: true }).then((instance) => {
+	instance.waitUntilExit()
+})
