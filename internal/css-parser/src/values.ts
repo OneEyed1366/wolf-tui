@@ -172,12 +172,15 @@ const CSS_TO_WOLF_BORDER: Record<string, string> = {
 	outset: 'classic',
 	none: '', // Will be handled specially
 	hidden: '', // Will be handled specially
-	// wolf-tui-specific border styles (not standard CSS, but valid via arbitrary properties)
+	// wolf-tui-specific border styles (cli-boxes keys)
+	// Keys are lowercase because parseBorderStyle() calls .toLowerCase()
 	single: 'single',
 	round: 'round',
 	bold: 'bold',
-	singleDouble: 'singleDouble',
-	doubleSingle: 'doubleSingle',
+	singledouble: 'singleDouble',
+	doublesingle: 'doubleSingle',
+	'single-double': 'singleDouble',
+	'double-single': 'doubleSingle',
 	classic: 'classic',
 	arrow: 'arrow',
 }

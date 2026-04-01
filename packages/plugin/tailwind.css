@@ -37,9 +37,9 @@
 }
 
 @utility border-single-double {
-	border-style: singleDouble;
+	border-style: single-double;
 }
 
 @utility border-double-single {
-	border-style: doubleSingle;
+	border-style: double-single;
 }
