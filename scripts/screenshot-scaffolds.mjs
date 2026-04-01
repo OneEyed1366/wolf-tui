@@ -3,11 +3,15 @@
  * Screenshot scaffolded projects.
  * Installs from npm, builds, runs headlessly, captures ANSI -> PNG.
  *
- * Usage: node screenshot-scaffolds.mjs
+ * Usage:
+ *   node screenshot-scaffolds.mjs              # all scaffolds
+ *   node screenshot-scaffolds.mjs solid         # only names containing "solid"
+ *   node screenshot-scaffolds.mjs solid_vite    # only names containing "solid_vite"
+ *
  * Output: scaffolds/__screenshots__/{name}.png
  */
 import { execSync } from 'node:child_process'
-import { existsSync, mkdirSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 import { chromium } from 'playwright'
 import AnsiToHtml from 'ansi-to-html'
@@ -113,32 +117,37 @@ function extractFrame(rawOutput) {
 	let inFrame = false
 
 	for (const line of lines) {
-		const cleaned = line
-			.replace(/\x1b\[\d*[ABCDEFGJKST]/g, '')
-			.replace(/\x1b\[\d*;\d*[Hf]/g, '')
-			.replace(/\x1b\[[\?]?\d*[hl]/g, '')
-			.replace(/\[[\dA-Z;]*[GKJE]/g, '')
+		// Strip cursor/erase CSI codes but KEEP SGR color codes (ending in 'm')
+		// Colors are needed for ansi-to-html; cursor codes would produce garbage
+		const colorLine = line
+			.replace(/\x1b\[[\?]?[0-9;]*[A-Za-ln-z]/g, '')
+			.replace(/\x1b[()][A-Z0-9]/g, '')
 			.replace(/\r/g, '')
 
-		if (!cleaned.trim()) {
-			if (inFrame) frameLines.push(cleaned)
+		// Strip ALL CSI codes (including colors) for content detection
+		const stripped = colorLine.replace(/\x1b\[[0-9;]*m/g, '')
+
+		if (!stripped.trim()) {
+			if (inFrame) frameLines.push(colorLine)
 			continue
 		}
 
 		if (
-			cleaned.includes('┌') ||
-			cleaned.includes('│') ||
-			cleaned.includes('└') ||
-			cleaned.includes('wolf-tui') ||
-			cleaned.includes('↑') ||
-			cleaned.includes('↓') ||
-			(inFrame && !cleaned.includes('ERROR') && !cleaned.includes('Raw mode'))
+			stripped.includes('╭') ||
+			stripped.includes('╰') ||
+			stripped.includes('┌') ||
+			stripped.includes('│') ||
+			stripped.includes('└') ||
+			stripped.includes('wolf-tui') ||
+			stripped.includes('↑') ||
+			stripped.includes('↓') ||
+			(inFrame && !stripped.includes('ERROR') && !stripped.includes('Raw mode'))
 		) {
 			inFrame = true
-			frameLines.push(cleaned)
+			frameLines.push(colorLine)
 		}
 
-		if (cleaned.includes('ERROR') || cleaned.includes('Raw mode')) break
+		if (stripped.includes('ERROR') || stripped.includes('Raw mode')) break
 	}
 
 	return frameLines.join('\n').trim()
@@ -146,26 +155,28 @@ function extractFrame(rawOutput) {
 
 //#endregion
 
-//#region Targets
+//#region Targets — auto-discover from scaffolds/
 
-const TARGETS = [
-	'react_esbuild_plain',
-	'react_vite_plain',
-	'react_webpack_plain',
-	'react_esbuild_tailwind',
-	'vue_esbuild_plain',
-	'vue_vite_plain',
-	'vue_webpack_plain',
-	'vue_webpack_tailwind',
-	'angular_esbuild_plain',
-	'angular_vite_plain',
-	'angular_webpack_plain',
-	'solid_esbuild_plain',
-	'solid_webpack_plain',
-	'svelte_esbuild_plain',
-	'svelte_vite_plain',
-	'svelte_webpack_plain',
-]
+const filter = process.argv[2] || ''
+
+if (!existsSync(SCAFFOLDS)) {
+	console.error('No scaffolds/ directory. Run scaffold-all.mjs first.')
+	process.exit(1)
+}
+
+const TARGETS = readdirSync(SCAFFOLDS)
+	.filter(
+		(name) =>
+			!name.startsWith('.') &&
+			!name.startsWith('__') &&
+			existsSync(join(SCAFFOLDS, name, 'package.json')) &&
+			name.includes(filter)
+	)
+	.sort()
+
+console.log(
+	`Found ${TARGETS.length} scaffolds${filter ? ` matching "${filter}"` : ''}`
+)
 
 //#endregion
 

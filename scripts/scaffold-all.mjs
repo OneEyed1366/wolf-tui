@@ -2,7 +2,7 @@ import {
 	compose,
 	renderProject,
 	isSupported,
-} from './packages/create-wolf-tui/dist/index.mjs'
+} from '../packages/create-wolf-tui/dist/index.mjs'
 import { rmSync } from 'node:fs'
 import { resolve } from 'node:path'
 
