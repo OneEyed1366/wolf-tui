@@ -16,6 +16,7 @@ export const reactLayer: ILayer = {
 		'react/jsx-runtime',
 		'react/jsx-dev-runtime',
 		'@wolf-tui/react',
+		'@wolf-tui/react/styles',
 	],
 	templateVars: {
 		entryExt: 'tsx',
