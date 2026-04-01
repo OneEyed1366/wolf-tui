@@ -1,9 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import {
-	isSupported,
-	getBlockedMessage,
-	getBundlerOptions,
-} from '../src/matrix'
+import { isSupported, getBundlerOptions } from '../src/matrix'
 
 describe('matrix', () => {
 	it('allows react + vite', () => {
@@ -18,20 +14,14 @@ describe('matrix', () => {
 		expect(isSupported('react', 'esbuild')).toBe(true)
 	})
 
-	it('blocks solid + vite', () => {
-		expect(isSupported('solid', 'vite')).toBe(false)
+	it('allows solid + vite', () => {
+		expect(isSupported('solid', 'vite')).toBe(true)
 	})
 
-	it('returns blocked message for solid + vite', () => {
-		const msg = getBlockedMessage('solid', 'vite')
-		expect(msg).toContain('Solid')
-		expect(msg).toContain('Vite')
-	})
-
-	it('filters bundler options for solid (no vite)', () => {
+	it('allows all bundler options for solid', () => {
 		const options = getBundlerOptions('solid')
 		const viteOpt = options.find((o) => o.value === 'vite')
-		expect(viteOpt?.disabled).toBe(true)
+		expect(viteOpt?.disabled).toBeFalsy()
 		expect(options.find((o) => o.value === 'webpack')?.disabled).toBeFalsy()
 		expect(options.find((o) => o.value === 'esbuild')?.disabled).toBeFalsy()
 	})
@@ -44,7 +34,7 @@ describe('matrix', () => {
 		expect(rollup?.disabled).toBe(true)
 	})
 
-	it('allows all 14 supported combos', () => {
+	it('allows all 15 supported combos', () => {
 		const combos = [
 			['react', 'vite'],
 			['react', 'webpack'],
@@ -55,6 +45,7 @@ describe('matrix', () => {
 			['angular', 'vite'],
 			['angular', 'webpack'],
 			['angular', 'esbuild'],
+			['solid', 'vite'],
 			['solid', 'webpack'],
 			['solid', 'esbuild'],
 			['svelte', 'vite'],

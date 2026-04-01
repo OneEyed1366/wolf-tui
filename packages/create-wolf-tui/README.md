@@ -92,10 +92,8 @@ Tailwind and a preprocessor can be combined — they're independent choices.
 | React     | Yes  | Yes     | Yes     |
 | Vue       | Yes  | Yes     | Yes     |
 | Angular   | Yes  | Yes     | Yes     |
-| Solid     | —    | Yes     | Yes     |
+| Solid     | Yes  | Yes     | Yes     |
 | Svelte    | Yes  | Yes     | Yes     |
-
-Solid + Vite is not yet supported (vite-plugin-solid resolves to the server build, breaking the universal renderer).
 
 ---
 

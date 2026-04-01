@@ -35,7 +35,7 @@ wolf-tui is a framework-agnostic Terminal User Interface library. Write CLI apps
   └──────────────────┘  └──────────────────┘  └──────────────────────┘
 ```
 
-Bundler examples also exist per framework: `examples/<fw>_{esbuild,vite,webpack}/` (all present except `solid_vite`)
+Bundler examples also exist per framework: `examples/<fw>_{esbuild,vite,webpack}/` (`solid_vite` uses `solid_invaders` as reference — scaffolding supported via `create-wolf-tui`)
 
 Workspace: **pnpm** monorepo. Node >= 20, pnpm >= 9.
 

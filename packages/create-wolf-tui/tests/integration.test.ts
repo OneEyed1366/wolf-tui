@@ -86,10 +86,12 @@ describe('compose integration', () => {
 		expect(wpConfig).toContain('module: true')
 	})
 
-	it('rejects solid + vite', () => {
-		expect(() =>
-			compose(makeConfig({ framework: 'solid', bundler: 'vite' }))
-		).toThrow('Solid')
+	it('accepts solid + vite', async () => {
+		const result = await compose(
+			makeConfig({ framework: 'solid', bundler: 'vite' })
+		)
+		expect(result.files.has('vite.config.ts')).toBe(true)
+		expect(result.files.has('src/App.tsx')).toBe(true)
 	})
 
 	it('adds sass devDep when cssPreprocessor is sass', async () => {

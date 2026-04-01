@@ -10,6 +10,7 @@ import { svelteWebpackInteraction } from './svelte-webpack'
 import { svelteEsbuildInteraction } from './svelte-esbuild'
 import { solidWebpackInteraction } from './solid-webpack'
 import { solidEsbuildInteraction } from './solid-esbuild'
+import { solidViteInteraction } from './solid-vite'
 import { reactWebpackInteraction } from './react-webpack'
 
 type InteractionKey = `${Framework}:${Bundler}`
@@ -24,6 +25,7 @@ const registry = new Map<InteractionKey, ILayer>([
 	['svelte:vite', svelteViteInteraction],
 	['svelte:webpack', svelteWebpackInteraction],
 	['svelte:esbuild', svelteEsbuildInteraction],
+	['solid:vite', solidViteInteraction],
 	['solid:webpack', solidWebpackInteraction],
 	['solid:esbuild', solidEsbuildInteraction],
 	['react:webpack', reactWebpackInteraction],

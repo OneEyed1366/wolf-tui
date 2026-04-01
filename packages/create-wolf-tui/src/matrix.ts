@@ -6,7 +6,7 @@ const SUPPORTED: Record<Framework, Bundler[]> = {
 	react: ['vite', 'webpack', 'esbuild'],
 	vue: ['vite', 'webpack', 'esbuild'],
 	angular: ['vite', 'webpack', 'esbuild'],
-	solid: ['webpack', 'esbuild'],
+	solid: ['vite', 'webpack', 'esbuild'],
 	svelte: ['vite', 'webpack', 'esbuild'],
 }
 
@@ -18,9 +18,6 @@ export function getBlockedMessage(
 	framework: Framework,
 	bundler: Bundler
 ): string {
-	if (framework === 'solid' && bundler === 'vite') {
-		return 'Solid + Vite is not yet supported. Use Webpack or esbuild.'
-	}
 	return `${framework} + ${bundler} is not supported.`
 }
 
