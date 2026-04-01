@@ -15,6 +15,7 @@ import {
 	generateJavaScript,
 	scanCandidates,
 	inlineStyles,
+	extractUtilities,
 	tailwind,
 	type ParsedStyles,
 } from '@wolf-tui/css-parser'
@@ -188,6 +189,13 @@ export async function wolfie(
 		const lang = detectLanguage(absolutePath)
 
 		const source = readFileSync(absolutePath, 'utf-8')
+
+		// Extract @utility blocks from raw CSS before Tailwind/PostCSS eats them
+		const utilities = extractUtilities(source)
+		if (Object.keys(utilities).length > 0) {
+			Object.assign(globalStylesMap, utilities)
+		}
+
 		const compileResult = await compile(source, lang, absolutePath)
 
 		// For inlining: camelCase keys (the inliner's getStyle handles both formats)
@@ -208,6 +216,9 @@ export async function wolfie(
 					filename: absolutePath,
 					camelCaseClasses: false,
 				})
+
+		// Merge @utility styles into codeStyles for registerStyles() fallback
+		Object.assign(codeStyles, utilities)
 
 		const code = generateJavaScript(codeStyles, {
 			mode: isModule ? 'module' : 'global',

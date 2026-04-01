@@ -12,6 +12,7 @@ import {
 	parseCSS,
 	generateJavaScript,
 	scanCandidates,
+	extractUtilities,
 	tailwind,
 } from '@wolf-tui/css-parser'
 
@@ -194,6 +195,9 @@ export const unpluginFactory: UnpluginFactory<[Framework, WolfieOptions?]> = (
 			const cleanId = id.split('?')[0]!
 			const lang = detectLanguage(cleanId)
 
+			// Extract @utility blocks from raw CSS before compile() processes them
+			const utilities = extractUtilities(code)
+
 			// Compile CSS/SCSS/etc
 			const compileResult = await compile(code, lang, cleanId)
 
@@ -204,6 +208,9 @@ export const unpluginFactory: UnpluginFactory<[Framework, WolfieOptions?]> = (
 				filename: cleanId,
 				camelCaseClasses: isModule ? camelCase : false,
 			})
+
+			// Merge @utility-extracted styles into the parsed styles
+			Object.assign(styles, utilities)
 
 			// Generate JavaScript — global registerStyles uses original CSS class
 			// names so runtime resolveClassName("flex-col") finds "flex-col".

@@ -1,6 +1,5 @@
 /* <%= vars.brandName %> + wolf-tui counter styles (Tailwind) */
 @import "tailwindcss";
-@import "@wolf-tui/plugin/tailwind.css";
 @source "../**/*.<%= vars.entryExt %>";
 @source "../**/*.svelte";
 @source "../**/*.vue";
@@ -9,3 +8,12 @@
 @theme {
 	--color-brand: <%= vars.brandColor %>;
 }
+
+/* wolf-tui terminal border styles (cli-boxes) — add your own below */
+@utility border-single { border-style: single; }
+@utility border-round  { border-style: round; }
+@utility border-bold   { border-style: bold; }
+@utility border-classic { border-style: classic; }
+@utility border-arrow  { border-style: arrow; }
+@utility border-single-double { border-style: single-double; }
+@utility border-double-single { border-style: double-single; }
