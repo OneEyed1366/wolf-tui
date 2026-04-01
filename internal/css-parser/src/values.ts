@@ -172,6 +172,14 @@ const CSS_TO_WOLF_BORDER: Record<string, string> = {
 	outset: 'classic',
 	none: '', // Will be handled specially
 	hidden: '', // Will be handled specially
+	// wolf-tui-specific border styles (not standard CSS, but valid via arbitrary properties)
+	single: 'single',
+	round: 'round',
+	bold: 'bold',
+	singleDouble: 'singleDouble',
+	doubleSingle: 'doubleSingle',
+	classic: 'classic',
+	arrow: 'arrow',
 }
 
 //#endregion Border Style Mapping
