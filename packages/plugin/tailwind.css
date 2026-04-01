@@ -1,0 +1,45 @@
+/*
+ * wolf-tui Tailwind preset — custom utilities for terminal border styles.
+ *
+ * Usage:
+ *   @import "@wolf-tui/plugin/tailwind.css";
+ *   @import "tailwindcss";
+ *
+ * These map to cli-boxes border characters:
+ *   border-single  → ┌┐└┘─│
+ *   border-round   → ╭╮╰╯─│
+ *   border-bold    → ┏┓┗┛━┃
+ *   border-double  → ╔╗╚╝═║
+ *   border-classic → ++-+--
+ *   border-arrow   → ↘↙↗↖→←↓↑
+ */
+
+@utility border-single {
+	border-style: single;
+}
+
+@utility border-round {
+	border-style: round;
+}
+
+@utility border-bold {
+	border-style: bold;
+}
+
+/* border-double is built-in Tailwind — maps to cli-boxes 'double' (╔╗╚╝═║) automatically */
+
+@utility border-classic {
+	border-style: classic;
+}
+
+@utility border-arrow {
+	border-style: arrow;
+}
+
+@utility border-single-double {
+	border-style: singleDouble;
+}
+
+@utility border-double-single {
+	border-style: doubleSingle;
+}

@@ -9,8 +9,8 @@ export const tailwindLayer: ILayer = {
 		cssFlavor: 'tailwind',
 		/**
 		 * Tailwind utility class mappings for wolf-tui terminal properties.
-		 * Uses arbitrary value syntax [property:value] for terminal-specific styles
-		 * and [color] for ANSI named colors (Tailwind doesn't ship them by default).
+		 * Border styles use custom utilities from @wolf-tui/plugin/tailwind.css
+		 * Colors use arbitrary value syntax [color] for ANSI named colors.
 		 *
 		 * Examples in templates:
 		 *   <Box className="<%= vars.tw.outerBorder %> <%= vars.tw.borderBrand %> px-2">
@@ -18,8 +18,8 @@ export const tailwindLayer: ILayer = {
 		 *   <Text className={count > 0 ? '<%= vars.tw.colorPositive %>' : '<%= vars.tw.colorNegative %>'}>
 		 */
 		tw: {
-			outerBorder: '[border-style:round]',
-			innerBorder: '[border-style:single]',
+			outerBorder: 'border-round',
+			innerBorder: 'border-single',
 			colorBrand: 'text-[cyan]',
 			borderBrand: 'border-[cyan]',
 			colorPositive: 'text-[green]',
