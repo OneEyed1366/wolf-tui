@@ -83,6 +83,8 @@ cd my-wolf-app && npm run dev
 
 Tailwind and a preprocessor can be combined — they're independent choices.
 
+When Tailwind is selected, the generated CSS includes terminal-specific border utilities (`border-round`, `border-single`, `border-bold`, etc.) via `@utility` directives. These map to [cli-boxes](https://github.com/sindresorhus/cli-boxes) characters. Add your own custom utilities in the same file.
+
 ---
 
 ## Support Matrix
