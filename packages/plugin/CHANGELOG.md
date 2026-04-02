@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.4.0](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.3.4...plugin@v1.4.0) (2026-04-02)
+
+
+### Features
+
+* **create-wolf-tui:** CLI scaffolding tool for wolf-tui projects ([#17](https://github.com/OneEyed1366/wolf-tui/issues/17)) ([a50fe11](https://github.com/OneEyed1366/wolf-tui/commit/a50fe117bebf6fffcbfda9f2b89d4ee2a9f9a513))
+
+
+### Bug Fixes
+
+* **plugin:** remove process.exit(1) from esbuild native banner fallback ([4645411](https://github.com/OneEyed1366/wolf-tui/commit/4645411bbcb12d930f48acf9237b676ab593407a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/css-parser bumped to 1.4.0
+
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/plugin@v1.2.1...plugin@v1.3.0) (2026-03-26)
 
 ### Features
