@@ -234,7 +234,7 @@ jobs:
             echo "No release PR found, skipping"
           fi
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
 
   publish:
     name: Publish to npm
