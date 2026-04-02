@@ -110,6 +110,7 @@ jobs:
         run: cp internal/core/index.js internal/core/index.cjs
 
       - name: List bindings
+        shell: bash
         run: ls -la internal/core/*.node
 
       - name: Upload combined bindings
