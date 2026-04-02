@@ -21,7 +21,7 @@
 	"scripts": {
 		"dev": "vite build --watch",
 		"build": "vite build && node scripts/postbuild.cjs",
-		"prepare": "npm run build"
+		"prepare": "pnpm run build"
 	},
 	"files": [
 		"build"

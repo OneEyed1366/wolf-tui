@@ -24,7 +24,7 @@
 	"scripts": {
 		"dev": "vite build --watch",
 		"build": "vite build",
-		"prepare": "npm run build",
+		"prepare": "pnpm run build",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"example": "pnpm --filter @examples/vue-vite example"
