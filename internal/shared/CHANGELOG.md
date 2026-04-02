@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.3.2...shared@v1.4.0) (2026-04-02)
+
+
+### Features
+
+* **create-wolf-tui:** CLI scaffolding tool for wolf-tui projects ([#17](https://github.com/OneEyed1366/wolf-tui/issues/17)) ([a50fe11](https://github.com/OneEyed1366/wolf-tui/commit/a50fe117bebf6fffcbfda9f2b89d4ee2a9f9a513))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * peerDependencies
+    * @wolf-tui/core bumped to 1.4.0
+
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.2.1...shared@v1.3.0) (2026-03-26)
 
 ### Features
