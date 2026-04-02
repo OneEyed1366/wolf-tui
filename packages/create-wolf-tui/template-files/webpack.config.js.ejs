@@ -1,0 +1,68 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { wolfie } from '@wolf-tui/plugin/webpack'
+<%- slots.importsSlot || '' %>
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+export default {
+	mode: 'production',
+	target: 'node',
+	entry: './src/<%= vars.entryFile || 'index.ts' %>',
+	output: {
+		path: path.resolve(__dirname, 'dist'),
+		filename: 'index.<%= vars.outputExt || 'cjs' %>',
+<% if (vars.webpackModule) { %>
+		module: true,
+		library: { type: 'module' },
+<% } else { %>
+		libraryTarget: 'commonjs',
+		chunkFormat: 'commonjs',
+<% } %>
+		clean: true,
+	},
+<% if (vars.webpackModule) { %>
+	experiments: {
+		outputModule: true,
+	},
+<% } %>
+	optimization: {
+		minimize: false,
+		usedExports: true,
+	},
+	resolve: {
+		extensions: ['.tsx', '.ts', '.js', '.node'],
+		<%- slots.resolveSlot || '' %>
+	},
+	module: {
+		rules: [
+<% if (slots.rulesOverride) { %>
+			<%- slots.rulesOverride %>
+<% } else { %>
+			{
+				test: /\.tsx?$/,
+				use: [{ loader: 'ts-loader', options: { transpileOnly: true } }],
+				exclude: /node_modules/,
+			},
+<% } %>
+			<%- slots.rulesSlot || '' %>
+		],
+	},
+	plugins: [
+		<%- slots.pluginsSlot || '' %>
+		wolfie('<%= framework %>'),
+	],
+<% if (slots.externalsOverride) { %>
+	<%- slots.externalsOverride %>
+<% } else { %>
+	externals: {
+<% for (const ext of externals) { %>
+		'<%= ext %>': 'commonjs <%= ext %>',
+<% } %>
+	},
+<% } %>
+	node: {
+		__dirname: false,
+		__filename: false,
+	},
+}

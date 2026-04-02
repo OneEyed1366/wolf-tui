@@ -28,6 +28,16 @@ wolf-tui started as a fork of Ink, then expanded: five framework adapters sharin
 
 ## Quick Start
 
+### Scaffold a new project
+
+```bash
+npm create wolf-tui
+```
+
+The CLI walks you through framework, bundler, and styling choices — generates a ready-to-run project. See [create-wolf-tui](packages/create-wolf-tui/README.md) for flags and options.
+
+### Add to an existing project
+
 Pick your framework:
 
 ### React
@@ -170,6 +180,7 @@ Each adapter has a detailed README with full API docs, Vite/esbuild/webpack conf
 
 | Package                                                             | Description                                | Docs                                           |
 | ------------------------------------------------------------------- | ------------------------------------------ | ---------------------------------------------- |
+| [create-wolf-tui](packages/create-wolf-tui/README.md)               | Project scaffolding CLI                    | [README](packages/create-wolf-tui/README.md)   |
 | [@wolf-tui/core](internal/core/README.md)                           | Layout engine, DOM, renderer               | Core                                           |
 | [@wolf-tui/react](packages/react/README.md)                         | React 19+ adapter                          | [README](packages/react/README.md)             |
 | [@wolf-tui/vue](packages/vue/README.md)                             | Vue 3.5+ adapter                           | [README](packages/vue/README.md)               |

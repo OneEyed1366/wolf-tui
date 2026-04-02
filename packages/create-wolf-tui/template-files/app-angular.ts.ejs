@@ -1,0 +1,120 @@
+import { Component, signal, computed, inject } from '@angular/core'
+import {
+	BoxComponent,
+	TextComponent,
+	injectInput,
+	AppService,
+} from '@wolf-tui/angular'
+
+@Component({
+	selector: 'app-root',
+	standalone: true,
+	imports: [BoxComponent, TextComponent],
+<% if (vars.cssFlavor === 'tailwind') { %>
+	template: `
+		<w-box class="flex-col <%= vars.tw.outerBorder %> <%= vars.tw.borderBrand %> px-2 py-1 gap-1 w-[40]">
+			<w-box class="justify-center">
+				<w-text class="font-bold <%= vars.tw.colorBrand %>">wolf-tui</w-text>
+			</w-box>
+
+			<w-box [class]="'justify-center <%= vars.tw.innerBorder %> px-2 ' + borderColor()">
+				<w-text [class]="'font-bold ' + textColor()">{{ count() }}</w-text>
+			</w-box>
+
+			<w-box class="justify-around">
+				<w-text class="<%= vars.tw.colorPositive %>">↑ up</w-text>
+				<w-text class="<%= vars.tw.colorNegative %>">↓ down</w-text>
+				<w-text class="<%= vars.tw.colorMuted %>">q quit</w-text>
+			</w-box>
+		</w-box>
+	`,
+<% } else if (vars.cssImport) { %>
+	template: `
+		<w-box class="counter">
+			<w-box class="title">
+				<w-text class="label">wolf-tui</w-text>
+			</w-box>
+
+			<w-box [class]="displayClass()">
+				<w-text>{{ count() }}</w-text>
+			</w-box>
+
+			<w-box class="controls">
+				<w-text class="key-up">↑ up</w-text>
+				<w-text class="key-down">↓ down</w-text>
+				<w-text class="key-quit">q quit</w-text>
+			</w-box>
+		</w-box>
+	`,
+<% } else { %>
+	template: `
+		<w-box
+			[style]="{
+				flexDirection: 'column',
+				borderStyle: 'round',
+				borderColor: 'cyan',
+				paddingLeft: 2,
+				paddingRight: 2,
+				paddingTop: 1,
+				paddingBottom: 1,
+				gap: 1,
+				width: 40
+			}"
+		>
+			<w-box [style]="{ justifyContent: 'center' }">
+				<w-text [style]="{ fontWeight: 'bold', color: 'cyan' }">wolf-tui</w-text>
+			</w-box>
+
+			<w-box
+				[style]="{
+					justifyContent: 'center',
+					borderStyle: 'single',
+					borderColor: color(),
+					paddingLeft: 2,
+					paddingRight: 2
+				}"
+			>
+				<w-text [style]="{ fontWeight: 'bold', color: color() }">{{ count() }}</w-text>
+			</w-box>
+
+			<w-box [style]="{ justifyContent: 'space-around' }">
+				<w-text [style]="{ color: 'green' }">↑ up</w-text>
+				<w-text [style]="{ color: 'red' }">↓ down</w-text>
+				<w-text [style]="{ color: 'gray' }">q quit</w-text>
+			</w-box>
+		</w-box>
+	`,
+<% } %>
+})
+export class AppComponent {
+	count = signal(0)
+<% if (vars.cssFlavor === 'tailwind') { %>
+	borderColor = computed(() =>
+		this.count() > 0 ? '<%= vars.tw.borderPositive %>' : this.count() < 0 ? '<%= vars.tw.borderNegative %>' : '<%= vars.tw.borderNeutral %>'
+	)
+	textColor = computed(() =>
+		this.count() > 0 ? '<%= vars.tw.colorPositive %>' : this.count() < 0 ? '<%= vars.tw.colorNegative %>' : '<%= vars.tw.colorNeutral %>'
+	)
+<% } else if (vars.cssImport) { %>
+	displayClass = computed(() =>
+		this.count() > 0
+			? 'display display-positive'
+			: this.count() < 0
+				? 'display display-negative'
+				: 'display display-zero'
+	)
+<% } else { %>
+	color = computed(() =>
+		this.count() > 0 ? 'green' : this.count() < 0 ? 'red' : 'white'
+	)
+<% } %>
+	private app = inject(AppService)
+
+	constructor() {
+		injectInput((input, key) => {
+			if (key.upArrow) this.count.update((c) => c + 1)
+			if (key.downArrow) this.count.update((c) => c - 1)
+			if (input === 'q') this.app.exit()
+		})
+	}
+}

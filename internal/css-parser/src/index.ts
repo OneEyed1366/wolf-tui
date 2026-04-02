@@ -32,6 +32,7 @@ export {
 
 export { scanCandidates } from './scanner'
 export { inlineStyles } from './inliner'
+export { extractUtilities } from './utility-parser'
 
 //#endregion Scanner & Inliner Exports
 

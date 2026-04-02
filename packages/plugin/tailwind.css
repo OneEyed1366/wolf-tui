@@ -1,0 +1,39 @@
+/*
+ * wolf-tui Tailwind preset — terminal border style utilities.
+ *
+ * Scaffolds embed these automatically. For manual setup, copy these classes
+ * into your CSS file (the wolfie plugin processes plain CSS classes directly).
+ *
+ * These map to cli-boxes border characters:
+ *   border-single  → ┌┐└┘─│
+ *   border-round   → ╭╮╰╯─│
+ *   border-bold    → ┏┓┗┛━┃
+ *   border-double  → ╔╗╚╝═║ (built-in Tailwind: border-double)
+ *   border-classic → ++-+--
+ *   border-arrow   → ↘↙↗↖→←↓↑
+ *
+ * Custom utilities: add your own classes to your CSS file:
+ *   .my-border { border-style: round; border-color: cyan; }
+ */
+
+.border-single {
+	border-style: single;
+}
+.border-round {
+	border-style: round;
+}
+.border-bold {
+	border-style: bold;
+}
+.border-classic {
+	border-style: classic;
+}
+.border-arrow {
+	border-style: arrow;
+}
+.border-single-double {
+	border-style: single-double;
+}
+.border-double-single {
+	border-style: double-single;
+}

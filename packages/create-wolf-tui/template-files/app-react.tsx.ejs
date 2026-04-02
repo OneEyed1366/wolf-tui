@@ -1,0 +1,95 @@
+import React, { useState } from 'react'
+import { Box, Text, useInput, useApp } from '@wolf-tui/react'
+
+export default function App() {
+	const [count, setCount] = useState(0)
+	const { exit } = useApp()
+
+	useInput((input, key) => {
+		if (key.upArrow) setCount((c) => c + 1)
+		if (key.downArrow) setCount((c) => c - 1)
+		if (input === 'q') exit()
+	})
+<% if (vars.cssFlavor === 'tailwind') { %>
+	const borderColor = count > 0 ? '<%= vars.tw.borderPositive %>' : count < 0 ? '<%= vars.tw.borderNegative %>' : '<%= vars.tw.borderNeutral %>'
+	const textColor = count > 0 ? '<%= vars.tw.colorPositive %>' : count < 0 ? '<%= vars.tw.colorNegative %>' : '<%= vars.tw.colorNeutral %>'
+
+	return (
+		<Box className="flex-col <%= vars.tw.outerBorder %> <%= vars.tw.borderBrand %> px-2 py-1 gap-1 w-[40]">
+			<Box className="justify-center">
+				<Text className="font-bold <%= vars.tw.colorBrand %>">wolf-tui</Text>
+			</Box>
+
+			<Box className={`justify-center <%= vars.tw.innerBorder %> px-2 ${borderColor}`}>
+				<Text className={`font-bold ${textColor}`}>{count}</Text>
+			</Box>
+
+			<Box className="justify-around">
+				<Text className="<%= vars.tw.colorPositive %>">↑ up</Text>
+				<Text className="<%= vars.tw.colorNegative %>">↓ down</Text>
+				<Text className="<%= vars.tw.colorMuted %>">q quit</Text>
+			</Box>
+		</Box>
+	)
+<% } else if (vars.cssImport) { %>
+	const displayClass = count > 0 ? 'display display-positive' : count < 0 ? 'display display-negative' : 'display display-zero'
+
+	return (
+		<Box className="counter">
+			<Box className="title">
+				<Text className="label">wolf-tui</Text>
+			</Box>
+
+			<Box className={displayClass}>
+				<Text>{count}</Text>
+			</Box>
+
+			<Box className="controls">
+				<Text className="key-up">↑ up</Text>
+				<Text className="key-down">↓ down</Text>
+				<Text className="key-quit">q quit</Text>
+			</Box>
+		</Box>
+	)
+<% } else { %>
+	const color = count > 0 ? 'green' : count < 0 ? 'red' : 'white'
+
+	return (
+		<Box
+			style={{
+				flexDirection: 'column',
+				borderStyle: 'round',
+				borderColor: 'cyan',
+				paddingLeft: 2,
+				paddingRight: 2,
+				paddingTop: 1,
+				paddingBottom: 1,
+				gap: 1,
+				width: 40,
+			}}
+		>
+			<Box style={{ justifyContent: 'center' }}>
+				<Text style={{ fontWeight: 'bold', color: 'cyan' }}>wolf-tui</Text>
+			</Box>
+
+			<Box
+				style={{
+					justifyContent: 'center',
+					borderStyle: 'single',
+					borderColor: color,
+					paddingLeft: 2,
+					paddingRight: 2,
+				}}
+			>
+				<Text style={{ fontWeight: 'bold', color }}>{count}</Text>
+			</Box>
+
+			<Box style={{ justifyContent: 'space-around' }}>
+				<Text style={{ color: 'green' }}>↑ up</Text>
+				<Text style={{ color: 'red' }}>↓ down</Text>
+				<Text style={{ color: 'gray' }}>q quit</Text>
+			</Box>
+		</Box>
+	)
+<% } %>
+}

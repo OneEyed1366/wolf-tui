@@ -1,0 +1,10 @@
+import { render } from '@wolf-tui/solid'
+<%_ if (vars.tailwindImport) { _%>
+import '<%= vars.tailwindImport %>'
+<%_ } _%>
+<%_ if (vars.cssImport) { _%>
+import '<%= vars.cssImport %>'
+<%_ } _%>
+import App from './App'
+
+render(App)

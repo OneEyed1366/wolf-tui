@@ -1,0 +1,33 @@
+import * as esbuild from 'esbuild'
+import { wolfie<% if (framework !== 'angular') { %>, generateNativeBanner<% } %> } from '@wolf-tui/plugin/esbuild'
+<%- slots.importsSlot || '' %>
+
+await esbuild.build({
+	entryPoints: ['src/<%= vars.entryFile || 'index.ts' %>'],
+	bundle: true,
+	outfile: 'dist/index.<%= vars.outputExt || 'cjs' %>',
+	format: '<%= vars.outputFormat || 'cjs' %>',
+	platform: 'node',
+	target: 'node20',
+	external: [
+<% for (const ext of externals) { %>
+		'<%= ext %>',
+<% } %>
+	],
+<% if (framework !== 'angular' && !vars.needsCreateRequire) { %>
+	banner: { js: generateNativeBanner('<%= vars.outputFormat || 'cjs' %>') },
+<% } %>
+<% if (vars.needsCreateRequire) { %>
+	banner: {
+		js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);',
+	},
+<% } %>
+	plugins: [
+		<%- slots.pluginsSlot || '' %>
+		wolfie('<%= framework %>'<% if (framework === 'angular') { %>, { nativeBindings: false }<% } %>),
+	],
+	<%- slots.extraSlot || '' %>
+	logLevel: 'info',
+})
+
+console.log('Build complete: dist/index.<%= vars.outputExt || 'cjs' %>')

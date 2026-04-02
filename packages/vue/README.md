@@ -22,9 +22,19 @@ If you've used [Ink](https://github.com/vadimdemedes/ink) for React terminal UIs
 
 ## Install
 
+### Scaffold a new project (recommended)
+
+```bash
+npm create wolf-tui -- --framework vue
+```
+
+Generates a complete project with bundler config, TypeScript, and optional CSS tooling. See [create-wolf-tui](../create-wolf-tui/README.md).
+
+### Manual setup
+
 ```bash
 # Runtime dependencies
-pnpm add @wolf-tui/vue chalk vue
+pnpm add @wolf-tui/vue vue
 
 # Build tooling
 pnpm add -D @wolf-tui/plugin @vitejs/plugin-vue vite
@@ -33,7 +43,6 @@ pnpm add -D @wolf-tui/plugin @vitejs/plugin-vue vite
 | Peer dependency | Version |
 | --------------- | ------- |
 | `vue`           | ^3.5.0  |
-| `chalk`         | ^5.0.0  |
 
 ---
 

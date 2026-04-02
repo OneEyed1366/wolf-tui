@@ -1,0 +1,36 @@
+import { defineConfig } from 'vite'
+import { wolfie } from '@wolf-tui/plugin/vite'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
+<%- slots.importsSlot || '' %>
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+export default defineConfig({
+	root: __dirname,
+	plugins: [
+		<%- slots.pluginsSlot || '' %>
+		wolfie('<%= framework %>'),
+	],
+<% if (slots.buildOverride) { %>
+	<%- slots.buildOverride %>
+<% } else { %>
+	build: {
+		lib: {
+			entry: resolve(__dirname, 'src/<%= vars.entryFile || 'index.ts' %>'),
+			formats: ['es'],
+			fileName: 'index',
+		},
+		rollupOptions: {
+			external: [
+				/node:.*/,
+<% for (const ext of externals) { %>
+				'<%= ext %>',
+<% } %>
+			],
+		},
+		<%- slots.buildSlot || '' %>
+	},
+<% } %>
+	<%- slots.extraConfigSlot || '' %>
+})

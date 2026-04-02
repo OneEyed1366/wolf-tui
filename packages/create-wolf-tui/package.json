@@ -1,0 +1,50 @@
+{
+	"name": "create-wolf-tui",
+	"version": "0.1.0",
+	"description": "Scaffold wolf-tui terminal UI projects",
+	"license": "MIT",
+	"type": "module",
+	"bin": {
+		"create-wolf-tui": "./dist/bin/index.mjs"
+	},
+	"main": "./dist/index.mjs",
+	"exports": {
+		".": "./dist/index.mjs"
+	},
+	"files": [
+		"dist",
+		"template-files",
+		"src/templates"
+	],
+	"scripts": {
+		"build": "unbuild",
+		"dev": "unbuild --watch",
+		"test": "vitest run",
+		"bake-versions": "tsx scripts/bake-versions.ts",
+		"scaffold": "tsx bin/index.ts"
+	},
+	"dependencies": {
+		"@clack/prompts": "^0.9.1",
+		"ejs": "^3.1.10"
+	},
+	"devDependencies": {
+		"@types/ejs": "^3.1.5",
+		"@types/node": "^24.10.9",
+		"tsx": "^4.19.0",
+		"typescript": "^5.8.3",
+		"unbuild": "^3.5.0",
+		"vitest": "^3.1.1"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/OneEyed1366/wolf-tui.git",
+		"directory": "packages/create-wolf-tui"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+}

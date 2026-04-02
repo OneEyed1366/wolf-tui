@@ -1,0 +1,136 @@
+<% if (vars.cssFlavor === 'tailwind') { %>
+<template>
+	<Box class="flex-col <%= vars.tw.outerBorder %> <%= vars.tw.borderBrand %> px-2 py-1 gap-1 w-[40]">
+		<Box class="justify-center">
+			<Text class="font-bold <%= vars.tw.colorBrand %>">wolf-tui</Text>
+		</Box>
+
+		<Box :class="`justify-center <%= vars.tw.innerBorder %> px-2 ${borderColor}`">
+			<Text :class="`font-bold ${textColor}`">{{ count }}</Text>
+		</Box>
+
+		<Box class="justify-around">
+			<Text class="<%= vars.tw.colorPositive %>">↑ up</Text>
+			<Text class="<%= vars.tw.colorNegative %>">↓ down</Text>
+			<Text class="<%= vars.tw.colorMuted %>">q quit</Text>
+		</Box>
+	</Box>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { Box, Text, useInput, useApp } from '@wolf-tui/vue'
+
+const count = ref(0)
+const { exit } = useApp()
+
+const borderColor = computed(() =>
+	count.value > 0 ? '<%= vars.tw.borderPositive %>' : count.value < 0 ? '<%= vars.tw.borderNegative %>' : '<%= vars.tw.borderNeutral %>'
+)
+const textColor = computed(() =>
+	count.value > 0 ? '<%= vars.tw.colorPositive %>' : count.value < 0 ? '<%= vars.tw.colorNegative %>' : '<%= vars.tw.colorNeutral %>'
+)
+
+useInput((input, key) => {
+	if (key.upArrow) count.value++
+	if (key.downArrow) count.value--
+	if (input === 'q') exit()
+})
+</script>
+<% } else if (vars.cssImport) { %>
+<template>
+	<Box class="counter">
+		<Box class="title">
+			<Text class="label">wolf-tui</Text>
+		</Box>
+
+		<Box :class="displayClass">
+			<Text>{{ count }}</Text>
+		</Box>
+
+		<Box class="controls">
+			<Text class="key-up">↑ up</Text>
+			<Text class="key-down">↓ down</Text>
+			<Text class="key-quit">q quit</Text>
+		</Box>
+	</Box>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { Box, Text, useInput, useApp } from '@wolf-tui/vue'
+
+const count = ref(0)
+const { exit } = useApp()
+
+const displayClass = computed(() =>
+	count.value > 0
+		? 'display display-positive'
+		: count.value < 0
+			? 'display display-negative'
+			: 'display display-zero'
+)
+
+useInput((input, key) => {
+	if (key.upArrow) count.value++
+	if (key.downArrow) count.value--
+	if (input === 'q') exit()
+})
+</script>
+<% } else { %>
+<template>
+	<Box
+		:style="{
+			flexDirection: 'column',
+			borderStyle: 'round',
+			borderColor: 'cyan',
+			paddingLeft: 2,
+			paddingRight: 2,
+			paddingTop: 1,
+			paddingBottom: 1,
+			gap: 1,
+			width: 40,
+		}"
+	>
+		<Box :style="{ justifyContent: 'center' }">
+			<Text :style="{ fontWeight: 'bold', color: 'cyan' }">wolf-tui</Text>
+		</Box>
+
+		<Box
+			:style="{
+				justifyContent: 'center',
+				borderStyle: 'single',
+				borderColor: color,
+				paddingLeft: 2,
+				paddingRight: 2,
+			}"
+		>
+			<Text :style="{ fontWeight: 'bold', color }">{{ count }}</Text>
+		</Box>
+
+		<Box :style="{ justifyContent: 'space-around' }">
+			<Text :style="{ color: 'green' }">↑ up</Text>
+			<Text :style="{ color: 'red' }">↓ down</Text>
+			<Text :style="{ color: 'gray' }">q quit</Text>
+		</Box>
+	</Box>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { Box, Text, useInput, useApp } from '@wolf-tui/vue'
+
+const count = ref(0)
+const { exit } = useApp()
+
+const color = computed(() =>
+	count.value > 0 ? 'green' : count.value < 0 ? 'red' : 'white'
+)
+
+useInput((input, key) => {
+	if (key.upArrow) count.value++
+	if (key.downArrow) count.value--
+	if (input === 'q') exit()
+})
+</script>
+<% } %>

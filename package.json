@@ -4,11 +4,6 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "pnpm -r --parallel dev",
-		"dev:log": "cross-env WOLFIE_LOG=1 pnpm -r --parallel dev",
-		"dev:log:react": "cross-env WOLFIE_LOG=1 pnpm --filter @wolf-tui/react-game-invaders dev",
-		"dev:log:vue": "cross-env WOLFIE_LOG=1 pnpm --filter @wolf-tui/vue-game-invaders dev",
-		"dev:log:angular": "cross-env WOLFIE_LOG=1 pnpm --filter @wolf-tui/angular-game-invaders dev",
 		"build": "pnpm -r build",
 		"test": "pnpm -r test",
 		"test:related": "vitest related --run",

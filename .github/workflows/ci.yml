@@ -109,7 +109,10 @@ jobs:
         if: matrix.generate_cjs
         run: cp internal/core/index.js internal/core/index.cjs
 
-      - name: Upload native bindings
+      - name: List bindings
+        run: ls -la internal/core/*.node
+
+      - name: Upload combined bindings
         uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.target }}

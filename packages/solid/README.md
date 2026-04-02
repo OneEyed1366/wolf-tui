@@ -22,9 +22,19 @@ If you've used [Ink](https://github.com/vadimdemedes/ink) for React terminal UIs
 
 ## Install
 
+### Scaffold a new project (recommended)
+
+```bash
+npm create wolf-tui -- --framework solid
+```
+
+Generates a complete project with bundler config, TypeScript, and optional CSS tooling. See [create-wolf-tui](../create-wolf-tui/README.md).
+
+### Manual setup
+
 ```bash
 # Runtime dependencies
-pnpm add @wolf-tui/solid chalk solid-js
+pnpm add @wolf-tui/solid solid-js
 
 # Build tooling (pick one)
 pnpm add -D @wolf-tui/plugin vite vite-plugin-solid
@@ -35,7 +45,6 @@ pnpm add -D @wolf-tui/plugin esbuild esbuild-plugin-solid
 | Peer dependency | Version |
 | --------------- | ------- |
 | `solid-js`      | ^1.9.0  |
-| `chalk`         | ^5.0.0  |
 
 ---
 

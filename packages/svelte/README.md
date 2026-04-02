@@ -32,9 +32,19 @@ If you've used [Ink](https://github.com/vadimdemedes/ink) for React terminal UIs
 
 ## Install
 
+### Scaffold a new project (recommended)
+
+```bash
+npm create wolf-tui -- --framework svelte
+```
+
+Generates a complete project with bundler config, TypeScript, and optional CSS tooling. See [create-wolf-tui](../create-wolf-tui/README.md).
+
+### Manual setup
+
 ```bash
 # Runtime dependencies
-pnpm add @wolf-tui/svelte chalk svelte
+pnpm add @wolf-tui/svelte svelte
 
 # Build tooling
 pnpm add -D @wolf-tui/plugin @sveltejs/vite-plugin-svelte vite
@@ -43,7 +53,6 @@ pnpm add -D @wolf-tui/plugin @sveltejs/vite-plugin-svelte vite
 | Peer dependency | Version |
 | --------------- | ------- |
 | `svelte`        | ^5.0.0  |
-| `chalk`         | ^5.0.0  |
 
 ---
 

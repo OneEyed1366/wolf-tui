@@ -70,7 +70,8 @@
 		"signal-exit": "^3.0.7",
 		"stack-utils": "^2.0.6",
 		"type-fest": "^4.27.0",
-		"wrap-ansi": "^9.0.0"
+		"wrap-ansi": "^9.0.0",
+		"react-reconciler": "^0.33.0"
 	},
 	"devDependencies": {
 		"@wolf-tui/css-parser": "workspace:*",
@@ -82,8 +83,7 @@
 	"peerDependencies": {
 		"@types/react": ">=19.0.0",
 		"react": ">=19.0.0",
-		"react-devtools-core": "^7.0.0",
-		"react-reconciler": "^0.33.0"
+		"react-devtools-core": "^7.0.0"
 	},
 	"peerDependenciesMeta": {
 		"@types/react": {

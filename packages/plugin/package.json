@@ -28,7 +28,8 @@
 		"./svelte": {
 			"types": "./build/svelte.d.ts",
 			"default": "./build/svelte.js"
-		}
+		},
+		"./tailwind.css": "./tailwind.css"
 	},
 	"engines": {
 		"node": ">=20"
@@ -39,7 +40,8 @@
 	},
 	"files": [
 		"build",
-		"wolfie.css-data.json"
+		"wolfie.css-data.json",
+		"tailwind.css"
 	],
 	"dependencies": {
 		"@wolf-tui/css-parser": "workspace:*",

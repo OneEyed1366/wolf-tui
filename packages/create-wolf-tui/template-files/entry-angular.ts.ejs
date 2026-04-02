@@ -1,0 +1,14 @@
+import 'zone.js'
+import '@angular/compiler'
+<%_ if (vars.tailwindImport) { _%>
+import '<%= vars.tailwindImport %>'
+<%_ } _%>
+<%_ if (vars.cssImport) { _%>
+import '<%= vars.cssImport %>'
+<%_ } _%>
+import { renderWolfie } from '@wolf-tui/angular'
+import { AppComponent } from './app.component'
+
+renderWolfie(AppComponent, { exitOnCtrlC: true }).then((instance) => {
+	instance.waitUntilExit()
+})

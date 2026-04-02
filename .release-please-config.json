@@ -12,7 +12,8 @@
 		"internal/core": { "component": "core" },
 		"internal/css-parser": { "component": "css-parser" },
 		"internal/shared": { "component": "shared" },
-		"packages/svelte": { "component": "svelte" }
+		"packages/svelte": { "component": "svelte" },
+		"packages/create-wolf-tui": { "component": "create-wolf-tui" }
 	},
 	"tag-separator": "@",
 	"include-v-in-tag": true

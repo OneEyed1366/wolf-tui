@@ -179,10 +179,56 @@ Full Tailwind v3.4 and v4.1 support with JIT compilation.
    </Box>
    ```
 
+#### Terminal Border Utilities
+
+wolf-tui extends Tailwind with terminal-specific border styles via `@utility`. Scaffolded projects include these by default:
+
+```css
+@utility border-round {
+	border-style: round;
+} /* ╭╮╰╯─│ */
+@utility border-single {
+	border-style: single;
+} /* ┌┐└┘─│ */
+@utility border-bold {
+	border-style: bold;
+} /* ┏┓┗┛━┃ */
+@utility border-classic {
+	border-style: classic;
+} /* ++-+-- */
+@utility border-arrow {
+	border-style: arrow;
+} /* ↘↙↗↖→← */
+```
+
+Usage:
+
+```tsx
+<Box className="border-round border-[cyan] px-2 py-1">
+	<Text className="font-bold text-[green]">Rounded box</Text>
+</Box>
+```
+
+Add your own in the same CSS file:
+
+```css
+@utility my-panel {
+	border-style: round;
+	border-color: cyan;
+	padding-left: 2;
+	padding-right: 2;
+}
+```
+
+> `border-double` is built-in Tailwind — it maps to cli-boxes `double` (╔╗╚╝═║) automatically.
+
+A reference preset is available at `@wolf-tui/plugin/tailwind.css`.
+
 #### Features
 
 - **JIT compilation** — Only generates CSS for used utilities
 - **Arbitrary values** — `w-[80]`, `text-[cyan]`, `p-[2rem]`
+- **`@utility` parsing** — Custom terminal utilities defined via Tailwind v4 `@utility` directive
 - **OKLCH colors** — Custom shim enables native OKLCH support
 - **Modern color functions** — `oklch()`, `hsl()`, `lab()`, `lch()`
 
@@ -299,27 +345,27 @@ All extensions support the `.module.` prefix for CSS Modules.
 
 ### Fully Supported
 
-| CSS Property                   | Notes                   |
-| ------------------------------ | ----------------------- |
-| `display`                      | `flex`, `none`          |
-| `flex-direction`               | All values              |
-| `flex-wrap`                    | All values              |
-| `flex-grow/shrink/basis`       | All values              |
-| `align-items/self`             | All values              |
-| `justify-content`              | All values              |
-| `gap`, `row-gap`, `column-gap` | Number or rem           |
-| `width`, `height`              | Number, %, vw, vh       |
-| `min-width`, `min-height`      | Number                  |
-| `padding`, `margin`            | All shorthand forms     |
-| `border-style`                 | single, double, round   |
-| `border-color`                 | ANSI or hex             |
-| `color`                        | ANSI, hex, rgb, oklch   |
-| `background-color`             | ANSI, hex, rgb, oklch   |
-| `font-weight`                  | bold, normal, numeric   |
-| `font-style`                   | italic, normal          |
-| `text-decoration`              | underline, line-through |
-| `overflow`                     | visible, hidden         |
-| `position`                     | absolute, relative      |
+| CSS Property                   | Notes                                       |
+| ------------------------------ | ------------------------------------------- |
+| `display`                      | `flex`, `none`                              |
+| `flex-direction`               | All values                                  |
+| `flex-wrap`                    | All values                                  |
+| `flex-grow/shrink/basis`       | All values                                  |
+| `align-items/self`             | All values                                  |
+| `justify-content`              | All values                                  |
+| `gap`, `row-gap`, `column-gap` | Number or rem                               |
+| `width`, `height`              | Number, %, vw, vh                           |
+| `min-width`, `min-height`      | Number                                      |
+| `padding`, `margin`            | All shorthand forms                         |
+| `border-style`                 | single, double, round, bold, classic, arrow |
+| `border-color`                 | ANSI or hex                                 |
+| `color`                        | ANSI, hex, rgb, oklch                       |
+| `background-color`             | ANSI, hex, rgb, oklch                       |
+| `font-weight`                  | bold, normal, numeric                       |
+| `font-style`                   | italic, normal                              |
+| `text-decoration`              | underline, line-through                     |
+| `overflow`                     | visible, hidden                             |
+| `position`                     | absolute, relative                          |
 
 ### Not Supported
 

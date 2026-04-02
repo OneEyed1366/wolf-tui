@@ -22,9 +22,19 @@ If you've used [Ink](https://github.com/vadimdemedes/ink) for React terminal UIs
 
 ## Install
 
+### Scaffold a new project (recommended)
+
+```bash
+npm create wolf-tui -- --framework angular
+```
+
+Generates a complete project with bundler config, TypeScript, and optional CSS tooling. See [create-wolf-tui](../create-wolf-tui/README.md).
+
+### Manual setup
+
 ```bash
 # Runtime dependencies
-pnpm add @wolf-tui/angular chalk @angular/core @angular/common
+pnpm add @wolf-tui/angular @angular/core @angular/common
 
 # Build tooling
 pnpm add -D @wolf-tui/plugin vite
@@ -34,7 +44,6 @@ pnpm add -D @wolf-tui/plugin vite
 | ----------------- | --------- |
 | `@angular/core`   | >= 17.0.0 |
 | `@angular/common` | >= 17.0.0 |
-| `chalk`           | ^5.0.0    |
 
 ---
 

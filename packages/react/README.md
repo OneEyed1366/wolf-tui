@@ -20,19 +20,27 @@ This package started as a fork of Ink, extended with the wolf-tui shared archite
 
 ## Install
 
+### Scaffold a new project (recommended)
+
+```bash
+npm create wolf-tui -- --framework react
+```
+
+Generates a complete project with bundler config, TypeScript, and optional CSS tooling. See [create-wolf-tui](../create-wolf-tui/README.md).
+
+### Manual setup
+
 ```bash
 # Runtime dependencies
-pnpm add @wolf-tui/react chalk react react-reconciler
+pnpm add @wolf-tui/react react
 
 # Build tooling
 pnpm add -D @wolf-tui/plugin @vitejs/plugin-react vite
 ```
 
-| Peer dependency    | Version   |
-| ------------------ | --------- |
-| `react`            | >= 19.0.0 |
-| `react-reconciler` | ^0.33.0   |
-| `chalk`            | ^5.0.0    |
+| Peer dependency | Version   |
+| --------------- | --------- |
+| `react`         | >= 19.0.0 |
 
 ---
 

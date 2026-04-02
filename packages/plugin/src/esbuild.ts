@@ -15,6 +15,7 @@ import {
 	generateJavaScript,
 	scanCandidates,
 	inlineStyles,
+	extractUtilities,
 	tailwind,
 	type ParsedStyles,
 } from '@wolf-tui/css-parser'
@@ -232,12 +233,18 @@ export function wolfie(
 			lang = detectLanguage(absolutePath)
 		}
 
+		// Extract @utility blocks from raw CSS before compile() processes them
+		const utilities = extractUtilities(source)
+
 		const compileResult = await compile(source, lang, filename)
 
 		const styles = parseCSS(compileResult.css, {
 			filename: filename,
 			camelCaseClasses: false, // Vite uses false
 		})
+
+		// Merge @utility-extracted styles
+		Object.assign(styles, utilities)
 
 		// For CSS Modules and <style module>, we need to export a mapping
 		// and register the scoped styles.
