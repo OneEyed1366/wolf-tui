@@ -159,11 +159,11 @@ export const Timer: DefineComponent<TimerProps> = defineComponent({
 	},
 	setup(props) {
 		const state = useTimerState({
-			variant: props.variant,
+			variant: () => props.variant ?? 'timer',
 			autoStart: props.autoStart,
-			interval: props.interval,
-			format: props.format,
-			durationMs: props.durationMs,
+			interval: () => props.interval ?? 1000,
+			format: () => props.format ?? 'digital',
+			durationMs: () => props.durationMs ?? 0,
 			onTick: props.onTick,
 			onComplete: props.onComplete,
 			onLap: props.onLap,

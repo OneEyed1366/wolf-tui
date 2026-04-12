@@ -2,9 +2,11 @@ import {
 	ref,
 	computed,
 	watch,
+	toValue,
 	onMounted,
 	onUnmounted,
 	type ComputedRef,
+	type MaybeRefOrGetter,
 } from 'vue'
 import {
 	timerReducer,
@@ -18,11 +20,11 @@ import {
 //#region Types
 export interface IUseTimerStateProps {
 	/**
-	 * Timer variant.
+	 * Timer variant. Accepts plain value, ref, or getter for reactivity.
 	 *
 	 * @default 'timer'
 	 */
-	variant?: TimerVariant
+	variant?: MaybeRefOrGetter<TimerVariant | undefined>
 
 	/**
 	 * Start automatically on mount.
@@ -36,19 +38,19 @@ export interface IUseTimerStateProps {
 	 *
 	 * @default 1000
 	 */
-	interval?: number
+	interval?: MaybeRefOrGetter<number | undefined>
 
 	/**
 	 * Time display format.
 	 *
 	 * @default 'digital'
 	 */
-	format?: TimeFormat
+	format?: MaybeRefOrGetter<TimeFormat | undefined>
 
 	/**
 	 * Duration for countdown variant (ms).
 	 */
-	durationMs?: number
+	durationMs?: MaybeRefOrGetter<number | undefined>
 
 	/**
 	 * Callback on each tick.
@@ -85,18 +87,18 @@ export interface ITimerState {
 
 //#region Composable
 export const useTimerState = ({
-	variant = 'timer',
+	variant: variantProp = 'timer',
 	autoStart = true,
-	interval = 1000,
-	format = 'digital',
-	durationMs = 0,
+	interval: intervalProp = 1000,
+	format: formatProp = 'digital',
+	durationMs: durationMsProp = 0,
 	onTick,
 	onComplete,
 	onLap,
 }: IUseTimerStateProps): ITimerState => {
 	const initialState = createInitialTimerState({
-		variant,
-		durationMs,
+		variant: toValue(variantProp),
+		durationMs: toValue(durationMsProp),
 		autoStart,
 	})
 
@@ -114,11 +116,14 @@ export const useTimerState = ({
 	const laps = computed(() => state.value.laps)
 
 	const formattedTime = computed(() => {
+		const v = toValue(variantProp) ?? 'timer'
+		const d = toValue(durationMsProp) ?? 0
+		const f = toValue(formatProp) ?? 'digital'
 		const ms =
-			variant === 'countdown'
-				? Math.max(0, durationMs - state.value.elapsedMs)
+			v === 'countdown'
+				? Math.max(0, d - state.value.elapsedMs)
 				: state.value.elapsedMs
-		return formatTime(ms, format).text
+		return formatTime(ms, f).text
 	})
 
 	//#region Interval Management
@@ -130,8 +135,9 @@ export const useTimerState = ({
 
 		const now = Date.now()
 		const elapsed = now - anchorMs
-		const drift = elapsed % interval
-		const delay = interval - drift
+		const iv = toValue(intervalProp) ?? 1000
+		const drift = elapsed % iv
+		const delay = iv - drift
 
 		timerId = setTimeout(() => {
 			const tickNow = Date.now()
@@ -160,7 +166,10 @@ export const useTimerState = ({
 	//#region Watchers
 	// Reset state when variant or durationMs changes
 	watch(
-		() => ({ variant, durationMs }),
+		() => ({
+			variant: toValue(variantProp),
+			durationMs: toValue(durationMsProp),
+		}),
 		(newProps, oldProps) => {
 			if (
 				newProps.variant !== oldProps.variant ||
@@ -245,7 +254,7 @@ export const useTimerState = ({
 		isComplete,
 		elapsedMs,
 		laps,
-		variant,
+		variant: toValue(variantProp) ?? 'timer',
 		start: () => dispatch('start'),
 		stop: () => dispatch('stop'),
 		toggle: () => dispatch('toggle'),
