@@ -43,7 +43,7 @@ export const defaultTimerTheme: TimerRenderTheme = {
 			if (isComplete) return { style: { color: 'yellow', fontWeight: 'bold' } }
 			if (isPaused) return { style: { dimColor: true } }
 			if (isRunning) return { style: { color: 'green' } }
-			return {}
+			return { style: {} }
 		},
 		prefix: (): WNodeProps => ({ style: { color: 'gray' } }),
 		suffix: (): WNodeProps => ({ style: { color: 'gray' } }),
