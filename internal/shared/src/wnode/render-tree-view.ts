@@ -54,7 +54,7 @@ export const defaultTreeViewTheme: TreeViewRenderTheme = {
 		node: ({ isFocused }): WNodeProps => ({
 			style: { gap: 1, paddingLeft: isFocused ? 0 : 2 },
 		}),
-		indent: (): WNodeProps => ({}),
+		indent: (): WNodeProps => ({ style: {} }),
 		expandIcon: (): WNodeProps => ({ style: { color: 'gray' } }),
 		checkbox: ({ isSelected }): WNodeProps => ({
 			style: { color: isSelected ? 'green' : 'gray' },

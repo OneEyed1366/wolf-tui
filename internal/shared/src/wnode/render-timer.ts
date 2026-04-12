@@ -54,7 +54,7 @@ export const defaultTimerTheme: TimerRenderTheme = {
 			style: { gap: 1, color: isCurrent ? 'cyan' : undefined },
 		}),
 		lapNumber: (): WNodeProps => ({ style: { dimColor: true } }),
-		lapTime: (): WNodeProps => ({}),
+		lapTime: (): WNodeProps => ({ style: {} }),
 		completeIndicator: (): WNodeProps => ({
 			style: { color: 'yellow', marginLeft: 1 },
 		}),

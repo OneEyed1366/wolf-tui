@@ -48,7 +48,7 @@ export type ComboboxRenderTheme = {
 export const defaultComboboxTheme: ComboboxRenderTheme = {
 	styles: {
 		container: (): WNodeProps => ({ style: { flexDirection: 'column' } }),
-		inputRow: (): WNodeProps => ({}),
+		inputRow: (): WNodeProps => ({ style: {} }),
 		prefix: (): WNodeProps => ({ style: { color: 'blue' } }),
 		input: ({ isDisabled }): WNodeProps => ({
 			style: { color: isDisabled ? 'gray' : undefined },

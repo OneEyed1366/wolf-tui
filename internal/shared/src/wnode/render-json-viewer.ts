@@ -45,7 +45,7 @@ export const defaultJsonViewerTheme: JsonViewerRenderTheme = {
 		row: ({ isFocused }): WNodeProps => ({
 			style: { gap: 1, paddingLeft: isFocused ? 0 : 2 },
 		}),
-		indent: (): WNodeProps => ({}),
+		indent: (): WNodeProps => ({ style: {} }),
 		focusIndicator: (): WNodeProps => ({ style: { color: 'blue' } }),
 		expandIcon: (): WNodeProps => ({ style: { color: 'gray' } }),
 		key: (): WNodeProps => ({ style: { color: 'cyan' } }),
