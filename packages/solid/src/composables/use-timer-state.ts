@@ -14,17 +14,19 @@ import {
 export type UseTimerStateProps = {
 	/**
 	 * Timer variant: 'timer' (count up), 'countdown', or 'stopwatch' (with laps).
+	 * Accepts an accessor so the composable re-tracks when the parent prop changes.
 	 *
 	 * @default 'timer'
 	 */
-	variant?: TimerVariant
+	variant?: () => TimerVariant | undefined
 
 	/**
 	 * Duration in milliseconds (used for countdown).
+	 * Accepts an accessor so the composable re-tracks when the parent prop changes.
 	 *
 	 * @default 0
 	 */
-	durationMs?: number
+	durationMs?: () => number | undefined
 
 	/**
 	 * Whether the timer starts automatically.
@@ -87,8 +89,8 @@ export type TimerStateResult = {
 
 //#region Composable
 export const useTimerState = ({
-	variant = 'timer',
-	durationMs = 0,
+	variant: variantAccessor = (): TimerVariant | undefined => 'timer',
+	durationMs: durationMsAccessor = () => 0,
 	autoStart = true,
 	interval = 1000,
 	format = 'digital',
@@ -101,9 +103,12 @@ export const useTimerState = ({
 	prefix?: string
 	suffix?: string
 } => {
+	const resolveVariant = (): TimerVariant => variantAccessor() ?? 'timer'
+	const resolveDurationMs = (): number => durationMsAccessor() ?? 0
+
 	const initialState = createInitialTimerState({
-		variant,
-		durationMs,
+		variant: resolveVariant(),
+		durationMs: resolveDurationMs(),
 		autoStart,
 	})
 	const [state, setState] = createSignal<TimerState>(initialState)
@@ -127,12 +132,10 @@ export const useTimerState = ({
 	// Reset state when variant or durationMs changes
 	createEffect(
 		on(
-			() => ({ variant, durationMs }),
+			() => ({ variant: resolveVariant(), durationMs: resolveDurationMs() }),
 			(
-				newProps: { variant: TimerVariant; durationMs: number | undefined },
-				oldProps:
-					| { variant: TimerVariant; durationMs: number | undefined }
-					| undefined
+				newProps: { variant: TimerVariant; durationMs: number },
+				oldProps: { variant: TimerVariant; durationMs: number } | undefined
 			) => {
 				if (
 					oldProps !== undefined &&
@@ -193,7 +196,7 @@ export const useTimerState = ({
 	const formattedTime = createMemo(() => {
 		const s = state()
 		const ms =
-			s.variant === 'countdown'
+			resolveVariant() === 'countdown'
 				? Math.max(0, s.durationMs - s.elapsedMs)
 				: s.elapsedMs
 

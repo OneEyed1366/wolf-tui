@@ -44,8 +44,8 @@
 	} = $props()
 
 	const state = useTimerState({
-		variant,
-		durationMs,
+		variant: () => variant,
+		durationMs: () => durationMs,
 		autoStart,
 		interval,
 		format,

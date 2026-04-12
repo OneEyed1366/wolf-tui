@@ -10,8 +10,8 @@ import {
 
 //#region Types
 export type UseTimerStateProps = {
-	variant?: TimerVariant
-	durationMs?: number
+	variant?: () => TimerVariant | undefined
+	durationMs?: () => number | undefined
 	autoStart?: boolean
 	interval?: number
 	format?: TimeFormat
@@ -39,8 +39,8 @@ export type TimerStateResult = {
 
 //#region Composable
 export const useTimerState = ({
-	variant = 'timer',
-	durationMs = 0,
+	variant: variantAccessor = (): TimerVariant | undefined => 'timer',
+	durationMs: durationMsAccessor = () => 0,
 	autoStart = true,
 	interval = 1000,
 	format = 'digital',
@@ -48,7 +48,14 @@ export const useTimerState = ({
 	onTick,
 	onLap,
 }: UseTimerStateProps = {}): TimerStateResult => {
-	const initial = createInitialTimerState({ variant, durationMs, autoStart })
+	const resolveVariant = (): TimerVariant => variantAccessor() ?? 'timer'
+	const resolveDurationMs = (): number => durationMsAccessor() ?? 0
+
+	const initial = createInitialTimerState({
+		variant: resolveVariant(),
+		durationMs: resolveDurationMs(),
+		autoStart,
+	})
 
 	let _state = $state<TimerState>(initial)
 	let _intervalId: ReturnType<typeof setInterval> | undefined
@@ -56,7 +63,7 @@ export const useTimerState = ({
 
 	const formattedTime = () => {
 		const ms =
-			_state.variant === 'countdown'
+			resolveVariant() === 'countdown'
 				? Math.max(0, _state.durationMs - _state.elapsedMs)
 				: _state.elapsedMs
 
@@ -73,7 +80,7 @@ export const useTimerState = ({
 	const isComplete = () => _state.isComplete
 	const elapsedMs = () => _state.elapsedMs
 	const laps = () => _state.laps
-	const variantAccessor = () => _state.variant
+	const variantGetter = () => _state.variant
 
 	const dispatch = (action: Parameters<typeof timerReducer>[1]) => {
 		const prevState = _state
@@ -140,13 +147,13 @@ export const useTimerState = ({
 	}
 
 	// Reset state when variant or durationMs changes
-	let _lastVariant = variant
-	let _lastDurationMs = durationMs
+	let _lastVariant = resolveVariant()
+	let _lastDurationMs = resolveDurationMs()
 
 	$effect(() => {
-		// Access reactive props to track them
-		const currentVariant = variant
-		const currentDurationMs = durationMs
+		// Call accessors inside $effect so Svelte tracks the reactive reads
+		const currentVariant = resolveVariant()
+		const currentDurationMs = resolveDurationMs()
 
 		if (
 			currentVariant !== _lastVariant ||
@@ -183,7 +190,7 @@ export const useTimerState = ({
 		isComplete,
 		elapsedMs,
 		laps,
-		variant: variantAccessor,
+		variant: variantGetter,
 		start,
 		stop,
 		toggle,

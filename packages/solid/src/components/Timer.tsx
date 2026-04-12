@@ -116,8 +116,8 @@ export function Timer(props: ITimerProps): JSX.Element {
 	])
 
 	const state = useTimerState({
-		variant: local.variant,
-		durationMs: local.durationMs,
+		variant: () => local.variant,
+		durationMs: () => local.durationMs,
 		autoStart: local.autoStart,
 		interval: local.interval,
 		format: local.format,
