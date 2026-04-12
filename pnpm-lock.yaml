@@ -444,6 +444,28 @@ importers:
         specifier: ^3.0.4
         version: 3.2.4(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
 
+  examples/react_showcase:
+    dependencies:
+      '@wolf-tui/react':
+        specifier: workspace:*
+        version: link:../../packages/react
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+    devDependencies:
+      '@wolf-tui/plugin':
+        specifier: workspace:*
+        version: link:../../packages/plugin
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+      vite:
+        specifier: ^6.0.7
+        version: 6.4.1(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+      vite-node:
+        specifier: ^3.0.4
+        version: 3.2.4(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+
   examples/react_vite:
     dependencies:
       '@wolf-tui/react':

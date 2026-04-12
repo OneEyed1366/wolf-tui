@@ -1,0 +1,15 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "dist",
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"plugins": [
+			{
+				"name": "@wolf-tui/typescript-plugin"
+			}
+		]
+	},
+	"include": ["src"]
+}
