@@ -45,8 +45,7 @@ const languages: Option[] = [
 				>Combobox Demo</w-text
 			>
 			<w-text [style]="{ dimColor: true }">
-				Type to filter, Up/Down=navigate, Enter=select, Tab=autofill,
-				Esc=close/back
+				Type to filter, Up/Down=navigate, Enter=select, Tab=autofill, Esc×2=back
 			</w-text>
 			<w-box [style]="{ marginTop: 1 }">
 				<w-combobox
@@ -69,10 +68,17 @@ export class ComboboxDemoComponent {
 
 	readonly languages = languages
 	readonly selected = signal<string | undefined>(undefined)
+	private lastEscapeMs = 0
 
 	constructor() {
 		injectInput((_input, key) => {
-			if (key.escape && !this.selected()) this.back.emit()
+			if (key.escape) {
+				const now = Date.now()
+				if (now - this.lastEscapeMs < 500) {
+					this.back.emit()
+				}
+				this.lastEscapeMs = now
+			}
 		})
 	}
 

@@ -5,9 +5,16 @@
 	let { onBack }: { onBack: () => void } = $props()
 
 	let selected = $state<string | undefined>(undefined)
+	let lastEscapeMs = $state(0)
 
 	useInput((_input, key) => {
-		if (key.escape && !selected) onBack()
+		if (key.escape) {
+			const now = Date.now()
+			if (now - lastEscapeMs < 500) {
+				onBack()
+			}
+			lastEscapeMs = now
+		}
 	})
 
 	//#region Data
@@ -36,7 +43,7 @@
 <Box style={{ flexDirection: 'column', padding: 1 }}>
 	<Text style={{ fontWeight: 'bold', color: 'cyan' }}>Combobox Demo</Text>
 	<Text style={{ dimColor: true }}>
-		Type to filter, ↑↓=navigate, Enter=select, Tab=autofill, Esc=close/back
+		Type to filter, ↑↓=navigate, Enter=select, Tab=autofill, Esc×2=back
 	</Text>
 	<Box style={{ marginTop: 1 }}>
 		<Combobox

@@ -134,6 +134,8 @@ async function verify() {
 	console.log('Combobox renders:', hasCombo ? 'PASS' : 'FAIL')
 
 	stdin.emit('data', ESC)
+	await delay(100)
+	stdin.emit('data', ESC) // double-Escape to exit Combobox demo
 	await delay(200)
 	//#endregion Combobox
 

@@ -136,6 +136,8 @@ async function verify() {
 	console.log('Combobox renders:', hasCombo ? '✅' : '❌')
 
 	send(ESC)
+	await delay(100)
+	send(ESC) // double-Escape to exit Combobox demo
 	await delay(300)
 	//#endregion Combobox
 

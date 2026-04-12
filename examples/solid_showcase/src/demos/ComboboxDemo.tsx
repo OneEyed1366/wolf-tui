@@ -25,9 +25,16 @@ const languages = [
 //#region Component
 export function ComboboxDemo(props: { onBack: () => void }) {
 	const [selected, setSelected] = createSignal<string | undefined>(undefined)
+	const [lastEscapeMs, setLastEscapeMs] = createSignal(0)
 
 	useInput((_input, key) => {
-		if (key.escape && !selected()) props.onBack()
+		if (key.escape) {
+			const now = Date.now()
+			if (now - lastEscapeMs() < 500) {
+				props.onBack()
+			}
+			setLastEscapeMs(now)
+		}
 	})
 
 	return (
@@ -35,7 +42,7 @@ export function ComboboxDemo(props: { onBack: () => void }) {
 			<Text style={{ fontWeight: 'bold', color: 'cyan' }}>Combobox Demo</Text>
 			<Text style={{ dimColor: true }}>
 				Type to filter, arrow-keys navigate, Enter=select, Tab=autofill,
-				Esc=close/back
+				Esc×2=back
 			</Text>
 			<Box style={{ marginTop: 1 }}>
 				<Combobox

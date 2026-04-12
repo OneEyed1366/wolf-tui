@@ -5,9 +5,16 @@ import { Box, Text, useInput, Combobox } from '@wolf-tui/vue'
 const props = defineProps<{ onBack: () => void }>()
 
 const selected = ref<string | undefined>(undefined)
+const lastEscapeMs = ref(0)
 
 useInput((_input, key) => {
-	if (key.escape && !selected.value) props.onBack()
+	if (key.escape) {
+		const now = Date.now()
+		if (now - lastEscapeMs.value < 500) {
+			props.onBack()
+		}
+		lastEscapeMs.value = now
+	}
 })
 
 //#region Data
@@ -40,7 +47,7 @@ export default { name: 'ComboboxDemo' }
 		<Text :style="{ fontWeight: 'bold', color: 'cyan' }">Combobox Demo</Text>
 		<Text :style="{ dimColor: true }">
 			Type to filter, arrow-keys=navigate, Enter=select, Tab=autofill,
-			Esc=close/back
+			Esc×2=back
 		</Text>
 		<Box :style="{ marginTop: 1 }">
 			<Combobox
