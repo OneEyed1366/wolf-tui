@@ -145,8 +145,11 @@ export class ComboboxComponent implements OnInit, OnDestroy {
 		}
 
 		if (key.escape) {
-			this.dispatch({ type: 'close' })
-			return
+			const s = this.state()
+			if (s.isOpen || s.inputValue.length > 0) {
+				this.dispatch({ type: 'close' })
+				return
+			}
 		}
 
 		if (key.backspace || key.delete) {

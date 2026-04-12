@@ -45,8 +45,10 @@ export const useCombobox = ({ isDisabled, state }: UseComboboxProps) => {
 			}
 
 			if (key.escape) {
-				state.dispatch({ type: 'close' })
-				return
+				if (state.isOpen() || state.inputValue().length > 0) {
+					state.dispatch({ type: 'close' })
+					return
+				}
 			}
 
 			if (key.delete || key.backspace) {

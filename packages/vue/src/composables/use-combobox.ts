@@ -48,8 +48,10 @@ export const useCombobox = ({
 			}
 
 			if (key.escape) {
-				state.close()
-				return
+				if (state.isOpen.value || state.inputValue.value.length > 0) {
+					state.close()
+					return
+				}
 			}
 
 			if (key.backspace || key.delete) {

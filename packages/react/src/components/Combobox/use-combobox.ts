@@ -45,8 +45,12 @@ export function useCombobox({
 			}
 
 			if (key.escape) {
-				state.close()
-				return
+				// Only consume Escape when there's something to close
+				// (dropdown open or input has text). Otherwise let it propagate.
+				if (state.isOpen || state.inputValue.length > 0) {
+					state.close()
+					return
+				}
 			}
 
 			if (key.backspace || key.delete) {
