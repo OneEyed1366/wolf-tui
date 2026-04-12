@@ -5,9 +5,10 @@ import { FilePicker } from '@wolf-tui/react'
 //#region Component
 export function FilePickerDemo({ onBack }: { onBack: () => void }) {
 	const [selectedPaths, setSelectedPaths] = useState<string[]>([])
+	const [confirmedPaths, setConfirmedPaths] = useState<string[]>([])
 
 	useInput((_input, key) => {
-		if (key.escape && selectedPaths.length === 0) onBack()
+		if (key.escape && confirmedPaths.length === 0) onBack()
 	})
 
 	return (
@@ -23,7 +24,8 @@ export function FilePickerDemo({ onBack }: { onBack: () => void }) {
 					showDetails
 					multiSelect
 					maxHeight={12}
-					onSelect={(paths) => setSelectedPaths(paths)}
+					onSelectionChange={(paths) => setSelectedPaths(paths)}
+					onSelect={(paths) => setConfirmedPaths(paths)}
 					onDirectoryChange={(_path) => {
 						// visible in WOLFIE_LOG
 					}}
@@ -31,8 +33,23 @@ export function FilePickerDemo({ onBack }: { onBack: () => void }) {
 			</Box>
 			{selectedPaths.length > 0 && (
 				<Box style={{ flexDirection: 'column', marginTop: 1 }}>
-					<Text style={{ color: 'green' }}>Selected:</Text>
+					<Text style={{ color: 'yellow' }}>
+						Toggled ({selectedPaths.length}):
+					</Text>
 					{selectedPaths.map((p) => (
+						<Text key={p} style={{ dimColor: true }}>
+							{' '}
+							{p}
+						</Text>
+					))}
+				</Box>
+			)}
+			{confirmedPaths.length > 0 && (
+				<Box style={{ flexDirection: 'column', marginTop: 1 }}>
+					<Text style={{ color: 'green' }}>
+						Confirmed ({confirmedPaths.length}):
+					</Text>
+					{confirmedPaths.map((p) => (
 						<Text key={p} style={{ dimColor: true }}>
 							{' '}
 							{p}

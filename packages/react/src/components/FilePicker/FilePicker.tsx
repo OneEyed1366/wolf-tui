@@ -69,9 +69,14 @@ export type IFilePickerProps = {
 	isDisabled?: boolean
 
 	/**
-	 * Callback when selection is confirmed.
+	 * Callback when selection is confirmed (Enter key).
 	 */
 	onSelect?: (paths: string[]) => void
+
+	/**
+	 * Callback on every selection toggle (Space key).
+	 */
+	onSelectionChange?: (paths: string[]) => void
 
 	/**
 	 * Callback on cancel (Escape).
@@ -96,6 +101,7 @@ export function FilePicker({
 	maxHeight = 10,
 	isDisabled = false,
 	onSelect,
+	onSelectionChange,
 	onCancel,
 	onDirectoryChange,
 }: IFilePickerProps) {
@@ -108,6 +114,7 @@ export function FilePicker({
 		fileTypes,
 		maxHeight,
 		onSelect,
+		onSelectionChange,
 		onCancel,
 		onDirectoryChange,
 	})

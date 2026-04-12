@@ -58,9 +58,15 @@ export type IUseFilePickerStateProps = {
 	maxHeight?: number
 
 	/**
-	 * Callback when selection is confirmed.
+	 * Callback when selection is confirmed (Enter key).
 	 */
 	onSelect?: (paths: string[]) => void
+
+	/**
+	 * Callback on every selection toggle (Space key). Fires in real-time
+	 * as the user toggles items, unlike onSelect which fires on confirmation.
+	 */
+	onSelectionChange?: (paths: string[]) => void
 
 	/**
 	 * Callback on cancel (Escape).
@@ -113,6 +119,7 @@ export function useFilePickerState({
 	fileTypes = 'all',
 	maxHeight = 10,
 	onSelect,
+	onSelectionChange,
 	onCancel: _onCancel,
 	onDirectoryChange,
 }: IUseFilePickerStateProps): IFilePickerState {
@@ -181,6 +188,15 @@ export function useFilePickerState({
 			onDirectoryChange?.(state.currentPath)
 		}
 	}, [state.currentPath, onDirectoryChange])
+
+	// onSelectionChange callback — fires on every toggle (Space)
+	const prevToggleRef = useRef(state.selectedPaths)
+	useEffect(() => {
+		if (state.selectedPaths !== prevToggleRef.current) {
+			prevToggleRef.current = state.selectedPaths
+			onSelectionChange?.([...state.selectedPaths])
+		}
+	}, [state.selectedPaths, onSelectionChange])
 
 	// onSelect callback — fires only on confirmation (Enter), not on every toggle
 	// The shared reducer sets previousSelectedPaths on confirm actions
