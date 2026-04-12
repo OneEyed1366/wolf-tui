@@ -1,5 +1,12 @@
 import { isDeepStrictEqual } from 'node:util'
-import { ref, computed, watch, type ComputedRef } from 'vue'
+import {
+	ref,
+	computed,
+	watch,
+	toValue,
+	type ComputedRef,
+	type MaybeRefOrGetter,
+} from 'vue'
 import {
 	jsonViewerReducer,
 	createDefaultJsonViewerState,
@@ -11,9 +18,9 @@ import type { JsonViewerVisibleNode } from '@wolf-tui/shared'
 //#region Types
 export interface IUseJsonViewerStateProps {
 	/**
-	 * JSON data to display.
+	 * JSON data to display. Accepts plain value, ref, or getter for reactivity.
 	 */
-	data: unknown
+	data: MaybeRefOrGetter<unknown>
 
 	/**
 	 * Default depth to expand on mount.
@@ -87,7 +94,7 @@ export interface IJsonViewerState {
 
 //#region Composable
 export const useJsonViewerState = ({
-	data,
+	data: dataProp,
 	defaultExpandDepth = 1,
 	visibleNodeCount = 20,
 	maxStringLength = 120,
@@ -97,7 +104,7 @@ export const useJsonViewerState = ({
 	onFocusChange,
 }: IUseJsonViewerStateProps): IJsonViewerState => {
 	const initialState = createDefaultJsonViewerState({
-		data,
+		data: toValue(dataProp),
 		defaultExpandDepth,
 		visibleNodeCount,
 		maxStringLength,
@@ -130,10 +137,10 @@ export const useJsonViewerState = ({
 
 	//#region Watchers
 	// Reset state when data changes
-	const lastData = ref(data)
+	const lastData = ref(toValue(dataProp))
 
 	watch(
-		() => data,
+		() => toValue(dataProp),
 		(newData) => {
 			if (
 				newData !== lastData.value &&
@@ -171,7 +178,7 @@ export const useJsonViewerState = ({
 	//#endregion Actions
 
 	return {
-		data,
+		data: toValue(dataProp),
 		nodes,
 		focusedIndex,
 		expandedIds,

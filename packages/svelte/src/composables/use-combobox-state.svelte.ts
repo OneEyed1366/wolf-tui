@@ -9,7 +9,7 @@ import type { ComboboxVisibleOption } from '@wolf-tui/shared'
 
 //#region Types
 export type UseComboboxStateProps = {
-	options: Option[]
+	options: () => Option[]
 	defaultValue?: string
 	visibleOptionCount?: number
 	placeholder?: string
@@ -46,7 +46,7 @@ export type ComboboxStateResult = {
 
 //#region Composable
 export const useComboboxState = ({
-	options,
+	options: optionsAccessor,
 	defaultValue,
 	visibleOptionCount = 5,
 	placeholder = 'Search...',
@@ -54,8 +54,10 @@ export const useComboboxState = ({
 	onChange,
 	onSelect,
 }: UseComboboxStateProps): ComboboxStateResult => {
+	const resolveOptions = (): Option[] => optionsAccessor()
+
 	const initial = createDefaultComboboxState({
-		options,
+		options: resolveOptions(),
 		defaultValue,
 		visibleOptionCount,
 	})
@@ -64,10 +66,10 @@ export const useComboboxState = ({
 	const _isDisabled = false
 
 	// Reset state when options change
-	let _lastOptions = options
+	let _lastOptions = resolveOptions()
 
 	$effect(() => {
-		const currentOptions = options
+		const currentOptions = resolveOptions()
 		if (
 			currentOptions !== _lastOptions &&
 			!isDeepStrictEqual(currentOptions, _lastOptions)

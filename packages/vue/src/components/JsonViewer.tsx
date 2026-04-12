@@ -120,7 +120,7 @@ export const JsonViewer: DefineComponent<JsonViewerProps> = defineComponent({
 	},
 	setup(props) {
 		const state = useJsonViewerState({
-			data: props.data,
+			data: () => props.data,
 			defaultExpandDepth: props.defaultExpandDepth,
 			visibleNodeCount: props.visibleNodeCount,
 			maxStringLength: props.maxStringLength,

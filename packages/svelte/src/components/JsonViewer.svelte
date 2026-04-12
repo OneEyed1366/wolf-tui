@@ -29,7 +29,7 @@
 	} = $props()
 
 	const state = useJsonViewerState({
-		data,
+		data: () => data,
 		defaultExpandDepth,
 		visibleNodeCount,
 		maxStringLength,

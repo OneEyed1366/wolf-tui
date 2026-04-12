@@ -73,7 +73,7 @@ export function JsonViewer(props: IJsonViewerProps): JSX.Element {
 	])
 
 	const state = useJsonViewerState({
-		data: local.data,
+		data: () => local.data,
 		defaultExpandDepth: local.defaultExpandDepth,
 		visibleNodeCount: local.visibleNodeCount,
 		maxStringLength: local.maxStringLength,

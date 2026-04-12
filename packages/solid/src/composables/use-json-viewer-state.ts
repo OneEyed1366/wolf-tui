@@ -13,8 +13,9 @@ import type { JsonViewerVisibleNode } from '@wolf-tui/shared'
 export type UseJsonViewerStateProps = {
 	/**
 	 * Data to display. Can be any JSON-serializable value.
+	 * Accepts an accessor so the composable re-tracks when the parent prop changes.
 	 */
-	data: unknown
+	data: () => unknown
 
 	/**
 	 * Default expand depth. Nodes at depth < this value are expanded on mount.
@@ -67,15 +68,17 @@ export type JsonViewerStateResult = {
 
 //#region Composable
 export const useJsonViewerState = ({
-	data,
+	data: dataAccessor,
 	defaultExpandDepth,
 	visibleNodeCount,
 	maxStringLength,
 	sortKeys,
 	maxDepth,
 }: UseJsonViewerStateProps): JsonViewerStateResult => {
+	const resolveData = (): unknown => dataAccessor()
+
 	const initialState = createDefaultJsonViewerState({
-		data,
+		data: resolveData(),
 		defaultExpandDepth,
 		visibleNodeCount,
 		maxStringLength,
@@ -90,16 +93,17 @@ export const useJsonViewerState = ({
 	}
 
 	// Reset state when data changes
-	const [lastData, setLastData] = createSignal(data)
+	const [lastData, setLastData] = createSignal(resolveData())
 
 	createEffect(
 		on(
-			() => JSON.stringify(data),
+			() => JSON.stringify(resolveData()),
 			() => {
-				if (!isDeepStrictEqual(data, lastData())) {
+				const currentData = resolveData()
+				if (!isDeepStrictEqual(currentData, lastData())) {
 					setState(
 						createDefaultJsonViewerState({
-							data,
+							data: currentData,
 							defaultExpandDepth,
 							visibleNodeCount,
 							maxStringLength,
@@ -107,7 +111,7 @@ export const useJsonViewerState = ({
 							maxDepth,
 						})
 					)
-					setLastData(data)
+					setLastData(currentData)
 				}
 			},
 			{ defer: true }
@@ -146,7 +150,7 @@ export const useJsonViewerState = ({
 	const indentWidth = createMemo(() => 2)
 
 	return {
-		data,
+		data: resolveData(),
 		nodes,
 		focusedIndex,
 		expandedIds,

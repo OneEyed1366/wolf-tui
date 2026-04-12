@@ -14,9 +14,9 @@ import type { TreeViewVisibleNode } from '@wolf-tui/shared'
 //#region Types
 export type UseTreeViewStateProps<T = Record<string, unknown>> = {
 	/**
-	 * Tree data.
+	 * Tree data. Accepts an accessor so the composable re-tracks when the parent prop changes.
 	 */
-	data: ITreeNode<T>[]
+	data: () => ITreeNode<T>[]
 
 	/**
 	 * Selection mode.
@@ -74,7 +74,7 @@ export type TreeViewStateResult<T = Record<string, unknown>> = {
 
 //#region Composable
 export const useTreeViewState = <T = Record<string, unknown>>({
-	data,
+	data: dataAccessor,
 	selectionMode = 'none',
 	defaultExpanded,
 	defaultSelected,
@@ -83,8 +83,10 @@ export const useTreeViewState = <T = Record<string, unknown>>({
 	onExpand,
 	onCollapse,
 }: UseTreeViewStateProps<T>): TreeViewStateResult<T> => {
+	const resolveData = (): ITreeNode<T>[] => dataAccessor()
+
 	const initialState = createDefaultTreeViewState({
-		data,
+		data: resolveData(),
 		selectionMode,
 		defaultExpanded,
 		defaultSelected,
@@ -129,23 +131,24 @@ export const useTreeViewState = <T = Record<string, unknown>>({
 	}
 
 	// Reset state when data changes
-	const [lastData, setLastData] = createSignal(data)
+	const [lastData, setLastData] = createSignal(resolveData())
 
 	createEffect(
 		on(
-			() => JSON.stringify(data),
+			() => JSON.stringify(resolveData()),
 			() => {
-				if (!isDeepStrictEqual(data, lastData())) {
+				const currentData = resolveData()
+				if (!isDeepStrictEqual(currentData, lastData())) {
 					setState(
 						createDefaultTreeViewState({
-							data,
+							data: currentData,
 							selectionMode,
 							defaultExpanded,
 							defaultSelected,
 							visibleNodeCount,
 						})
 					)
-					setLastData(data)
+					setLastData(currentData)
 				}
 			},
 			{ defer: true }

@@ -11,7 +11,7 @@ import type { TreeViewVisibleNode } from '@wolf-tui/shared'
 
 //#region Types
 export type UseTreeViewStateProps<T = Record<string, unknown>> = {
-	data: ITreeNode<T>[]
+	data: () => ITreeNode<T>[]
 	selectionMode?: TreeViewSelectionMode
 	defaultExpanded?: ReadonlySet<string> | 'all'
 	defaultSelected?: ReadonlySet<string>
@@ -49,7 +49,7 @@ export type TreeViewStateResult = {
 
 //#region Composable
 export const useTreeViewState = <T = Record<string, unknown>>({
-	data,
+	data: dataAccessor,
 	selectionMode = 'none',
 	defaultExpanded,
 	defaultSelected,
@@ -59,8 +59,10 @@ export const useTreeViewState = <T = Record<string, unknown>>({
 	onCollapse,
 	onLoadChildren,
 }: UseTreeViewStateProps<T>): TreeViewStateResult => {
+	const resolveData = (): ITreeNode<T>[] => dataAccessor()
+
 	const initial = createDefaultTreeViewState({
-		data,
+		data: resolveData(),
 		selectionMode,
 		defaultExpanded,
 		defaultSelected,
@@ -70,10 +72,10 @@ export const useTreeViewState = <T = Record<string, unknown>>({
 	let _state = $state<TreeViewState<T>>(initial)
 
 	// Reset state when data changes
-	let _lastData = data
+	let _lastData = resolveData()
 
 	$effect(() => {
-		const currentData = data
+		const currentData = resolveData()
 		if (
 			currentData !== _lastData &&
 			!isDeepStrictEqual(currentData, _lastData)

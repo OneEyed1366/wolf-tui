@@ -13,8 +13,9 @@ import type { ComboboxVisibleOption } from '@wolf-tui/shared'
 export type UseComboboxStateProps = {
 	/**
 	 * Options to search through.
+	 * Accepts an accessor so the composable re-tracks when the parent prop changes.
 	 */
-	options: Option[]
+	options: () => Option[]
 
 	/**
 	 * Default selected value.
@@ -67,7 +68,7 @@ export type ComboboxStateResult = {
 
 //#region Composable
 export const useComboboxState = ({
-	options,
+	options: optionsAccessor,
 	defaultValue,
 	visibleOptionCount,
 	placeholder = 'Search...',
@@ -78,8 +79,10 @@ export const useComboboxState = ({
 	placeholder: string
 	noMatchesText: string
 } => {
+	const resolveOptions = (): Option[] => optionsAccessor()
+
 	const initialState = createDefaultComboboxState({
-		options,
+		options: resolveOptions(),
 		defaultValue,
 		visibleOptionCount,
 	})
@@ -91,21 +94,22 @@ export const useComboboxState = ({
 	}
 
 	// Reset state when options change
-	const [lastOptions, setLastOptions] = createSignal(options)
+	const [lastOptions, setLastOptions] = createSignal(resolveOptions())
 
 	createEffect(
 		on(
-			() => JSON.stringify(options),
+			() => JSON.stringify(resolveOptions()),
 			() => {
-				if (!isDeepStrictEqual(options, lastOptions())) {
+				const currentOptions = resolveOptions()
+				if (!isDeepStrictEqual(currentOptions, lastOptions())) {
 					setState(
 						createDefaultComboboxState({
-							options,
+							options: currentOptions,
 							defaultValue,
 							visibleOptionCount,
 						})
 					)
-					setLastOptions(options)
+					setLastOptions(currentOptions)
 				}
 			},
 			{ defer: true }

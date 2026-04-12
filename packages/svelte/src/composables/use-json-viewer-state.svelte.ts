@@ -9,7 +9,7 @@ import type { JsonViewerVisibleNode } from '@wolf-tui/shared'
 
 //#region Types
 export type UseJsonViewerStateProps = {
-	data: unknown
+	data: () => unknown
 	defaultExpandDepth?: number
 	visibleNodeCount?: number
 	maxStringLength?: number
@@ -45,15 +45,17 @@ const DEFAULT_INDENT_WIDTH = 2
 
 //#region Composable
 export const useJsonViewerState = ({
-	data,
+	data: dataAccessor,
 	defaultExpandDepth = 1,
 	visibleNodeCount = 20,
 	maxStringLength = 120,
 	sortKeys = false,
 	maxDepth = 100,
 }: UseJsonViewerStateProps): JsonViewerStateResult => {
+	const resolveData = (): unknown => dataAccessor()
+
 	const initial = createDefaultJsonViewerState({
-		data,
+		data: resolveData(),
 		defaultExpandDepth,
 		visibleNodeCount,
 		maxStringLength,
@@ -64,10 +66,10 @@ export const useJsonViewerState = ({
 	let _state = $state<JsonViewerState>(initial)
 
 	// Reset state when data changes
-	let _lastData = data
+	let _lastData = resolveData()
 
 	$effect(() => {
-		const currentData = data
+		const currentData = resolveData()
 		if (
 			currentData !== _lastData &&
 			!isDeepStrictEqual(currentData, _lastData)
@@ -116,7 +118,7 @@ export const useJsonViewerState = ({
 	const moveToFirstChild = () => dispatch({ type: 'move-to-first-child' })
 
 	return {
-		data,
+		data: resolveData(),
 		nodes,
 		focusedIndex,
 		expandedIds,

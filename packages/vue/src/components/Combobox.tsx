@@ -106,7 +106,7 @@ export const Combobox: DefineComponent<ComboboxProps> = defineComponent({
 	},
 	setup(props) {
 		const state = useComboboxState({
-			options: props.options,
+			options: () => props.options,
 			defaultValue: props.defaultValue,
 			visibleOptionCount: props.visibleOptionCount,
 			placeholder: props.placeholder,

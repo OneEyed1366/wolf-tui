@@ -74,7 +74,7 @@ export function Combobox(props: IComboboxProps): JSX.Element {
 	])
 
 	const state = useComboboxState({
-		options: local.options,
+		options: () => local.options,
 		defaultValue: local.defaultValue,
 		visibleOptionCount: local.visibleOptionCount,
 		placeholder: local.placeholder,

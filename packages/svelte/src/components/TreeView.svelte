@@ -37,7 +37,7 @@
 	} = $props()
 
 	const state = useTreeViewState({
-		data,
+		data: () => data,
 		selectionMode,
 		defaultExpanded,
 		defaultSelected,

@@ -81,7 +81,7 @@ export function TreeView<T = Record<string, unknown>>(
 	])
 
 	const state = useTreeViewState({
-		data: local.data,
+		data: () => local.data,
 		selectionMode: local.selectionMode,
 		defaultExpanded: local.defaultExpanded,
 		defaultSelected: local.defaultSelected,

@@ -114,7 +114,7 @@ export const TreeView: DefineComponent<TreeViewProps> = defineComponent({
 	},
 	setup(props) {
 		const state = useTreeViewState({
-			data: props.data,
+			data: () => props.data,
 			selectionMode: props.selectionMode,
 			defaultExpanded: props.defaultExpanded,
 			defaultSelected: props.defaultSelected,

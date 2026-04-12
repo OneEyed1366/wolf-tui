@@ -1,5 +1,13 @@
 import { isDeepStrictEqual } from 'node:util'
-import { ref, computed, watch, type ComputedRef, type Ref } from 'vue'
+import {
+	ref,
+	computed,
+	watch,
+	toValue,
+	type ComputedRef,
+	type MaybeRefOrGetter,
+	type Ref,
+} from 'vue'
 import {
 	treeViewReducer,
 	createDefaultTreeViewState,
@@ -14,9 +22,9 @@ import type { TreeViewVisibleNode } from '@wolf-tui/shared'
 //#region Types
 export interface IUseTreeViewStateProps {
 	/**
-	 * Tree data.
+	 * Tree data. Accepts plain value, ref, or getter for reactivity.
 	 */
-	data: ITreeNode[]
+	data: MaybeRefOrGetter<ITreeNode[]>
 
 	/**
 	 * Selection mode.
@@ -84,7 +92,7 @@ export interface ITreeViewState {
 
 //#region Composable
 export const useTreeViewState = ({
-	data,
+	data: dataProp,
 	selectionMode = 'none',
 	defaultExpanded,
 	defaultSelected,
@@ -94,7 +102,7 @@ export const useTreeViewState = ({
 	loadChildren,
 }: IUseTreeViewStateProps): ITreeViewState => {
 	const initialState = createDefaultTreeViewState({
-		data,
+		data: toValue(dataProp),
 		selectionMode,
 		defaultExpanded,
 		defaultSelected,
@@ -151,10 +159,10 @@ export const useTreeViewState = ({
 
 	//#region Watchers
 	// Reset state when data changes
-	const lastData = ref(data)
+	const lastData = ref(toValue(dataProp))
 
 	watch(
-		() => data,
+		() => toValue(dataProp),
 		(newData) => {
 			if (
 				newData !== lastData.value &&

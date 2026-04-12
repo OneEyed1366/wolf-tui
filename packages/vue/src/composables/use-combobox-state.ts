@@ -1,5 +1,12 @@
 import { isDeepStrictEqual } from 'node:util'
-import { ref, computed, watch, type ComputedRef } from 'vue'
+import {
+	ref,
+	computed,
+	watch,
+	toValue,
+	type ComputedRef,
+	type MaybeRefOrGetter,
+} from 'vue'
 import {
 	comboboxReducer,
 	createDefaultComboboxState,
@@ -11,9 +18,9 @@ import type { ComboboxVisibleOption } from '@wolf-tui/shared'
 //#region Types
 export interface IUseComboboxStateProps {
 	/**
-	 * Options to display.
+	 * Options to display. Accepts plain value, ref, or getter for reactivity.
 	 */
-	options: Option[]
+	options: MaybeRefOrGetter<Option[]>
 
 	/**
 	 * Default selected value.
@@ -77,7 +84,7 @@ export interface IComboboxState {
 
 //#region Composable
 export const useComboboxState = ({
-	options,
+	options: optionsProp,
 	defaultValue,
 	visibleOptionCount = 5,
 	placeholder: _placeholder = 'Type to search...',
@@ -86,7 +93,7 @@ export const useComboboxState = ({
 	onSelect,
 }: IUseComboboxStateProps): IComboboxState => {
 	const initialState = createDefaultComboboxState({
-		options,
+		options: toValue(optionsProp),
 		defaultValue,
 		visibleOptionCount,
 	})
@@ -120,10 +127,10 @@ export const useComboboxState = ({
 
 	//#region Watchers
 	// Reset state when options change
-	const lastOptions = ref(options)
+	const lastOptions = ref(toValue(optionsProp))
 
 	watch(
-		() => options,
+		() => toValue(optionsProp),
 		(newOptions) => {
 			if (
 				newOptions !== lastOptions.value &&

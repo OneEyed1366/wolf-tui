@@ -32,7 +32,7 @@
 	} = $props()
 
 	const state = useComboboxState({
-		options,
+		options: () => options,
 		defaultValue,
 		visibleOptionCount,
 		placeholder,
