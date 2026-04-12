@@ -67,6 +67,12 @@ export interface IFilePickerProps {
 	onSelect?: (paths: string[]) => void
 
 	/**
+	 * Called on every selection toggle (Space key). Fires in real-time
+	 * as the user toggles items, unlike onSelect which fires on confirmation.
+	 */
+	onSelectionChange?: (paths: string[]) => void
+
+	/**
 	 * Called on cancel (Escape).
 	 */
 	onCancel?: () => void
@@ -89,6 +95,7 @@ export function FilePicker(props: IFilePickerProps): JSX.Element {
 		'showDetails',
 		'maxHeight',
 		'onSelect',
+		'onSelectionChange',
 		'onCancel',
 		'onDirectoryChange',
 	])
@@ -101,6 +108,7 @@ export function FilePicker(props: IFilePickerProps): JSX.Element {
 		showDetails: local.showDetails,
 		maxHeight: local.maxHeight,
 		onSelect: local.onSelect,
+		onSelectionChange: local.onSelectionChange,
 		onDirectoryChange: local.onDirectoryChange,
 	})
 

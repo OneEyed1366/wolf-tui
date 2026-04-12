@@ -73,6 +73,7 @@ export class FilePickerComponent implements OnInit, OnDestroy {
 
 	//#region Outputs
 	@Output() select = new EventEmitter<string[]>()
+	@Output() selectionChange = new EventEmitter<string[]>()
 	@Output() cancel = new EventEmitter<void>()
 	@Output() directoryChange = new EventEmitter<string>()
 	//#endregion Outputs
@@ -87,6 +88,7 @@ export class FilePickerComponent implements OnInit, OnDestroy {
 	private _isDisabled = signal(false)
 	private state = signal<FilePickerState>(createDefaultFilePickerState({}))
 	private previousPath = ''
+	private previousSelectedPaths: ReadonlySet<string> = new Set()
 	//#endregion Internal State
 
 	//#region Computed State
@@ -261,6 +263,12 @@ export class FilePickerComponent implements OnInit, OnDestroy {
 		const prev = this.state()
 		const next = filePickerReducer(prev, action)
 		this.state.set(next)
+
+		// onSelectionChange — fires on every toggle (Space), not just confirmation
+		if (next.selectedPaths !== this.previousSelectedPaths) {
+			this.previousSelectedPaths = next.selectedPaths
+			this.selectionChange.emit([...next.selectedPaths])
+		}
 
 		// Detect directory change
 		if (next.currentPath !== prev.currentPath && next.mode === 'loading') {

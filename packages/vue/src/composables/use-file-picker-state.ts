@@ -61,6 +61,12 @@ export interface IUseFilePickerStateProps {
 	onSelect?: (selectedPaths: string[]) => void
 
 	/**
+	 * Callback on every selection toggle (Space key). Fires in real-time
+	 * as the user toggles items, unlike onSelect which fires on confirmation.
+	 */
+	onSelectionChange?: (paths: string[]) => void
+
+	/**
 	 * Callback when current directory changes.
 	 */
 	onDirectoryChange?: (path: string) => void
@@ -119,6 +125,7 @@ export const useFilePickerState = ({
 	showDetails = false,
 	maxHeight = 10,
 	onSelect,
+	onSelectionChange,
 	onDirectoryChange,
 	onError,
 }: IUseFilePickerStateProps): IFilePickerState => {
@@ -215,6 +222,16 @@ export const useFilePickerState = ({
 		(_prev, oldPrev) => {
 			if (_prev !== oldPrev && state.value.selectedPaths.size > 0) {
 				onSelect?.([...state.value.selectedPaths])
+			}
+		}
+	)
+
+	// onSelectionChange — fires on every toggle (Space), not just confirmation
+	watch(
+		() => state.value.selectedPaths,
+		(current, previous) => {
+			if (current !== previous) {
+				onSelectionChange?.([...current])
 			}
 		}
 	)

@@ -20,6 +20,7 @@
 		maxHeight = 10,
 		isDisabled = false,
 		onSelect,
+		onSelectionChange,
 		onCancel,
 		onDirectoryChange,
 		onError,
@@ -32,6 +33,7 @@
 		maxHeight?: number
 		isDisabled?: boolean
 		onSelect?: (paths: string[]) => void
+		onSelectionChange?: (paths: string[]) => void
 		onCancel?: () => void
 		onDirectoryChange?: (path: string) => void
 		onError?: (error: string) => void
@@ -45,6 +47,7 @@
 		showDetails,
 		maxHeight,
 		onSelect: (...args: Parameters<NonNullable<typeof onSelect>>) => onSelect?.(...args),
+		onSelectionChange: (...args: Parameters<NonNullable<typeof onSelectionChange>>) => onSelectionChange?.(...args),
 		onDirectoryChange: (...args: Parameters<NonNullable<typeof onDirectoryChange>>) => onDirectoryChange?.(...args),
 		onError: (...args: Parameters<NonNullable<typeof onError>>) => onError?.(...args),
 	})

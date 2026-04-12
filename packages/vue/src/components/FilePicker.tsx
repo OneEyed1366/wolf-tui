@@ -72,6 +72,12 @@ export interface FilePickerProps {
 	onSelect?: (selectedPaths: string[]) => void
 
 	/**
+	 * Callback on every selection toggle (Space key). Fires in real-time
+	 * as the user toggles items, unlike onSelect which fires on confirmation.
+	 */
+	onSelectionChange?: (paths: string[]) => void
+
+	/**
 	 * Callback on cancel (Escape).
 	 */
 	onCancel?: () => void
@@ -124,6 +130,10 @@ export const FilePicker: DefineComponent<FilePickerProps> = defineComponent({
 			type: Function as PropType<(selectedPaths: string[]) => void>,
 			default: undefined,
 		},
+		onSelectionChange: {
+			type: Function as PropType<(paths: string[]) => void>,
+			default: undefined,
+		},
 		onCancel: {
 			type: Function as PropType<() => void>,
 			default: undefined,
@@ -146,6 +156,7 @@ export const FilePicker: DefineComponent<FilePickerProps> = defineComponent({
 			showDetails: props.showDetails,
 			maxHeight: props.maxHeight,
 			onSelect: props.onSelect,
+			onSelectionChange: props.onSelectionChange,
 			onDirectoryChange: props.onDirectoryChange,
 			onError: props.onError,
 		})

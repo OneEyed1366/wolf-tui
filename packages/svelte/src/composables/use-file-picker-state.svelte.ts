@@ -20,6 +20,7 @@ export type UseFilePickerStateProps = {
 	showDetails?: boolean
 	maxHeight?: number
 	onSelect?: (paths: string[]) => void
+	onSelectionChange?: (paths: string[]) => void
 	onDirectoryChange?: (path: string) => void
 	onError?: (error: string) => void
 }
@@ -83,6 +84,7 @@ export const useFilePickerState = ({
 	showDetails = false,
 	maxHeight = 10,
 	onSelect,
+	onSelectionChange,
 	onDirectoryChange,
 	onError,
 }: UseFilePickerStateProps = {}): FilePickerStateResult => {
@@ -217,6 +219,16 @@ export const useFilePickerState = ({
 		dispatch({ type: 'retry' })
 		loadDirectory(_state.currentPath)
 	}
+
+	// onSelectionChange — fires on every toggle (Space), not just confirmation
+	let prevSelectedPaths: ReadonlySet<string> = _state.selectedPaths
+	$effect(() => {
+		const current = _state.selectedPaths
+		if (current !== prevSelectedPaths) {
+			prevSelectedPaths = current
+			onSelectionChange?.([...current])
+		}
+	})
 
 	// Load initial directory
 	$effect(() => {

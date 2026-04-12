@@ -62,6 +62,12 @@ export type UseFilePickerStateProps = {
 	onSelect?: (paths: string[]) => void
 
 	/**
+	 * Called on every selection toggle (Space key). Fires in real-time
+	 * as the user toggles items, unlike onSelect which fires on confirmation.
+	 */
+	onSelectionChange?: (paths: string[]) => void
+
+	/**
 	 * Called when the current directory changes.
 	 */
 	onDirectoryChange?: (path: string) => void
@@ -94,6 +100,7 @@ export const useFilePickerState = ({
 	showDetails = false,
 	maxHeight = 10,
 	onSelect,
+	onSelectionChange,
 	onDirectoryChange,
 }: UseFilePickerStateProps): FilePickerStateResult => {
 	const initialState = createDefaultFilePickerState({
@@ -151,6 +158,19 @@ export const useFilePickerState = ({
 				const paths = state().selectedPaths
 				if (_current !== _prev && paths.size > 0) {
 					onSelect?.([...paths])
+				}
+			},
+			{ defer: true }
+		)
+	)
+
+	// onSelectionChange — fires on every toggle (Space), not just confirmation
+	createEffect(
+		on(
+			() => state().selectedPaths,
+			(current, previous) => {
+				if (current !== previous) {
+					onSelectionChange?.([...current])
 				}
 			},
 			{ defer: true }
