@@ -49,12 +49,12 @@ export function useCombobox({
 				return
 			}
 
-			if (key.backspace) {
+			if (key.backspace || key.delete) {
 				state.inputDelete()
 				return
 			}
 
-			if (key.delete || (key.ctrl && input === 'd')) {
+			if (key.ctrl && input === 'd') {
 				state.inputDeleteForward()
 				return
 			}

@@ -149,13 +149,13 @@ export class ComboboxComponent implements OnInit, OnDestroy {
 			return
 		}
 
-		if (key.backspace) {
+		if (key.backspace || key.delete) {
 			this.dispatch({ type: 'input-delete' })
 			this.emitValueChange()
 			return
 		}
 
-		if (key.delete) {
+		if (key.ctrl && input === 'd') {
 			this.dispatch({ type: 'input-delete-forward' })
 			this.emitValueChange()
 			return

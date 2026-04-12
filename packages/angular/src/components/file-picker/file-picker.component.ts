@@ -234,7 +234,7 @@ export class FilePickerComponent implements OnInit, OnDestroy {
 			return
 		}
 
-		if (key.backspace) {
+		if (key.backspace || key.delete) {
 			this.dispatch({ type: 'filter-delete' })
 			return
 		}

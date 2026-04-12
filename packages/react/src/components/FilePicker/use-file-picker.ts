@@ -37,7 +37,7 @@ export function useFilePicker({
 					return
 				}
 
-				if (key.backspace) {
+				if (key.backspace || key.delete) {
 					state.filterDelete()
 					return
 				}

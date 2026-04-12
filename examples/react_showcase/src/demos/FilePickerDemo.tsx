@@ -14,7 +14,7 @@ export function FilePickerDemo({ onBack }: { onBack: () => void }) {
 		<Box style={{ flexDirection: 'column', padding: 1 }}>
 			<Text style={{ fontWeight: 'bold', color: 'cyan' }}>FilePicker Demo</Text>
 			<Text style={{ dimColor: true }}>
-				↑↓=navigate Enter=open/select ←=parent →=enter dir Space=toggle /=filter
+				↑↓=navigate Space=toggle(☑) Enter=confirm ←=parent →=enter dir /=filter
 				Esc=back
 			</Text>
 			<Box style={{ marginTop: 1 }}>
