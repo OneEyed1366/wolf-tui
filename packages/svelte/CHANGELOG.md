@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/svelte@v1.2.0...svelte@v1.3.0) (2026-04-14)
+
+
+### Features
+
+* community components + tree-shake + attw fixes ([d83bc4a](https://github.com/OneEyed1366/wolf-tui/commit/d83bc4a5b1cc5fc4150c8c5c8fec16b6ca06fd59))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/core bumped to 1.5.0
+    * @wolf-tui/shared bumped to 1.5.0
+  * devDependencies
+    * @wolf-tui/css-parser bumped to 1.5.0
+    * @wolf-tui/plugin bumped to 1.5.0
+
 ## [1.2.0](https://github.com/OneEyed1366/wolf-tui/compare/svelte@v1.1.4...svelte@v1.2.0) (2026-04-02)
 
 

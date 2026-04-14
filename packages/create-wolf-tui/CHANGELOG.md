@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/OneEyed1366/wolf-tui/compare/create-wolf-tui@v0.2.0...create-wolf-tui@v0.3.0) (2026-04-14)
+
+
+### Features
+
+* community components + tree-shake + attw fixes ([d83bc4a](https://github.com/OneEyed1366/wolf-tui/commit/d83bc4a5b1cc5fc4150c8c5c8fec16b6ca06fd59))
+
 ## [0.2.0](https://github.com/OneEyed1366/wolf-tui/compare/create-wolf-tui@v0.1.0...create-wolf-tui@v0.2.0) (2026-04-02)
 
 
