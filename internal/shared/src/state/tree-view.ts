@@ -469,7 +469,7 @@ export function createDefaultTreeViewState<T>(options: {
 
 	const viewport = computeViewport(flatNodes.length, 0, visibleNodeCount, {
 		fromIndex: 0,
-		toIndex: 0,
+		toIndex: Math.min(visibleNodeCount, flatNodes.length),
 	})
 
 	return {
