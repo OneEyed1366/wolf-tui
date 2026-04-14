@@ -24,10 +24,12 @@ const cleanupPath = (path: string | undefined): string | undefined => {
 	return path?.replace(`file://${cwd()}/`, '')
 }
 
-const stackUtils = new StackUtils({
-	cwd: cwd(),
-	internals: StackUtils.nodeInternals(),
-})
+let _stackUtils: StackUtils | undefined
+const getStackUtils = () =>
+	(_stackUtils ??= new StackUtils({
+		cwd: cwd(),
+		internals: StackUtils.nodeInternals(),
+	}))
 //#endregion Helpers
 
 //#region Component
@@ -39,7 +41,7 @@ export function ErrorOverview(props: IErrorOverviewProps): JSX.Element {
 	const wnode = createMemo(() => {
 		const { error } = props
 		const stack = error.stack ? error.stack.split('\n').slice(1) : undefined
-		const origin = stack ? stackUtils.parseLine(stack[0]!) : undefined
+		const origin = stack ? getStackUtils().parseLine(stack[0]!) : undefined
 		const filePath = cleanupPath(origin?.file)
 		let excerpt: Array<{ line: number; value: string }> | undefined
 		let lineWidth = 0
@@ -60,7 +62,7 @@ export function ErrorOverview(props: IErrorOverviewProps): JSX.Element {
 					.split('\n')
 					.slice(1)
 					.map((line): ErrorOverviewStackFrame => {
-						const parsed = stackUtils.parseLine(line)
+						const parsed = getStackUtils().parseLine(line)
 						if (!parsed) return { parsed: false, raw: line }
 						return {
 							parsed: true,
