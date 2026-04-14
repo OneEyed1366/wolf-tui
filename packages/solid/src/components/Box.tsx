@@ -1,4 +1,4 @@
-import { useContext, type JSX } from 'solid-js'
+import { useContext, Show, type JSX } from 'solid-js'
 import type { Styles } from '@wolf-tui/core'
 import { AccessibilityCtx, BackgroundCtx } from '../context/symbols'
 import { resolveClassName, type ClassNameValue } from '../styles'
@@ -71,44 +71,45 @@ export function Box(props: BoxProps) {
 		return s.backgroundColor ?? inheritedBackgroundColor?.()
 	}
 
+	const isHidden = () =>
+		Boolean(accessibility?.isScreenReaderEnabled && props['aria-hidden'])
+
+	// WHY: Accessor functions (not IIFE snapshots) preserve Solid reactivity
+	// — re-evaluated whenever props.style or props.className change.
+	const boxStyle = () => {
+		const style = resolvedStyles()
+		return {
+			backgroundColor: backgroundColor(),
+			overflowX: style.overflowX ?? style.overflow ?? 'visible',
+			overflowY: style.overflowY ?? style.overflow ?? 'visible',
+			...defaultBoxStyles,
+			...style,
+		}
+	}
+
+	const accessibilityMeta = () => ({
+		role: props['aria-role'],
+		state: props['aria-state'],
+	})
+
+	const renderedChildren = () => {
+		const ariaLabel = props['aria-label']
+		if (accessibility?.isScreenReaderEnabled && ariaLabel) {
+			return <wolfie-text>{ariaLabel}</wolfie-text>
+		}
+		return props.children
+	}
+
 	return (
 		<BackgroundCtx.Provider value={backgroundColor}>
-			{(() => {
-				const isScreenReaderEnabled = accessibility?.isScreenReaderEnabled
-				const ariaLabel = props['aria-label']
-				const ariaHidden = props['aria-hidden']
-				const ariaRole = props['aria-role']
-				const ariaState = props['aria-state']
-
-				if (isScreenReaderEnabled && ariaHidden) {
-					return null
-				}
-
-				const style = resolvedStyles()
-				const bgColor = backgroundColor()
-
-				const label = ariaLabel ? (
-					<wolfie-text>{ariaLabel}</wolfie-text>
-				) : undefined
-
-				return (
-					<wolfie-box
-						style={{
-							backgroundColor: bgColor,
-							overflowX: style.overflowX ?? style.overflow ?? 'visible',
-							overflowY: style.overflowY ?? style.overflow ?? 'visible',
-							...defaultBoxStyles,
-							...style,
-						}}
-						internal_accessibility={{
-							role: ariaRole,
-							state: ariaState,
-						}}
-					>
-						{isScreenReaderEnabled && label ? label : props.children}
-					</wolfie-box>
-				)
-			})()}
+			<Show when={!isHidden()}>
+				<wolfie-box
+					style={boxStyle()}
+					internal_accessibility={accessibilityMeta()}
+				>
+					{renderedChildren()}
+				</wolfie-box>
+			</Show>
 		</BackgroundCtx.Provider>
 	)
 }
