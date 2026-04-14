@@ -56,6 +56,12 @@ export interface RenderOptions {
 	isScreenReaderEnabled?: boolean
 	theme?: ITheme
 	incrementalRendering?: boolean
+	/**
+	 * Configure whether Wolfie should listen for Ctrl+C and exit the app.
+	 *
+	 * @default true
+	 */
+	exitOnCtrlC?: boolean
 }
 
 interface Focusable {
@@ -110,6 +116,7 @@ class WolfieSvelte {
 	private flushRender: () => void
 	private svelteApp?: SvelteApp
 	private theme: ITheme
+	private exitOnCtrlC: boolean
 
 	//#region Focus State
 	private focusables: Focusable[] = []
@@ -123,6 +130,7 @@ class WolfieSvelte {
 		this.stdin = options.stdin || process.stdin
 		this.stderr = options.stderr || process.stderr
 		this.theme = options.theme ?? { components: {} }
+		this.exitOnCtrlC = options.exitOnCtrlC ?? true
 
 		// Use LoggedLayoutTree when logging is enabled — zero overhead otherwise
 		this.layoutTree = logger.enabled
@@ -173,6 +181,10 @@ class WolfieSvelte {
 
 		this.stdin.on('data', (data: Buffer) => {
 			const input = data.toString()
+			if (input === '\x03' && this.exitOnCtrlC) {
+				this.unmount()
+				process.exit(0)
+			}
 			logger.log({
 				ts: performance.now(),
 				cat: 'input',
@@ -535,7 +547,7 @@ class WolfieSvelte {
 				}
 			},
 			isRawModeSupported: this.stdin.isTTY ?? false,
-			internal_exitOnCtrlC: true,
+			internal_exitOnCtrlC: this.exitOnCtrlC,
 			internal_eventEmitter: this.eventEmitter,
 		}
 
@@ -721,6 +733,41 @@ export type {
 } from './composables/use-multi-select-state.svelte.js'
 export { useMultiSelect } from './composables/use-multi-select.js'
 export type { UseMultiSelectProps } from './composables/use-multi-select.js'
+export { useTimerState } from './composables/use-timer-state.svelte.js'
+export type {
+	UseTimerStateProps,
+	TimerStateResult,
+} from './composables/use-timer-state.svelte.js'
+export { useTimer } from './composables/use-timer.js'
+export type { UseTimerProps } from './composables/use-timer.js'
+export { useTreeViewState } from './composables/use-tree-view-state.svelte.js'
+export type {
+	UseTreeViewStateProps,
+	TreeViewStateResult,
+} from './composables/use-tree-view-state.svelte.js'
+export { useTreeView } from './composables/use-tree-view.js'
+export type { UseTreeViewProps } from './composables/use-tree-view.js'
+export { useComboboxState } from './composables/use-combobox-state.svelte.js'
+export type {
+	UseComboboxStateProps,
+	ComboboxStateResult,
+} from './composables/use-combobox-state.svelte.js'
+export { useCombobox } from './composables/use-combobox.js'
+export type { UseComboboxProps } from './composables/use-combobox.js'
+export { useJsonViewerState } from './composables/use-json-viewer-state.svelte.js'
+export type {
+	UseJsonViewerStateProps,
+	JsonViewerStateResult,
+} from './composables/use-json-viewer-state.svelte.js'
+export { useJsonViewer } from './composables/use-json-viewer.js'
+export type { UseJsonViewerProps } from './composables/use-json-viewer.js'
+export { useFilePickerState } from './composables/use-file-picker-state.svelte.js'
+export type {
+	UseFilePickerStateProps,
+	FilePickerStateResult,
+} from './composables/use-file-picker-state.svelte.js'
+export { useFilePicker } from './composables/use-file-picker.js'
+export type { UseFilePickerProps } from './composables/use-file-picker.js'
 //#endregion Composable Exports
 
 //#region Component Exports

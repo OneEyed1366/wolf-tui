@@ -16,7 +16,8 @@ export type UsePasswordInputResult = {
 //#endregion Types
 
 //#region Composable
-const cursor = chalk.inverse(' ')
+let _cursor: string | undefined
+const getCursor = () => (_cursor ??= chalk.inverse(' '))
 
 export const usePasswordInput = ({
 	isDisabled,
@@ -31,7 +32,7 @@ export const usePasswordInput = ({
 		}
 		return placeholder && placeholder.length > 0
 			? chalk.inverse(placeholder[0]!) + chalk.dim(placeholder.slice(1))
-			: cursor
+			: getCursor()
 	})
 
 	const renderedValue = createMemo(() => {
@@ -42,7 +43,7 @@ export const usePasswordInput = ({
 		}
 
 		let index = 0
-		let result = maskedValue.length > 0 ? '' : cursor
+		let result = maskedValue.length > 0 ? '' : getCursor()
 
 		for (const char of maskedValue) {
 			result += index === state.cursorOffset() ? chalk.inverse(char) : char
@@ -50,7 +51,7 @@ export const usePasswordInput = ({
 		}
 
 		if (maskedValue.length > 0 && state.cursorOffset() === maskedValue.length) {
-			result += cursor
+			result += getCursor()
 		}
 
 		return result

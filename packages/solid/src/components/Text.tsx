@@ -1,4 +1,4 @@
-import { useContext, type JSX } from 'solid-js'
+import { useContext, Show, type JSX } from 'solid-js'
 import chalk from 'chalk'
 import { colorize, type Styles } from '@wolf-tui/core'
 import { AccessibilityCtx, BackgroundCtx } from '../context/symbols'
@@ -18,65 +18,65 @@ export function Text(props: TextProps) {
 	const accessibility = useContext(AccessibilityCtx)
 	const inheritedBackgroundColor = useContext(BackgroundCtx)
 
+	// Accessor — re-evaluated on every access inside a reactive context.
+	// WHY: IIFE pattern snapshots props once at mount; accessors let
+	// Solid's reactivity trigger on prop changes (e.g. dynamic color).
 	const effectiveStyles = (): Styles => {
 		const resolved = resolveClassName(props.className)
 		return { ...resolved, ...(props.style ?? {}) }
 	}
 
-	return (() => {
-		const ariaLabel = props['aria-label']
-		const ariaHidden = props['aria-hidden']
-		const isScreenReaderEnabled = accessibility?.isScreenReaderEnabled
-		const children =
-			isScreenReaderEnabled && ariaLabel ? ariaLabel : props.children
-
-		if (children === undefined || children === null) return null
-		if (isScreenReaderEnabled && ariaHidden) return null
-
+	const transform = (text: string): string => {
 		const styles = effectiveStyles()
+		let result = text
 
-		const effectiveColor = styles.color
-		const effectiveBackgroundColor = styles.backgroundColor
-		const effectiveBold = styles.fontWeight === 'bold'
-		const effectiveItalic = styles.fontStyle === 'italic'
-		const effectiveUnderline = styles.textDecoration === 'underline'
-		const effectiveStrikethrough = styles.textDecoration === 'line-through'
-		const effectiveInverse = styles.inverse ?? false
-		const effectiveWrap = styles.textWrap ?? 'wrap'
-
-		const transform = (text: string): string => {
-			let result = text
-
-			if (effectiveColor) {
-				result = colorize(result, effectiveColor, 'foreground')
-			}
-
-			const finalBackgroundColor =
-				effectiveBackgroundColor ?? inheritedBackgroundColor?.()
-			if (finalBackgroundColor) {
-				result = colorize(result, finalBackgroundColor, 'background')
-			}
-
-			if (effectiveBold) result = chalk.bold(result)
-			if (effectiveItalic) result = chalk.italic(result)
-			if (effectiveUnderline) result = chalk.underline(result)
-			if (effectiveStrikethrough) result = chalk.strikethrough(result)
-			if (effectiveInverse) result = chalk.inverse(result)
-
-			return result
+		if (styles.color) {
+			result = colorize(result, styles.color, 'foreground')
 		}
 
-		return (
+		const finalBackgroundColor =
+			styles.backgroundColor ?? inheritedBackgroundColor?.()
+		if (finalBackgroundColor) {
+			result = colorize(result, finalBackgroundColor, 'background')
+		}
+
+		if (styles.fontWeight === 'bold') result = chalk.bold(result)
+		if (styles.fontStyle === 'italic') result = chalk.italic(result)
+		if (styles.textDecoration === 'underline') result = chalk.underline(result)
+		if (styles.textDecoration === 'line-through')
+			result = chalk.strikethrough(result)
+		if (styles.inverse ?? false) result = chalk.inverse(result)
+
+		return result
+	}
+
+	const renderedChildren = () => {
+		const isScreenReaderEnabled = accessibility?.isScreenReaderEnabled
+		const ariaLabel = props['aria-label']
+		return isScreenReaderEnabled && ariaLabel ? ariaLabel : props.children
+	}
+
+	const isHidden = () => {
+		const isScreenReaderEnabled = accessibility?.isScreenReaderEnabled
+		const ariaHidden = props['aria-hidden']
+		if (isScreenReaderEnabled && ariaHidden) return true
+		const children = renderedChildren()
+		return children === undefined || children === null
+	}
+
+	return (
+		<Show when={!isHidden()}>
 			<wolfie-text
-				style={{ ...styles, textWrap: effectiveWrap }}
+				style={{
+					...effectiveStyles(),
+					textWrap: effectiveStyles().textWrap ?? 'wrap',
+				}}
 				internal_transform={transform}
 			>
-				{() =>
-					isScreenReaderEnabled && ariaLabel ? ariaLabel : props.children
-				}
+				{renderedChildren()}
 			</wolfie-text>
-		)
-	})()
+		</Show>
+	)
 }
 
 export type { TextProps as Props, TextProps as IProps }

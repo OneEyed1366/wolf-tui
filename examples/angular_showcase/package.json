@@ -1,0 +1,26 @@
+{
+	"name": "@wolf-tui/angular-showcase",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite build && node dist/index.cjs",
+		"build": "vite build",
+		"start": "node dist/index.cjs",
+		"verify": "WOLFIE_VERIFY=1 node verify.cjs"
+	},
+	"dependencies": {
+		"@wolf-tui/angular": "workspace:*",
+		"zone.js": "^0.16.0"
+	},
+	"devDependencies": {
+		"@angular/common": "^19.0.0",
+		"@angular/compiler": "^19.0.0",
+		"@angular/core": "^19.0.0",
+		"@wolf-tui/plugin": "workspace:*",
+		"@wolf-tui/typescript-plugin": "workspace:*",
+		"vite": "^6.0.0",
+		"strip-ansi": "^7.0.0",
+		"typescript": "^5.8.3"
+	}
+}

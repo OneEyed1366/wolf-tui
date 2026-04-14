@@ -197,14 +197,46 @@ Each adapter has a detailed README with full API docs, Vite/esbuild/webpack conf
 
 All adapters share the same component set:
 
-| Category    | Components                                                                          |
-| ----------- | ----------------------------------------------------------------------------------- |
-| **Layout**  | `Box`, `Text`, `Spacer`, `Newline`, `Static`, `Transform`                           |
-| **Display** | `Alert`, `Badge`, `Spinner`, `ProgressBar`, `StatusMessage`, `ErrorOverview`        |
-| **Input**   | `TextInput`, `PasswordInput`, `EmailInput`, `ConfirmInput`, `Select`, `MultiSelect` |
-| **Lists**   | `OrderedList`, `UnorderedList`                                                      |
+| Category      | Components                                                                          |
+| ------------- | ----------------------------------------------------------------------------------- |
+| **Layout**    | `Box`, `Text`, `Spacer`, `Newline`, `Static`, `Transform`                           |
+| **Display**   | `Alert`, `Badge`, `Spinner`, `ProgressBar`, `StatusMessage`, `ErrorOverview`        |
+| **Input**     | `TextInput`, `PasswordInput`, `EmailInput`, `ConfirmInput`, `Select`, `MultiSelect` |
+| **Lists**     | `OrderedList`, `UnorderedList`                                                      |
+| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`                         |
 
 Plus composables/hooks: `useInput`, `useFocus`, `useFocusManager`, stream access, screen reader detection.
+
+<details>
+<summary><b>Community components</b> — Timer, TreeView, Combobox, JsonViewer, FilePicker</summary>
+
+Adapted from the [ink-\* community ecosystem](https://github.com/vadimdemedes/ink/pull/922), available in all 5 adapters:
+
+| Component    | Description                            | Key features                                            |
+| ------------ | -------------------------------------- | ------------------------------------------------------- |
+| `Timer`      | Count-up, countdown, stopwatch         | Lap recording, configurable format, drift-resistant     |
+| `TreeView`   | Hierarchical tree with expand/collapse | Single/multi-select, async lazy loading, virtual scroll |
+| `Combobox`   | Fuzzy-search autocomplete dropdown     | Two-pass fzf-style matching, cursor nav, autofill       |
+| `JsonViewer` | Interactive JSON tree viewer           | 16 value types, syntax coloring, circular detection     |
+| `FilePicker` | Filesystem browser with filter         | Multi-select, symlink support, directory navigation     |
+
+```tsx
+// React example
+import { Timer, TreeView, Combobox, JsonViewer, FilePicker } from '@wolf-tui/react'
+
+// Timer with countdown
+<Timer variant="countdown" durationMs={60000} format="human" />
+
+// Interactive JSON viewer
+<JsonViewer data={{ users: [{ name: 'Alice' }] }} defaultExpandDepth={2} />
+
+// File picker with multi-select
+<FilePicker initialPath="." multiSelect onSelect={(paths) => console.log(paths)} />
+```
+
+All community components use the shared WNode render architecture — same visual output across all 5 frameworks.
+
+</details>
 
 See individual adapter READMEs for API details and prop reference.
 

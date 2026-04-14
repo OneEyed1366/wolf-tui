@@ -43,6 +43,12 @@ export interface RenderOptions {
 	isScreenReaderEnabled?: boolean
 	theme?: ITheme
 	incrementalRendering?: boolean
+	/**
+	 * Configure whether Wolfie should listen for Ctrl+C and exit the app.
+	 *
+	 * @default true
+	 */
+	exitOnCtrlC?: boolean
 }
 
 interface Focusable {
@@ -71,6 +77,7 @@ class WolfieSolid {
 	private flushRender: () => void
 	private dispose?: () => void
 	private theme: ITheme
+	private exitOnCtrlC: boolean
 
 	//#region Focus State
 	private focusables: Focusable[] = []
@@ -84,6 +91,7 @@ class WolfieSolid {
 		this.stdin = options.stdin || process.stdin
 		this.stderr = options.stderr || process.stderr
 		this.theme = options.theme ?? { components: {} }
+		this.exitOnCtrlC = options.exitOnCtrlC ?? true
 
 		this.layoutTree = new TaffyLayoutTree()
 		this.rootNode = createNode('wolfie-root' as ElementNames, this.layoutTree)
@@ -128,6 +136,10 @@ class WolfieSolid {
 
 		this.stdin.on('data', (data: Buffer) => {
 			const input = data.toString()
+			if (input === '\x03' && this.exitOnCtrlC) {
+				this.unmount()
+				process.exit(0)
+			}
 			this.handleFocusInput(input)
 			this.eventEmitter.emit('input', input)
 		})
@@ -445,7 +457,7 @@ class WolfieSolid {
 				}
 			},
 			isRawModeSupported: this.stdin.isTTY ?? false,
-			internal_exitOnCtrlC: true,
+			internal_exitOnCtrlC: this.exitOnCtrlC,
 			internal_eventEmitter: this.eventEmitter,
 		}
 
@@ -629,6 +641,41 @@ export type {
 } from './composables/use-multi-select-state'
 export { useMultiSelect } from './composables/use-multi-select'
 export type { UseMultiSelectProps } from './composables/use-multi-select'
+export { useTimerState } from './composables/use-timer-state'
+export type {
+	UseTimerStateProps,
+	TimerStateResult,
+} from './composables/use-timer-state'
+export { useTimer } from './composables/use-timer'
+export type { UseTimerProps } from './composables/use-timer'
+export { useTreeViewState } from './composables/use-tree-view-state'
+export type {
+	UseTreeViewStateProps,
+	TreeViewStateResult,
+} from './composables/use-tree-view-state'
+export { useTreeView } from './composables/use-tree-view'
+export type { UseTreeViewProps } from './composables/use-tree-view'
+export { useComboboxState } from './composables/use-combobox-state'
+export type {
+	UseComboboxStateProps,
+	ComboboxStateResult,
+} from './composables/use-combobox-state'
+export { useCombobox } from './composables/use-combobox'
+export type { UseComboboxProps } from './composables/use-combobox'
+export { useJsonViewerState } from './composables/use-json-viewer-state'
+export type {
+	UseJsonViewerStateProps,
+	JsonViewerStateResult,
+} from './composables/use-json-viewer-state'
+export { useJsonViewer } from './composables/use-json-viewer'
+export type { UseJsonViewerProps } from './composables/use-json-viewer'
+export { useFilePickerState } from './composables/use-file-picker-state'
+export type {
+	UseFilePickerStateProps,
+	FilePickerStateResult,
+} from './composables/use-file-picker-state'
+export { useFilePicker } from './composables/use-file-picker'
+export type { UseFilePickerProps } from './composables/use-file-picker'
 //#endregion Composable Exports
 
 //#region Solid Re-exports

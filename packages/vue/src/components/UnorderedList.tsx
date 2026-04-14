@@ -203,9 +203,12 @@ const UnorderedListComponent = defineComponent({
 	},
 })
 
-export const UnorderedList = Object.assign(UnorderedListComponent, {
-	Item: UnorderedListItem,
-})
+export const UnorderedList = /*#__PURE__*/ Object.assign(
+	UnorderedListComponent,
+	{
+		Item: UnorderedListItem,
+	}
+)
 //#endregion UnorderedList Component
 
 export type { UnorderedListProps as Props, UnorderedListProps as IProps }

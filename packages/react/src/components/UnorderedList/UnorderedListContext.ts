@@ -7,6 +7,7 @@ export type IUnorderedListContextProps = {
 	depth: number
 }
 
-export const UnorderedListContext = createContext<IUnorderedListContextProps>({
-	depth: 0,
-})
+export const UnorderedListContext =
+	/*#__PURE__*/ createContext<IUnorderedListContextProps>({
+		depth: 0,
+	})

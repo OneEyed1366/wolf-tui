@@ -2,8 +2,8 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import dts from 'vite-plugin-dts'
 import { wolfie } from '@wolf-tui/plugin/vite'
+import { createDtsPlugin } from '@wolf-tui/build-config'
 
 export default defineConfig({
 	build: {
@@ -19,6 +19,7 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				index: resolve(__dirname, 'src/index.ts'),
+				'styles/index': resolve(__dirname, 'src/styles/index.ts'),
 			},
 			output: {
 				// Maintain file structure for better tree-shaking
@@ -46,6 +47,6 @@ export default defineConfig({
 		vueJsx({
 			isCustomElement: (tag) => tag.startsWith('wolfie-'),
 		}),
-		dts({ rollupTypes: true }),
+		createDtsPlugin(),
 	],
 })

@@ -262,6 +262,16 @@ Both accept `style` (inline object) and `class`/`className` (CSS classes via `@w
 | `<OrderedList>`   | Numbered list |
 | `<UnorderedList>` | Bulleted list |
 
+### Community
+
+| Component      | Description                            |
+| -------------- | -------------------------------------- |
+| `<Timer>`      | Count-up, countdown, stopwatch         |
+| `<TreeView>`   | Hierarchical tree with expand/collapse |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown     |
+| `<JsonViewer>` | Interactive JSON tree viewer           |
+| `<FilePicker>` | Filesystem browser with filter mode    |
+
 <details>
 <summary><b>Component examples</b></summary>
 
@@ -303,6 +313,26 @@ Both accept `style` (inline object) and `class`/`className` (CSS classes via `@w
 		<OrderedListItem>First</OrderedListItem>
 		<OrderedListItem>Second</OrderedListItem>
 	</OrderedList>
+
+	<!-- Timer (countdown) -->
+	<Timer
+		variant="countdown"
+		:durationMs="60000"
+		format="human"
+		@complete="onDone"
+	/>
+
+	<!-- TreeView -->
+	<TreeView :data="treeData" selectionMode="single" @selectChange="onSelect" />
+
+	<!-- Combobox -->
+	<Combobox :options="items" placeholder="Search..." @select="onPick" />
+
+	<!-- JsonViewer -->
+	<JsonViewer :data="jsonData" :defaultExpandDepth="2" />
+
+	<!-- FilePicker -->
+	<FilePicker initialPath="." multiSelect @select="onFiles" />
 </template>
 ```
 

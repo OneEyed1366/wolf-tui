@@ -36,3 +36,11 @@ export { default as SelectOption } from './SelectOption.svelte'
 export { default as MultiSelect } from './MultiSelect.svelte'
 export { default as MultiSelectOption } from './MultiSelectOption.svelte'
 //#endregion Selection Components
+
+//#region Community Components
+export { default as Timer } from './Timer.svelte'
+export { default as TreeView } from './TreeView.svelte'
+export { default as Combobox } from './Combobox.svelte'
+export { default as JsonViewer } from './JsonViewer.svelte'
+export { default as FilePicker } from './FilePicker.svelte'
+//#endregion Community Components

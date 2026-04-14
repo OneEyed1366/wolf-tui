@@ -15,7 +15,8 @@ export type UseTextInputResult = {
 //#endregion Types
 
 //#region Composable
-const cursor = chalk.inverse(' ')
+let _cursor: string | undefined
+const getCursor = () => (_cursor ??= chalk.inverse(' '))
 
 export const useTextInput = ({
 	isDisabled,
@@ -30,7 +31,7 @@ export const useTextInput = ({
 		}
 		return placeholder && placeholder.length > 0
 			? chalk.inverse(placeholder[0]!) + chalk.dim(placeholder.slice(1))
-			: cursor
+			: getCursor()
 	}
 
 	const renderedValue = () => {
@@ -39,7 +40,7 @@ export const useTextInput = ({
 		}
 
 		let index = 0
-		let result = state.value().length > 0 ? '' : cursor
+		let result = state.value().length > 0 ? '' : getCursor()
 
 		for (const char of state.value()) {
 			result += index === state.cursorOffset() ? chalk.inverse(char) : char
@@ -61,7 +62,7 @@ export const useTextInput = ({
 			state.value().length > 0 &&
 			state.cursorOffset() === state.value().length
 		) {
-			result += cursor
+			result += getCursor()
 		}
 
 		return result

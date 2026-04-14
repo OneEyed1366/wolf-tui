@@ -1,0 +1,22 @@
+{
+	"name": "@wolf-tui/vue-showcase",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite-node src/index.ts",
+		"build": "vite build",
+		"start": "node dist/index.js"
+	},
+	"dependencies": {
+		"@wolf-tui/vue": "workspace:*",
+		"vue": "^3.5.16"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^6.0.3",
+		"@wolf-tui/plugin": "workspace:*",
+		"vite": "^6.0.7",
+		"vite-node": "^3.0.4",
+		"typescript": "^5.8.3"
+	}
+}

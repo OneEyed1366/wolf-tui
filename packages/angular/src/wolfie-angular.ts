@@ -130,7 +130,12 @@ export class WolfieAngular {
 
 		// Set up stdin data listener
 		this.stdin.on('data', (data: Buffer) => {
-			this.eventEmitter.emit('input', data.toString())
+			const input = data.toString()
+			if (input === '\x03' && this.exitOnCtrlC) {
+				this.unmount()
+				process.exit(0)
+			}
+			this.eventEmitter.emit('input', input)
 		})
 
 		// Set up resize listener if TTY

@@ -39,7 +39,7 @@ import type {
 	MultiSelectProps,
 	MultiSelectOptionProps,
 	ErrorOverviewProps,
-} from './build/index'
+} from './build/index.js'
 
 //#region Component Type Definitions
 type BoxComponent = DefineComponent<BoxProps>

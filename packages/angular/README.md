@@ -206,6 +206,16 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 | `UnorderedListComponent`     | `<w-unordered-list>`      |
 | `UnorderedListItemComponent` | `<w-unordered-list-item>` |
 
+### Community
+
+| Component             | Selector          | Description                            |
+| --------------------- | ----------------- | -------------------------------------- |
+| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch         |
+| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse |
+| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown     |
+| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer           |
+| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode    |
+
 <details>
 <summary><b>Component examples</b></summary>
 
@@ -260,6 +270,38 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 	<w-ordered-list-item>First</w-ordered-list-item>
 	<w-ordered-list-item>Second</w-ordered-list-item>
 </w-ordered-list>
+
+<!-- Timer (countdown) -->
+<w-timer
+	variant="countdown"
+	[durationMs]="60000"
+	format="human"
+	(complete)="onDone()"
+></w-timer>
+
+<!-- TreeView -->
+<w-tree-view
+	[data]="treeData"
+	selectionMode="single"
+	(selectChange)="onSelect($event)"
+></w-tree-view>
+
+<!-- Combobox -->
+<w-combobox
+	[options]="items"
+	placeholder="Search..."
+	(select)="onPick($event)"
+></w-combobox>
+
+<!-- JsonViewer -->
+<w-json-viewer [data]="jsonData" [defaultExpandDepth]="2"></w-json-viewer>
+
+<!-- FilePicker -->
+<w-file-picker
+	initialPath="."
+	[multiSelect]="true"
+	(select)="onFiles($event)"
+></w-file-picker>
 ```
 
 </details>

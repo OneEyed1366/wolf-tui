@@ -48,7 +48,7 @@ function OrderedListBase(props: IOrderedListProps): JSX.Element {
 	)
 }
 
-export const OrderedList = Object.assign(OrderedListBase, {
+export const OrderedList = /*#__PURE__*/ Object.assign(OrderedListBase, {
 	Item: OrderedListItem,
 })
 //#endregion OrderedList Component

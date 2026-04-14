@@ -85,6 +85,27 @@ export {
 	type TextInputProps,
 	textInputTheme,
 } from './components/TextInput'
+export { Timer, type TimerProps, timerTheme } from './components/Timer'
+export {
+	TreeView,
+	type TreeViewProps,
+	treeViewTheme,
+} from './components/TreeView'
+export {
+	Combobox,
+	type ComboboxProps,
+	comboboxTheme,
+} from './components/Combobox'
+export {
+	JsonViewer,
+	type JsonViewerProps,
+	jsonViewerTheme,
+} from './components/JsonViewer'
+export {
+	FilePicker,
+	type FilePickerProps,
+	filePickerTheme,
+} from './components/FilePicker'
 export {
 	UnorderedList,
 	type UnorderedListProps,

@@ -9,6 +9,6 @@ export type OrderedListItemContextProps = {
 }
 
 export const OrderedListItemContext =
-	createContext<OrderedListItemContextProps>({
+	/*#__PURE__*/ createContext<OrderedListItemContextProps>({
 		marker: figures.line,
 	})

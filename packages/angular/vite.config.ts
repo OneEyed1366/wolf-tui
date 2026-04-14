@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 import { wolfie } from '@wolf-tui/plugin/vite'
+import { createDtsPlugin } from '@wolf-tui/build-config'
 
 export default defineConfig({
 	build: {
@@ -17,6 +17,7 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				index: resolve(__dirname, 'src/index.ts'),
+				'styles/index': resolve(__dirname, 'src/styles/index.ts'),
 			},
 			output: {
 				preserveModules: true,
@@ -33,6 +34,6 @@ export default defineConfig({
 	plugins: [
 		wolfie('angular'),
 		// Disable rollupTypes due to Angular decorator complexity
-		dts({ rollupTypes: false }),
+		createDtsPlugin(),
 	],
 })

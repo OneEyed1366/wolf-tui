@@ -190,6 +190,16 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 | `<OrderedList>`   | Numbered list |
 | `<UnorderedList>` | Bulleted list |
 
+### Community
+
+| Component      | Description                            |
+| -------------- | -------------------------------------- |
+| `<Timer>`      | Count-up, countdown, stopwatch         |
+| `<TreeView>`   | Hierarchical tree with expand/collapse |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown     |
+| `<JsonViewer>` | Interactive JSON tree viewer           |
+| `<FilePicker>` | Filesystem browser with filter mode    |
+
 <details>
 <summary><b>Component examples</b></summary>
 
@@ -232,6 +242,29 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
   <OrderedListItem>First</OrderedListItem>
   <OrderedListItem>Second</OrderedListItem>
 </OrderedList>
+
+// Timer (countdown)
+<Timer variant="countdown" durationMs={60000} format="human" onComplete={() => console.log('done')} />
+
+// TreeView
+<TreeView
+  data={[{ id: '1', label: 'src', children: [{ id: '1.1', label: 'index.ts' }] }]}
+  selectionMode="single"
+  onSelectChange={(ids) => console.log(ids)}
+/>
+
+// Combobox
+<Combobox
+  options={[{ label: 'TypeScript', value: 'ts' }, { label: 'JavaScript', value: 'js' }]}
+  placeholder="Search..."
+  onSelect={(value) => console.log(value)}
+/>
+
+// JsonViewer
+<JsonViewer data={{ name: 'wolf-tui', version: '1.0' }} defaultExpandDepth={2} />
+
+// FilePicker
+<FilePicker initialPath="." multiSelect onSelect={(paths) => console.log(paths)} />
 ```
 
 </details>

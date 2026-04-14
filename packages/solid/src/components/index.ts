@@ -78,3 +78,20 @@ export type { IMultiSelectProps, MultiSelectTheme } from './MultiSelect'
 export { MultiSelectOption } from './MultiSelectOption'
 export type { IMultiSelectOptionProps } from './MultiSelectOption'
 //#endregion Selection Components
+
+//#region Community Components
+export { Timer, timerTheme } from './Timer'
+export type { ITimerProps, TimerTheme } from './Timer'
+
+export { TreeView, treeViewTheme } from './TreeView'
+export type { ITreeViewProps, TreeViewTheme } from './TreeView'
+
+export { Combobox, comboboxTheme } from './Combobox'
+export type { IComboboxProps, ComboboxTheme } from './Combobox'
+
+export { JsonViewer, jsonViewerTheme } from './JsonViewer'
+export type { IJsonViewerProps, JsonViewerTheme } from './JsonViewer'
+
+export { FilePicker, filePickerTheme } from './FilePicker'
+export type { IFilePickerProps, FilePickerTheme } from './FilePicker'
+//#endregion Community Components
