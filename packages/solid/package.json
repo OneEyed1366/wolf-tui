@@ -5,6 +5,8 @@
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./build/index.d.ts",
@@ -60,7 +62,8 @@
 		"@wolf-tui/spec": "workspace:*",
 		"memfs": "^4.56.10",
 		"vite-plugin-solid": "^2.11.0",
-		"solid-js": "^1.9.0"
+		"solid-js": "^1.9.0",
+		"@wolf-tui/build-config": "workspace:*"
 	},
 	"peerDependencies": {
 		"solid-js": "^1.9.0"

@@ -1,8 +1,8 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import solidPlugin from 'vite-plugin-solid'
-import dts from 'vite-plugin-dts'
 import { wolfie } from '@wolf-tui/plugin/vite'
+import { createDtsPlugin } from '@wolf-tui/build-config'
 
 export default defineConfig({
 	resolve: {
@@ -46,6 +46,6 @@ export default defineConfig({
 				generate: 'universal',
 			},
 		}),
-		dts({ rollupTypes: false }),
+		createDtsPlugin(),
 	],
 })

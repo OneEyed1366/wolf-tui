@@ -5,6 +5,8 @@
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./build/index.d.ts",
@@ -63,7 +65,8 @@
 		"@wolf-tui/spec": "workspace:*",
 		"memfs": "^4.56.10",
 		"ts-loader": "^9.5.4",
-		"vue": "^3.5.0"
+		"vue": "^3.5.0",
+		"@wolf-tui/build-config": "workspace:*"
 	},
 	"peerDependencies": {
 		"vue": "^3.5.0"

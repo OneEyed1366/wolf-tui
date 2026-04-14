@@ -1,8 +1,8 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import dts from 'vite-plugin-dts'
 import { wolfie } from '@wolf-tui/plugin/vite'
+import { createDtsPlugin } from '@wolf-tui/build-config'
 
 export default defineConfig(({ command }) => {
 	const babelPlugins: [string, object][] = [['babel-plugin-react-compiler', {}]]
@@ -47,7 +47,7 @@ export default defineConfig(({ command }) => {
 					plugins: babelPlugins,
 				},
 			}),
-			dts({ rollupTypes: false }),
+			createDtsPlugin(),
 		],
 	}
 })
