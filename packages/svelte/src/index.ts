@@ -56,6 +56,12 @@ export interface RenderOptions {
 	isScreenReaderEnabled?: boolean
 	theme?: ITheme
 	incrementalRendering?: boolean
+	/**
+	 * Configure whether Wolfie should listen for Ctrl+C and exit the app.
+	 *
+	 * @default true
+	 */
+	exitOnCtrlC?: boolean
 }
 
 interface Focusable {
@@ -110,6 +116,7 @@ class WolfieSvelte {
 	private flushRender: () => void
 	private svelteApp?: SvelteApp
 	private theme: ITheme
+	private exitOnCtrlC: boolean
 
 	//#region Focus State
 	private focusables: Focusable[] = []
@@ -123,6 +130,7 @@ class WolfieSvelte {
 		this.stdin = options.stdin || process.stdin
 		this.stderr = options.stderr || process.stderr
 		this.theme = options.theme ?? { components: {} }
+		this.exitOnCtrlC = options.exitOnCtrlC ?? true
 
 		// Use LoggedLayoutTree when logging is enabled — zero overhead otherwise
 		this.layoutTree = logger.enabled
@@ -173,6 +181,10 @@ class WolfieSvelte {
 
 		this.stdin.on('data', (data: Buffer) => {
 			const input = data.toString()
+			if (input === '\x03' && this.exitOnCtrlC) {
+				this.unmount()
+				process.exit(0)
+			}
 			logger.log({
 				ts: performance.now(),
 				cat: 'input',
@@ -535,7 +547,7 @@ class WolfieSvelte {
 				}
 			},
 			isRawModeSupported: this.stdin.isTTY ?? false,
-			internal_exitOnCtrlC: true,
+			internal_exitOnCtrlC: this.exitOnCtrlC,
 			internal_eventEmitter: this.eventEmitter,
 		}
 

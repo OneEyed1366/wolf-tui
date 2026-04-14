@@ -63,6 +63,14 @@ export interface RenderOptions {
 	stderr?: NodeJS.WriteStream
 	maxFps?: number
 	/**
+	 * Configure whether Wolfie should listen for Ctrl+C keyboard input and
+	 * exit the app. Needed because stdin is in raw mode, so Ctrl+C is
+	 * ignored by default and must be handled manually.
+	 *
+	 * @default true
+	 */
+	exitOnCtrlC?: boolean
+	/**
 	 * Enable debug mode (disables throttling for synchronous testing)
 	 */
 	debug?: boolean
@@ -112,10 +120,13 @@ class WolfieVue {
 	private isFocusEnabled = true
 	//#endregion Focus State
 
+	private exitOnCtrlC: boolean
+
 	constructor(options: RenderOptions = {}) {
 		this.stdout = options.stdout || process.stdout
 		this.stdin = options.stdin || process.stdin
 		this.stderr = options.stderr || process.stderr
+		this.exitOnCtrlC = options.exitOnCtrlC ?? true
 
 		const rawLayoutTree = new TaffyLayoutTree()
 		// WHY: LoggedLayoutTree is only constructed when logging is enabled
@@ -175,6 +186,10 @@ class WolfieVue {
 
 		this.stdin.on('data', (data: Buffer) => {
 			const input = data.toString()
+			if (input === '\x03' && this.exitOnCtrlC) {
+				this.unmount()
+				process.exit(0)
+			}
 			this.handleFocusInput(input)
 			this.eventEmitter.emit('input', input)
 		})
@@ -524,7 +539,7 @@ class WolfieVue {
 				}
 			},
 			isRawModeSupported: this.stdin.isTTY,
-			internal_exitOnCtrlC: true,
+			internal_exitOnCtrlC: this.exitOnCtrlC,
 			internal_eventEmitter: this.eventEmitter,
 		})
 

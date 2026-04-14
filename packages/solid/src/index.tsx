@@ -43,6 +43,12 @@ export interface RenderOptions {
 	isScreenReaderEnabled?: boolean
 	theme?: ITheme
 	incrementalRendering?: boolean
+	/**
+	 * Configure whether Wolfie should listen for Ctrl+C and exit the app.
+	 *
+	 * @default true
+	 */
+	exitOnCtrlC?: boolean
 }
 
 interface Focusable {
@@ -71,6 +77,7 @@ class WolfieSolid {
 	private flushRender: () => void
 	private dispose?: () => void
 	private theme: ITheme
+	private exitOnCtrlC: boolean
 
 	//#region Focus State
 	private focusables: Focusable[] = []
@@ -84,6 +91,7 @@ class WolfieSolid {
 		this.stdin = options.stdin || process.stdin
 		this.stderr = options.stderr || process.stderr
 		this.theme = options.theme ?? { components: {} }
+		this.exitOnCtrlC = options.exitOnCtrlC ?? true
 
 		this.layoutTree = new TaffyLayoutTree()
 		this.rootNode = createNode('wolfie-root' as ElementNames, this.layoutTree)
@@ -128,6 +136,10 @@ class WolfieSolid {
 
 		this.stdin.on('data', (data: Buffer) => {
 			const input = data.toString()
+			if (input === '\x03' && this.exitOnCtrlC) {
+				this.unmount()
+				process.exit(0)
+			}
 			this.handleFocusInput(input)
 			this.eventEmitter.emit('input', input)
 		})
@@ -445,7 +457,7 @@ class WolfieSolid {
 				}
 			},
 			isRawModeSupported: this.stdin.isTTY ?? false,
-			internal_exitOnCtrlC: true,
+			internal_exitOnCtrlC: this.exitOnCtrlC,
 			internal_eventEmitter: this.eventEmitter,
 		}
 
