@@ -17,6 +17,7 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				index: resolve(__dirname, 'src/index.ts'),
+				'styles/index': resolve(__dirname, 'src/styles/index.ts'),
 			},
 			output: {
 				preserveModules: true,

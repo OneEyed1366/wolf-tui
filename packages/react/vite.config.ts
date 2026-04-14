@@ -47,7 +47,7 @@ export default defineConfig(({ command }) => {
 					plugins: babelPlugins,
 				},
 			}),
-			dts({ rollupTypes: true }),
+			dts({ rollupTypes: false }),
 		],
 	}
 })
