@@ -672,7 +672,7 @@ export function createDefaultJsonViewerState(options: {
 
 	const viewport = computeViewport(nodes.length, 0, visibleNodeCount, {
 		fromIndex: 0,
-		toIndex: 0,
+		toIndex: Math.min(visibleNodeCount, nodes.length),
 	})
 
 	return {
