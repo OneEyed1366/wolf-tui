@@ -49,7 +49,8 @@ export interface PasswordInputProps {
 //#endregion Types
 
 //#region Constants
-const CURSOR = chalk.inverse(' ')
+let _CURSOR: string | undefined
+const getCursor = () => (_CURSOR ??= chalk.inverse(' '))
 //#endregion Constants
 
 //#region PasswordInputComponent
@@ -108,7 +109,7 @@ export class PasswordInputComponent implements OnInit, OnDestroy {
 		return this.placeholder && this.placeholder.length > 0
 			? chalk.inverse(this.placeholder[0]!) +
 					chalk.dim(this.placeholder.slice(1))
-			: CURSOR
+			: getCursor()
 	})
 
 	private renderedValue = computed(() => {
@@ -121,7 +122,7 @@ export class PasswordInputComponent implements OnInit, OnDestroy {
 		}
 
 		let index = 0
-		let result = maskedValue.length > 0 ? '' : CURSOR
+		let result = maskedValue.length > 0 ? '' : getCursor()
 
 		for (const char of maskedValue) {
 			result += index === currentCursorOffset ? chalk.inverse(char) : char
@@ -129,7 +130,7 @@ export class PasswordInputComponent implements OnInit, OnDestroy {
 		}
 
 		if (maskedValue.length > 0 && currentCursorOffset === maskedValue.length) {
-			result += CURSOR
+			result += getCursor()
 		}
 
 		return result

@@ -34,7 +34,8 @@ export type UsePasswordInputResult = {
 //#endregion Types
 
 //#region Hook
-const cursor = chalk.inverse(' ')
+let _cursor: string | undefined
+const getCursor = () => (_cursor ??= chalk.inverse(' '))
 
 export const usePasswordInput = ({
 	isDisabled = false,
@@ -48,7 +49,7 @@ export const usePasswordInput = ({
 
 		return placeholder && placeholder.length > 0
 			? chalk.inverse(placeholder[0]!) + chalk.dim(placeholder.slice(1))
-			: cursor
+			: getCursor()
 	}, [isDisabled, placeholder])
 
 	const renderedValue = useMemo(() => {
@@ -59,7 +60,7 @@ export const usePasswordInput = ({
 		}
 
 		let index = 0
-		let result = value.length > 0 ? '' : cursor
+		let result = value.length > 0 ? '' : getCursor()
 
 		for (const char of value) {
 			result += index === state.cursorOffset ? chalk.inverse(char) : char
@@ -68,7 +69,7 @@ export const usePasswordInput = ({
 		}
 
 		if (value.length > 0 && state.cursorOffset === value.length) {
-			result += cursor
+			result += getCursor()
 		}
 
 		return result
