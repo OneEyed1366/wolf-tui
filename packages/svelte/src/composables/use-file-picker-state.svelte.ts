@@ -111,20 +111,35 @@ export const useFilePickerState = ({
 			onSelect?.([..._state.selectedPaths])
 		}
 
+		// WHY: Fire onSelectionChange synchronously here instead of via $effect —
+		// a $effect reading _state.selectedPaths re-runs on every dispatch due to
+		// Svelte 5 proxy semantics, causing an infinite update loop.
+		if (prevState.selectedPaths !== _state.selectedPaths) {
+			onSelectionChange?.([..._state.selectedPaths])
+		}
+
 		if (prevState.currentPath !== _state.currentPath) {
 			onDirectoryChange?.(_state.currentPath)
 		}
 
-		if (_state.mode === 'error' && _state.errorMessage !== undefined) {
+		if (
+			prevState.mode !== 'error' &&
+			_state.mode === 'error' &&
+			_state.errorMessage !== undefined
+		) {
 			onError?.(_state.errorMessage)
 		}
 	}
 
 	const loadDirectory = (path: string) => {
+		// WHY: Capture showHidden into a local BEFORE dispatch — reading
+		// _state.showHidden inside a $effect would create a reactive dep
+		// that re-fires on every dispatch, causing an infinite loop.
+		const showHiddenSnapshot = _state.showHidden
 		dispatch({ type: 'set-loading' })
 
 		readDirectory(path, {
-			showHidden: _state.showHidden,
+			showHidden: showHiddenSnapshot,
 		})
 			.then((entries) => {
 				dispatch({ type: 'set-entries', path, entries })
@@ -220,20 +235,10 @@ export const useFilePickerState = ({
 		loadDirectory(_state.currentPath)
 	}
 
-	// onSelectionChange — fires on every toggle (Space), not just confirmation
-	let prevSelectedPaths: ReadonlySet<string> = _state.selectedPaths
-	$effect(() => {
-		const current = _state.selectedPaths
-		if (current !== prevSelectedPaths) {
-			prevSelectedPaths = current
-			onSelectionChange?.([...current])
-		}
-	})
-
-	// Load initial directory
-	$effect(() => {
-		loadDirectory(initialPath)
-	})
+	// Load initial directory synchronously — using $effect would track reactive
+	// reads inside loadDirectory (e.g. _state.showHidden) and re-fire on every
+	// dispatch, causing effect_update_depth_exceeded.
+	loadDirectory(initialPath)
 
 	return {
 		currentPath,

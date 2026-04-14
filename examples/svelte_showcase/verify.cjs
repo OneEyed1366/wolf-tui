@@ -155,53 +155,14 @@ async function verify() {
 	//#endregion JsonViewer
 
 	//#region FilePicker
-	// Known issue: Svelte FilePicker adapter has an effect_update_depth_exceeded bug.
-	// The $effect in use-file-picker-state.svelte.ts tracks _state via loadDirectory's
-	// closure (reads _state.showHidden), and loadDirectory dispatches mutations to _state,
-	// causing an infinite re-trigger cycle. This is a pre-existing adapter bug.
-	// We test it in a guarded block so the rest of the suite still validates.
 	console.log('\n--- FilePicker ---')
-	let filePickerPassed = false
-	const origListeners = process.listeners('uncaughtException')
-	process.removeAllListeners('uncaughtException')
-	const filePickerDone = new Promise((resolve) => {
-		const handler = (err) => {
-			if (String(err).includes('effect_update_depth_exceeded')) {
-				console.log(
-					'FilePicker hit known effect_update_depth_exceeded bug (skipped)'
-				)
-				filePickerPassed = false
-				process.removeListener('uncaughtException', handler)
-				resolve()
-			} else {
-				// Re-throw non-FilePicker errors
-				throw err
-			}
-		}
-		process.on('uncaughtException', handler)
-
-		openDemo(4)
-			.then(() => delay(500))
-			.then(() => {
-				let fileFrame = stripAnsi(stdout.get())
-				console.log(fileFrame)
-				const hasFile = fileFrame.includes('FilePicker Demo')
-				filePickerPassed = hasFile
-				console.log('FilePicker renders:', hasFile ? '✅' : '❌')
-				process.removeListener('uncaughtException', handler)
-				resolve()
-			})
-	})
-	await filePickerDone
-
-	// Skip FilePicker from pass/fail count — known adapter bug
-	checks.push({
-		name: 'FilePicker renders (known bug: skipped)',
-		pass: true,
-		skipped: !filePickerPassed,
-	})
-	// Restore original listeners
-	for (const l of origListeners) process.on('uncaughtException', l)
+	await openDemo(4)
+	await delay(500)
+	const fileFrame = stripAnsi(stdout.get())
+	console.log(fileFrame)
+	const hasFile = fileFrame.includes('FilePicker Demo')
+	checks.push({ name: 'FilePicker renders', pass: hasFile })
+	console.log('FilePicker renders:', hasFile ? '✅' : '❌')
 	//#endregion FilePicker
 
 	//#region Summary
