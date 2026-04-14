@@ -2,11 +2,46 @@ name: PR Checks
 
 on:
   pull_request:
+    types: [opened, edited, synchronize, reopened]
 
 permissions:
   contents: read
 
 jobs:
+  semantic-pr-title:
+    name: Validate PR title (Conventional Commits)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title against Conventional Commits
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          # Pattern: <type>[optional-scope][optional-!]: <lowercase-subject>
+          # Types: feat|fix|docs|chore|refactor|test|perf|build|ci|revert
+          PATTERN='^(feat|fix|docs|chore|refactor|test|perf|build|ci|revert)(\([^)]+\))?!?: [a-z].+'
+
+          if [[ "$PR_TITLE" =~ $PATTERN ]]; then
+            echo "✅ PR title follows Conventional Commits: $PR_TITLE"
+            exit 0
+          fi
+
+          echo "❌ PR title does NOT follow Conventional Commits."
+          echo ""
+          echo "   Got:      $PR_TITLE"
+          echo "   Expected: <type>[optional-scope]: <lowercase-subject>"
+          echo ""
+          echo "   Valid types: feat, fix, docs, chore, refactor, test, perf, build, ci, revert"
+          echo ""
+          echo "   Examples:"
+          echo "     feat: add user authentication"
+          echo "     fix(react): handle null props in Text"
+          echo "     ci: require conventional commit titles"
+          echo ""
+          echo "   Why this matters: release-please parses squash-merge commit"
+          echo "   messages to decide releases. Non-conventional titles produce"
+          echo "   zero releasable commits → publish pipeline skipped."
+          exit 1
+
   native:
     name: Build native bindings
     runs-on: ubuntu-latest
