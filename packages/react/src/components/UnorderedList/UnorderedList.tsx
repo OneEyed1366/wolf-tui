@@ -53,6 +53,9 @@ function UnorderedListComponent({ children }: IUnorderedListProps) {
 	)
 }
 
-export const UnorderedList = Object.assign(UnorderedListComponent, {
-	Item: UnorderedListItem,
-})
+export const UnorderedList = /*#__PURE__*/ Object.assign(
+	UnorderedListComponent,
+	{
+		Item: UnorderedListItem,
+	}
+)

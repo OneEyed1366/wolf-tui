@@ -51,6 +51,6 @@ function OrderedListComponent({ children }: OrderedListProps) {
 	)
 }
 
-export const OrderedList = Object.assign(OrderedListComponent, {
+export const OrderedList = /*#__PURE__*/ Object.assign(OrderedListComponent, {
 	Item: OrderedListItem,
 })

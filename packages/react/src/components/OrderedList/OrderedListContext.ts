@@ -7,6 +7,7 @@ export type OrderedListContextProps = {
 	marker: string
 }
 
-export const OrderedListContext = createContext<OrderedListContextProps>({
-	marker: '',
-})
+export const OrderedListContext =
+	/*#__PURE__*/ createContext<OrderedListContextProps>({
+		marker: '',
+	})

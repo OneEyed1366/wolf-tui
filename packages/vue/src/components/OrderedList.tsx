@@ -226,7 +226,7 @@ const OrderedListComponent = defineComponent({
 	},
 })
 
-export const OrderedList = Object.assign(OrderedListComponent, {
+export const OrderedList = /*#__PURE__*/ Object.assign(OrderedListComponent, {
 	Item: OrderedListItem,
 })
 //#endregion OrderedList Component

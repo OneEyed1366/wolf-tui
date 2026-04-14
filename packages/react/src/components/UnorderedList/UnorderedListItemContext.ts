@@ -9,6 +9,6 @@ export type IUnorderedListItemContextProps = {
 }
 
 export const UnorderedListItemContext =
-	createContext<IUnorderedListItemContextProps>({
+	/*#__PURE__*/ createContext<IUnorderedListItemContextProps>({
 		marker: defaultMarker,
 	})
