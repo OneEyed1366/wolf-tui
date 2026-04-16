@@ -203,26 +203,27 @@ All adapters share the same component set:
 | **Display**   | `Alert`, `Badge`, `Spinner`, `ProgressBar`, `StatusMessage`, `ErrorOverview`        |
 | **Input**     | `TextInput`, `PasswordInput`, `EmailInput`, `ConfirmInput`, `Select`, `MultiSelect` |
 | **Lists**     | `OrderedList`, `UnorderedList`                                                      |
-| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`                         |
+| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`, `Table`                |
 
 Plus composables/hooks: `useInput`, `useFocus`, `useFocusManager`, stream access, screen reader detection.
 
 <details>
-<summary><b>Community components</b> — Timer, TreeView, Combobox, JsonViewer, FilePicker</summary>
+<summary><b>Community components</b> — Timer, TreeView, Combobox, JsonViewer, FilePicker, Table</summary>
 
 Adapted from the [ink-\* community ecosystem](https://github.com/vadimdemedes/ink/pull/922), available in all 5 adapters:
 
-| Component    | Description                            | Key features                                            |
-| ------------ | -------------------------------------- | ------------------------------------------------------- |
-| `Timer`      | Count-up, countdown, stopwatch         | Lap recording, configurable format, drift-resistant     |
-| `TreeView`   | Hierarchical tree with expand/collapse | Single/multi-select, async lazy loading, virtual scroll |
-| `Combobox`   | Fuzzy-search autocomplete dropdown     | Two-pass fzf-style matching, cursor nav, autofill       |
-| `JsonViewer` | Interactive JSON tree viewer           | 16 value types, syntax coloring, circular detection     |
-| `FilePicker` | Filesystem browser with filter         | Multi-select, symlink support, directory navigation     |
+| Component    | Description                            | Key features                                              |
+| ------------ | -------------------------------------- | --------------------------------------------------------- |
+| `Timer`      | Count-up, countdown, stopwatch         | Lap recording, configurable format, drift-resistant       |
+| `TreeView`   | Hierarchical tree with expand/collapse | Single/multi-select, async lazy loading, virtual scroll   |
+| `Combobox`   | Fuzzy-search autocomplete dropdown     | Two-pass fzf-style matching, cursor nav, autofill         |
+| `JsonViewer` | Interactive JSON tree viewer           | 16 value types, syntax coloring, circular detection       |
+| `FilePicker` | Filesystem browser with filter         | Multi-select, symlink support, directory navigation       |
+| `Table`      | Box-drawing table for tabular data     | `ink-table` parity, themable borders/cells, column subset |
 
 ```tsx
 // React example
-import { Timer, TreeView, Combobox, JsonViewer, FilePicker } from '@wolf-tui/react'
+import { Timer, TreeView, Combobox, JsonViewer, FilePicker, Table } from '@wolf-tui/react'
 
 // Timer with countdown
 <Timer variant="countdown" durationMs={60000} format="human" />
@@ -232,6 +233,9 @@ import { Timer, TreeView, Combobox, JsonViewer, FilePicker } from '@wolf-tui/rea
 
 // File picker with multi-select
 <FilePicker initialPath="." multiSelect onSelect={(paths) => console.log(paths)} />
+
+// Table with box-drawing borders
+<Table data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]} />
 ```
 
 All community components use the shared WNode render architecture — same visual output across all 5 frameworks.

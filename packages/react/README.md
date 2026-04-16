@@ -199,6 +199,7 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 | `<Combobox>`   | Fuzzy-search autocomplete dropdown     |
 | `<JsonViewer>` | Interactive JSON tree viewer           |
 | `<FilePicker>` | Filesystem browser with filter mode    |
+| `<Table>`      | Box-drawing table for tabular data     |
 
 <details>
 <summary><b>Component examples</b></summary>
@@ -265,6 +266,9 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 
 // FilePicker
 <FilePicker initialPath="." multiSelect onSelect={(paths) => console.log(paths)} />
+
+// Table (ink-table parity)
+<Table data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]} columns={['id', 'name']} padding={1} />
 ```
 
 </details>

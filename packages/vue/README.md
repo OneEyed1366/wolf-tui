@@ -271,6 +271,7 @@ Both accept `style` (inline object) and `class`/`className` (CSS classes via `@w
 | `<Combobox>`   | Fuzzy-search autocomplete dropdown     |
 | `<JsonViewer>` | Interactive JSON tree viewer           |
 | `<FilePicker>` | Filesystem browser with filter mode    |
+| `<Table>`      | Box-drawing table for tabular data     |
 
 <details>
 <summary><b>Component examples</b></summary>
@@ -333,6 +334,9 @@ Both accept `style` (inline object) and `class`/`className` (CSS classes via `@w
 
 	<!-- FilePicker -->
 	<FilePicker initialPath="." multiSelect @select="onFiles" />
+
+	<!-- Table (ink-table parity) -->
+	<Table :data="rows" :columns="['id', 'name']" :padding="1" />
 </template>
 ```
 

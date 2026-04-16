@@ -215,6 +215,7 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 | `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown     |
 | `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer           |
 | `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode    |
+| `TableComponent`      | `<w-table>`       | Box-drawing table for tabular data     |
 
 <details>
 <summary><b>Component examples</b></summary>
@@ -302,6 +303,9 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 	[multiSelect]="true"
 	(select)="onFiles($event)"
 ></w-file-picker>
+
+<!-- Table (ink-table parity) -->
+<w-table [data]="rows" [columns]="['id', 'name']" [padding]="1"></w-table>
 ```
 
 </details>
