@@ -6,6 +6,7 @@ import {
 	PasswordInput,
 	EmailInput,
 	Newline,
+	Table,
 	useInput,
 } from '@wolf-tui/react'
 import type { Screen } from '../hooks/useInvaders'
@@ -108,27 +109,15 @@ export function HighScores({ score, onNavigate }: HighScoresProps) {
 
 			{step === 'view' && (
 				<>
-					<Box style={{ flexDirection: 'column' }}>
-						<Box>
-							<Text className="text-yellow">{'RANK'.padEnd(6)}</Text>
-							<Text className="text-yellow">{'NAME'.padEnd(12)}</Text>
-							<Text className="text-yellow">{'SCORE'.padStart(8)}</Text>
-							<Text className="text-yellow">{'  DATE'.padEnd(12)}</Text>
-						</Box>
-						<Newline />
-
-						{scores.map((entry, index) => (
-							<Box key={`score-${index}`}>
-								<Text className="text-white">{`${index + 1}.`.padEnd(6)}</Text>
-								<Text className="text-green">{entry.name.padEnd(12)}</Text>
-								<Text className="text-cyan">
-									{entry.score.toString().padStart(8)}
-								</Text>
-								<Text className="text-gray">{'  ' + entry.date}</Text>
-								<Newline />
-							</Box>
-						))}
-					</Box>
+					<Table
+						data={scores.map((entry, index) => ({
+							rank: index + 1,
+							name: entry.name,
+							score: entry.score,
+							date: entry.date,
+						}))}
+						columns={['rank', 'name', 'score', 'date']}
+					/>
 
 					<Newline />
 					{isNewHighScore && score !== undefined && (

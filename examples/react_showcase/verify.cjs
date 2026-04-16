@@ -165,7 +165,22 @@ async function verify() {
 	const hasFile = fileFrame.includes('FilePicker Demo')
 	checks.push({ name: 'FilePicker renders', pass: hasFile })
 	console.log('FilePicker renders:', hasFile ? '✅' : '❌')
+	send(ESC)
+	await delay(200)
 	//#endregion FilePicker
+
+	//#region Table
+	console.log('\n--- Table ---')
+	await openDemo(5)
+	let tableFrame = stripAnsi(stdout.get())
+	console.log(tableFrame)
+	const hasTable =
+		tableFrame.includes('Table Demo') &&
+		tableFrame.includes('Naruto') &&
+		tableFrame.includes('│')
+	checks.push({ name: 'Table renders', pass: hasTable })
+	console.log('Table renders:', hasTable ? '✅' : '❌')
+	//#endregion Table
 
 	//#region Summary
 	console.log('\n=== SUMMARY ===')

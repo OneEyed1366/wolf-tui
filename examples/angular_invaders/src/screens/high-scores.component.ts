@@ -3,6 +3,7 @@ import {
 	ChangeDetectionStrategy,
 	inject,
 	signal,
+	computed,
 } from '@angular/core'
 import {
 	BoxComponent,
@@ -10,6 +11,7 @@ import {
 	TextInputComponent,
 	EmailInputComponent,
 	PasswordInputComponent,
+	TableComponent,
 	injectInput,
 } from '@wolf-tui/angular'
 import { InvadersService } from '../services/invaders.service'
@@ -54,6 +56,7 @@ const MOCK_HIGH_SCORES: HighScoreEntry[] = [
 		TextInputComponent,
 		EmailInputComponent,
 		PasswordInputComponent,
+		TableComponent,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
@@ -74,30 +77,10 @@ const MOCK_HIGH_SCORES: HighScoreEntry[] = [
 			<w-text> </w-text>
 
 			@if (step() === 'view') {
-				<w-box [style]="{ flexDirection: 'column' }">
-					<w-box>
-						<w-text className="text-yellow">{{ 'RANK'.padEnd(6) }}</w-text>
-						<w-text className="text-yellow">{{ 'NAME'.padEnd(12) }}</w-text>
-						<w-text className="text-yellow">{{ 'SCORE'.padStart(8) }}</w-text>
-						<w-text className="text-yellow">{{ '  DATE'.padEnd(12) }}</w-text>
-					</w-box>
-					<w-text> </w-text>
-
-					@for (entry of scores(); track $index) {
-						<w-box>
-							<w-text className="text-white">{{
-								($index + 1 + '.').padEnd(6)
-							}}</w-text>
-							<w-text className="text-green">{{
-								entry.name.padEnd(12)
-							}}</w-text>
-							<w-text className="text-cyan">{{
-								entry.score.toString().padStart(8)
-							}}</w-text>
-							<w-text className="text-gray">{{ '  ' + entry.date }}</w-text>
-						</w-box>
-					}
-				</w-box>
+				<w-table
+					[data]="scoreRows()"
+					[columns]="['rank', 'name', 'score', 'date']"
+				/>
 
 				<w-text> </w-text>
 				<w-text className="text-gray"
@@ -152,6 +135,14 @@ export class HighScoresComponent {
 
 	readonly step = signal<'view' | 'name' | 'email' | 'password'>('view')
 	readonly scores = signal<HighScoreEntry[]>(MOCK_HIGH_SCORES)
+	readonly scoreRows = computed(() =>
+		this.scores().map((entry, index) => ({
+			rank: index + 1,
+			name: entry.name,
+			score: entry.score,
+			date: entry.date,
+		}))
+	)
 
 	private name = ''
 	private email = ''

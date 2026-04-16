@@ -1,5 +1,4 @@
-import { For } from 'solid-js'
-import { Box, Text, Newline, useInput } from '@wolf-tui/solid'
+import { Box, Text, Newline, Table, useInput } from '@wolf-tui/solid'
 import type { Screen } from '../composables/useInvaders'
 import { BRAND } from '../theme'
 
@@ -64,28 +63,15 @@ export default function HighScores(props: HighScoresProps) {
 			</Text>
 			<Newline />
 
-			<Box style={{ flexDirection: 'column' }}>
-				<Box>
-					<Text className="text-yellow">{'RANK'.padEnd(6)}</Text>
-					<Text className="text-yellow">{'NAME'.padEnd(12)}</Text>
-					<Text className="text-yellow">{'SCORE'.padStart(8)}</Text>
-					<Text className="text-yellow">{'  DATE'.padEnd(12)}</Text>
-				</Box>
-				<Newline />
-
-				<For each={MOCK_HIGH_SCORES}>
-					{(entry, index) => (
-						<Box>
-							<Text className="text-white">{`${index() + 1}.`.padEnd(6)}</Text>
-							<Text className="text-green">{entry.name.padEnd(12)}</Text>
-							<Text className="text-cyan">
-								{entry.score.toString().padStart(8)}
-							</Text>
-							<Text className="text-gray">{'  ' + entry.date}</Text>
-						</Box>
-					)}
-				</For>
-			</Box>
+			<Table
+				data={MOCK_HIGH_SCORES.map((entry, index) => ({
+					rank: index + 1,
+					name: entry.name,
+					score: entry.score,
+					date: entry.date,
+				}))}
+				columns={['rank', 'name', 'score', 'date']}
+			/>
 
 			<Newline />
 			<Text className="text-gray">Press ESC or Q to return to menu</Text>
