@@ -12,6 +12,7 @@ export { default as Transform } from './Transform.svelte'
 
 //#region Display Components
 export { default as Badge } from './Badge.svelte'
+export { default as Gradient } from './Gradient.svelte'
 export { default as StatusMessage } from './StatusMessage.svelte'
 export { default as Alert } from './Alert.svelte'
 export { default as Spinner } from './Spinner.svelte'

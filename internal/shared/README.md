@@ -50,6 +50,7 @@ Each adapter converts WNodes to framework-native elements:
 | `renderBadge`         | `BadgeViewState`         | Colored label badges              |
 | `renderConfirmInput`  | `ConfirmInputViewState`  | Yes/no confirmation prompt        |
 | `renderErrorOverview` | `ErrorOverviewData`      | Error display with stack traces   |
+| `renderGradient`      | `GradientViewState`      | Per-char colored text gradient    |
 | `renderMultiSelect`   | `MultiSelectViewState`   | Multi-option selection list       |
 | `renderNewline`       | —                        | Line break element                |
 | `renderProgressBar`   | `ProgressBarViewState`   | Determinate progress indicator    |
