@@ -102,3 +102,4 @@ export {
 	FilePickerComponent,
 	type FilePickerProps,
 } from './file-picker/file-picker.component'
+export { TableComponent, type TableProps } from './table/table.component'

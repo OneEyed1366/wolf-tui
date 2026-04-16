@@ -118,6 +118,8 @@ export {
 	type JsonViewerProps,
 	FilePickerComponent,
 	type FilePickerProps,
+	TableComponent,
+	type TableProps,
 } from './components'
 
 // Styles
