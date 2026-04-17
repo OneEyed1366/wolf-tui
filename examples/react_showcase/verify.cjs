@@ -167,6 +167,44 @@ async function verify() {
 	console.log('FilePicker renders:', hasFile ? '✅' : '❌')
 	//#endregion FilePicker
 
+	send(ESC)
+	await delay(200)
+
+	//#region ScrollView
+	console.log('\n--- ScrollView ---')
+	await openDemo(5)
+	let scrollFrame = stripAnsi(stdout.get())
+	console.log(scrollFrame)
+	const hasScroll = scrollFrame.includes('ScrollView Demo')
+	checks.push({ name: 'ScrollView renders', pass: hasScroll })
+	console.log('ScrollView renders:', hasScroll ? '✅' : '❌')
+
+	// Count visible "Item NN" lines — viewport height is 8, so 8 items visible.
+	const itemMatchesBefore = (scrollFrame.match(/Item \d\d/g) || []).length
+	const hasClipping = itemMatchesBefore > 0 && itemMatchesBefore <= 10
+	checks.push({ name: 'ScrollView clips content', pass: hasClipping })
+	console.log(
+		'ScrollView clip (items visible):',
+		itemMatchesBefore,
+		hasClipping ? '✅' : '❌'
+	)
+
+	// Scroll down and check that offset advances (first visible item changes).
+	send(DOWN)
+	await delay(50)
+	send(DOWN)
+	await delay(50)
+	send(DOWN)
+	await delay(100)
+	scrollFrame = stripAnsi(stdout.get())
+	const offsetAdvanced = scrollFrame.includes('offset=3')
+	checks.push({ name: 'ScrollView scrolls on DownArrow', pass: offsetAdvanced })
+	console.log('ScrollView scrolls:', offsetAdvanced ? '✅' : '❌')
+
+	send(ESC)
+	await delay(200)
+	//#endregion ScrollView
+
 	//#region Summary
 	console.log('\n=== SUMMARY ===')
 	const passed = checks.filter((c) => c.pass).length

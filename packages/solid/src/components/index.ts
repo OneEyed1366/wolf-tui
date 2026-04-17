@@ -49,6 +49,9 @@ export type { IOrderedListProps, IOrderedListItemProps } from './OrderedList'
 
 export { ErrorOverview } from './ErrorOverview'
 export type { IErrorOverviewProps } from './ErrorOverview'
+
+export { ScrollView } from './ScrollView'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView'
 //#endregion Display Components
 
 //#region Input Components

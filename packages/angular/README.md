@@ -208,13 +208,14 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 
 ### Community
 
-| Component             | Selector          | Description                            |
-| --------------------- | ----------------- | -------------------------------------- |
-| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch         |
-| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse |
-| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown     |
-| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer           |
-| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode    |
+| Component             | Selector          | Description                                                                 |
+| --------------------- | ----------------- | --------------------------------------------------------------------------- |
+| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch                                              |
+| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse                                      |
+| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown                                          |
+| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer                                                |
+| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode                                         |
+| `ScrollViewComponent` | `<w-scroll-view>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling |
 
 <details>
 <summary><b>Component examples</b></summary>
@@ -302,6 +303,13 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 	[multiSelect]="true"
 	(select)="onFiles($event)"
 ></w-file-picker>
+
+<!-- ScrollView — uncontrolled, built-in arrows/PageUp/PageDown/Home/End -->
+<w-scroll-view #scrollRef [height]="8" (onScroll)="onOffset($event)">
+	<w-text *ngFor="let it of items">{{ it }}</w-text>
+</w-scroll-view>
+<!-- @ViewChild('scrollRef') gives imperative methods:
+     scrollRef.scrollToBottom(); scrollRef.scrollBy(4); -->
 ```
 
 </details>

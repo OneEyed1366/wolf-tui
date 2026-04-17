@@ -38,6 +38,9 @@ export type {
 
 export { ProgressBar, progressBarTheme } from './ProgressBar'
 export type { ProgressBarProps, ProgressBarTheme } from './ProgressBar'
+
+export { ScrollView } from './ScrollView'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView'
 //#endregion Display Components
 
 //#region List Components

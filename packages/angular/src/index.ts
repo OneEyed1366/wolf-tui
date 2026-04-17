@@ -77,6 +77,9 @@ export {
 	type StatusMessageProps,
 	ProgressBarComponent,
 	type ProgressBarProps,
+	ScrollViewComponent,
+	type IScrollViewProps,
+	type IScrollViewHandle,
 	// List Components
 	OrderedListComponent,
 	type OrderedListProps,

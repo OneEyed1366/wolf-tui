@@ -5,9 +5,16 @@ import { TreeViewDemo } from './demos/TreeViewDemo'
 import { ComboboxDemo } from './demos/ComboboxDemo'
 import { JsonViewerDemo } from './demos/JsonViewerDemo'
 import { FilePickerDemo } from './demos/FilePickerDemo'
+import { ScrollViewDemo } from './demos/ScrollViewDemo'
 
 //#region Menu
-type DemoName = 'timer' | 'treeview' | 'combobox' | 'jsonviewer' | 'filepicker'
+type DemoName =
+	| 'timer'
+	| 'treeview'
+	| 'combobox'
+	| 'jsonviewer'
+	| 'filepicker'
+	| 'scrollview'
 
 const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -15,6 +22,7 @@ const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
+	{ key: 'scrollview', label: 'ScrollView' },
 ]
 //#endregion Menu
 
@@ -39,6 +47,9 @@ export function App() {
 			</Show>
 			<Show when={activeDemo() === 'filepicker'}>
 				<FilePickerDemo onBack={goBack} />
+			</Show>
+			<Show when={activeDemo() === 'scrollview'}>
+				<ScrollViewDemo onBack={goBack} />
 			</Show>
 			<Show when={activeDemo() === null}>
 				<Menu onSelect={setActiveDemo} />

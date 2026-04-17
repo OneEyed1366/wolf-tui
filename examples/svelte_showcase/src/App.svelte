@@ -8,10 +8,17 @@
 	import ComboboxDemo from './demos/ComboboxDemo.svelte'
 	import JsonViewerDemo from './demos/JsonViewerDemo.svelte'
 	import FilePickerDemo from './demos/FilePickerDemo.svelte'
+	import ScrollViewDemo from './demos/ScrollViewDemo.svelte'
 	//#endregion Screens
 
 	//#region Menu Data
-	type DemoName = 'timer' | 'treeview' | 'combobox' | 'jsonviewer' | 'filepicker'
+	type DemoName =
+		| 'timer'
+		| 'treeview'
+		| 'combobox'
+		| 'jsonviewer'
+		| 'filepicker'
+		| 'scrollview'
 
 	const DEMOS: Array<{ key: DemoName; label: string }> = [
 		{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -19,6 +26,7 @@
 		{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 		{ key: 'jsonviewer', label: 'JsonViewer' },
 		{ key: 'filepicker', label: 'FilePicker' },
+		{ key: 'scrollview', label: 'ScrollView' },
 	]
 	//#endregion Menu Data
 
@@ -56,6 +64,8 @@
 	<JsonViewerDemo onBack={goBack} />
 {:else if activeDemo === 'filepicker'}
 	<FilePickerDemo onBack={goBack} />
+{:else if activeDemo === 'scrollview'}
+	<ScrollViewDemo onBack={goBack} />
 {:else}
 	<Box style={{ flexDirection: 'column', padding: 1 }}>
 		<Text style={{ fontWeight: 'bold', color: 'cyan' }}>

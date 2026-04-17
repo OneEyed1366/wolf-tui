@@ -43,4 +43,6 @@ export { default as TreeView } from './TreeView.svelte'
 export { default as Combobox } from './Combobox.svelte'
 export { default as JsonViewer } from './JsonViewer.svelte'
 export { default as FilePicker } from './FilePicker.svelte'
+export { default as ScrollView } from './ScrollView.svelte'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView.types.js'
 //#endregion Community Components
