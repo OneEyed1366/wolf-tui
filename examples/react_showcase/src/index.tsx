@@ -5,9 +5,16 @@ import { TreeViewDemo } from './demos/TreeViewDemo'
 import { ComboboxDemo } from './demos/ComboboxDemo'
 import { JsonViewerDemo } from './demos/JsonViewerDemo'
 import { FilePickerDemo } from './demos/FilePickerDemo'
+import { BigTextDemo } from './demos/BigTextDemo'
 
 //#region Menu
-type DemoName = 'timer' | 'treeview' | 'combobox' | 'jsonviewer' | 'filepicker'
+type DemoName =
+	| 'timer'
+	| 'treeview'
+	| 'combobox'
+	| 'jsonviewer'
+	| 'filepicker'
+	| 'bigtext'
 
 const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -15,6 +22,7 @@ const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
+	{ key: 'bigtext', label: 'BigText (ink-big-text parity)' },
 ]
 //#endregion Menu
 
@@ -32,6 +40,8 @@ export function App() {
 		return <JsonViewerDemo onBack={() => setActiveDemo(null)} />
 	if (activeDemo === 'filepicker')
 		return <FilePickerDemo onBack={() => setActiveDemo(null)} />
+	if (activeDemo === 'bigtext')
+		return <BigTextDemo onBack={() => setActiveDemo(null)} />
 
 	return <Menu onSelect={setActiveDemo} />
 }

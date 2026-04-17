@@ -5,9 +5,16 @@ import { TreeViewDemoComponent } from './demos/tree-view-demo.component'
 import { ComboboxDemoComponent } from './demos/combobox-demo.component'
 import { JsonViewerDemoComponent } from './demos/json-viewer-demo.component'
 import { FilePickerDemoComponent } from './demos/file-picker-demo.component'
+import { BigTextDemoComponent } from './demos/big-text-demo.component'
 
 //#region Types
-type DemoName = 'timer' | 'treeview' | 'combobox' | 'jsonviewer' | 'filepicker'
+type DemoName =
+	| 'timer'
+	| 'treeview'
+	| 'combobox'
+	| 'jsonviewer'
+	| 'filepicker'
+	| 'bigtext'
 
 interface IDemoEntry {
 	key: DemoName
@@ -22,6 +29,7 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 	{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
+	{ key: 'bigtext', label: 'BigText (cfonts banner)' },
 ]
 //#endregion Constants
 
@@ -37,6 +45,7 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 		ComboboxDemoComponent,
 		JsonViewerDemoComponent,
 		FilePickerDemoComponent,
+		BigTextDemoComponent,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
@@ -55,6 +64,9 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 			}
 			@case ('filepicker') {
 				<app-file-picker-demo (back)="goBack()" />
+			}
+			@case ('bigtext') {
+				<app-big-text-demo (back)="goBack()" />
 			}
 			@default {
 				<w-box [style]="{ flexDirection: 'column', padding: 1 }">
