@@ -1,4 +1,11 @@
-import { Box, Text, Select, useFocusManager, useInput } from '@wolf-tui/react'
+import {
+	BigText,
+	Box,
+	Text,
+	Select,
+	useFocusManager,
+	useInput,
+} from '@wolf-tui/react'
 import type { Screen } from '../hooks/useInvaders'
 import { useQuit } from '../hooks/useQuit'
 import { BRAND } from '../theme'
@@ -19,16 +26,6 @@ const MENU_OPTIONS = [
 	{ label: 'Quit', value: 'quit' },
 ] as const
 //#endregion Menu Options
-
-//#region ASCII Logo
-const LOGO = `
- ____  ____   _    ____ _____   ___ _   ___     ___    ____  _____ ____  ____
-/ ___||  _ \\ / \\  / ___| ____| |_ _| \\ | \\ \\   / / \\  |  _ \\| ____|  _ \\/ ___|
-\\___ \\| |_) / _ \\| |   |  _|    | ||  \\| |\\ \\ / / _ \\ | | | |  _| | |_) \\___ \\
- ___) |  __/ ___ \\ |___| |___   | || |\\  | \\ V / ___ \\| |_| | |___|  _ < ___) |
-|____/|_| /_/   \\_\\____|_____| |___|_| \\_|  \\_/_/   \\_\\____/|_____|_| \\_\\____/
-`
-//#endregion ASCII Logo
 
 //#region Component
 export function Menu({ onNavigate, onStartGame }: MenuProps) {
@@ -76,9 +73,13 @@ export function Menu({ onNavigate, onStartGame }: MenuProps) {
 				backgroundColor: BRAND.bgDark,
 			}}
 		>
-			<Text style={{ color: BRAND.primary }} className="font-bold">
-				{LOGO}
-			</Text>
+			<BigText
+				text="INVADERS"
+				font="tiny"
+				align="center"
+				colors={[BRAND.primary]}
+				space={false}
+			/>
 
 			<Box style={{ marginTop: 2, marginBottom: 1 }}>
 				<Text className="text-gray">↑/↓ Navigate • Enter Select</Text>

@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { Box, Text, Select, useFocusManager, useInput } from '@wolf-tui/vue'
+import {
+	Box,
+	Text,
+	Select,
+	BigText,
+	useFocusManager,
+	useInput,
+} from '@wolf-tui/vue'
 import type { Screen } from '../composables/useInvaders'
 import { useQuit } from '../composables/useQuit'
 import { BRAND } from '../theme'
@@ -20,16 +27,6 @@ const MENU_OPTIONS = [
 	{ label: 'Quit', value: 'quit' },
 ]
 //#endregion Menu Options
-
-//#region ASCII Logo
-const LOGO = `
- ____  ____   _    ____ _____   ___ _   ___     ___    ____  _____ ____  ____
-/ ___||  _ \\ / \\  / ___| ____| |_ _| \\ | \\ \\   / / \\  |  _ \\| ____|  _ \\/ ___|
-\\___ \\| |_) / _ \\| |   |  _|    | ||  \\| |\\ \\ / / _ \\ | | | |  _| | |_) \\___ \\
- ___) |  __/ ___ \\ |___| |___   | || |\\  | \\ V / ___ \\| |_| | |___|  _ < ___) |
-|____/|_| /_/   \\_\\____|_____| |___|_| \\_|  \\_/_/   \\_\\____/|_____|_| \\_\\____/
-`
-//#endregion ASCII Logo
 
 //#region Logic
 const quit = useQuit()
@@ -78,7 +75,7 @@ function handleChange(value: string) {
 			backgroundColor: BRAND.bgDark,
 		}"
 	>
-		<Text :style="{ color: BRAND.primary }" class="font-bold">{{ LOGO }}</Text>
+		<BigText text="INVADERS" font="block" :colors="[BRAND.primary]" />
 
 		<Box :style="{ marginTop: 2, marginBottom: 1 }">
 			<Text class="text-gray">↑/↓ Navigate • Enter Select</Text>

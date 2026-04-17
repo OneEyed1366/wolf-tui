@@ -38,6 +38,17 @@ export type {
 
 export { ProgressBar, progressBarTheme } from './ProgressBar'
 export type { ProgressBarProps, ProgressBarTheme } from './ProgressBar'
+
+export { BigText, bigTextTheme } from './BigText'
+export type {
+	BigTextProps,
+	BigTextTheme,
+	BigTextFont,
+	BigTextAlign,
+	BigTextBackgroundColor,
+	BigTextGradient,
+	BigTextEnv,
+} from './BigText'
 //#endregion Display Components
 
 //#region List Components

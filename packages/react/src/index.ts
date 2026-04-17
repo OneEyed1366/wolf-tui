@@ -29,6 +29,16 @@ export { App } from './components/App'
 export type { IProps as AppProps } from './components/App/types'
 export { Badge, type BadgeProps, badgeTheme } from './components/Badge'
 export {
+	BigText,
+	type BigTextProps,
+	bigTextTheme,
+	type BigTextFont,
+	type BigTextAlign,
+	type BigTextBackgroundColor,
+	type BigTextGradient,
+	type BigTextEnv,
+} from './components/BigText'
+export {
 	ConfirmInput,
 	type ConfirmInputProps,
 	confirmInputTheme,

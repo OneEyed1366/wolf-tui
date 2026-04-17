@@ -21,6 +21,14 @@ export { default as UnorderedListItem } from './UnorderedListItem.svelte'
 export { default as OrderedList } from './OrderedList.svelte'
 export { default as OrderedListItem } from './OrderedListItem.svelte'
 export { default as ErrorOverview } from './ErrorOverview.svelte'
+export { default as BigText } from './BigText.svelte'
+export type {
+	BigTextFont,
+	BigTextAlign,
+	BigTextBackgroundColor,
+	BigTextGradient,
+	BigTextEnv,
+} from '@wolf-tui/shared'
 //#endregion Display Components
 
 //#region Input Components

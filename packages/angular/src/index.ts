@@ -77,6 +77,13 @@ export {
 	type StatusMessageProps,
 	ProgressBarComponent,
 	type ProgressBarProps,
+	BigTextComponent,
+	type BigTextProps,
+	type BigTextFont,
+	type BigTextAlign,
+	type BigTextBackgroundColor,
+	type BigTextGradient,
+	type BigTextEnv,
 	// List Components
 	OrderedListComponent,
 	type OrderedListProps,

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Box, Text, useInput } from '@wolf-tui/svelte'
+	import { Box, Text, BigText, useInput } from '@wolf-tui/svelte'
 	import type { Screen } from '../composables/useInvaders.svelte'
 	import { useQuit } from '../composables/useQuit'
 	import { BRAND } from '../theme'
@@ -20,16 +20,6 @@
 		{ label: 'Quit', value: 'quit' },
 	]
 	//#endregion Menu Options
-
-	//#region ASCII Logo
-	const LOGO = `
- ____  ____   _    ____ _____   ___ _   ___     ___    ____  _____ ____  ____
-/ ___||  _ \\ / \\  / ___| ____| |_ _| \\ | \\ \\   / / \\  |  _ \\| ____|  _ \\/ ___|
-\\___ \\| |_) / _ \\| |   |  _|    | ||  \\| |\\ \\ / / _ \\ | | | |  _| | |_) \\___ \\
- ___) |  __/ ___ \\ |___| |___   | || |\\  | \\ V / ___ \\| |_| | |___|  _ < ___) |
-|____/|_| /_/   \\_\\____|_____| |___|_| \\_|  \\_/_/   \\_\\____/|_____|_| \\_\\____/
-`
-	//#endregion ASCII Logo
 
 	const quit = useQuit()
 	let selectedIndex = $state(0)
@@ -69,9 +59,7 @@
 </script>
 
 <Box className={[{ width: '100vw', height: '100vh', backgroundColor: BRAND.bgDark }, 'flex-col items-center justify-center']}>
-	<Text className={[{ color: BRAND.primary }, 'font-bold']}>
-		{LOGO}
-	</Text>
+	<BigText text="INVADERS" font="tiny" colors={[BRAND.primary]} space={false} />
 
 	<Box className="mt-2 mb-1">
 		<Text className="text-gray">↑/↓ Navigate • Enter Select</Text>
