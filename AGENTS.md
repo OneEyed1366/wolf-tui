@@ -1,5 +1,41 @@
 # wolf-tui
 
+<cross_adapter_demo_parity>
+Every component that ships in all five adapters (React / Vue / Angular / Solid / Svelte) must render a visually identical demo in each `examples/<framework>_showcase` (and `examples/<framework>_invaders` where applicable). The only permitted differences are brand/framework color accents (e.g. cyan title in one, magenta in another) and framework-idiomatic child iteration syntax (`map`, `For`, `#each`, `v-for`, `*ngFor`).
+
+Why: the five demos are our runtime regression harness. Visual drift hides bugs — if React's demo wraps ScrollView in a border box and Angular's doesn't, a broken border primitive in Angular looks "correct" and ships (this exact case happened on 2026-04-17 for ScrollView). Identical demos make the five frames diff-able: any visual delta between adapters is the bug signal.
+
+Forbidden:
+
+- Different wrapper chrome around the same component across adapters (one has `borderStyle: 'round'`, another has none)
+- Different outer padding / margin / gap around the demo
+- Different help-line wording (`↑↓=scroll` vs `arrow-keys=scroll` vs `Up/Down=scroll`)
+- Different status-line format (`offset: 3 / 22` vs `offset=3 contentHeight=30`)
+- Different fixture data (one demo has 30 items with random suffix, another has 10 items plain)
+- Shipping the demo in one adapter without porting to the other four in the same branch (unless explicitly scoped as follow-up in the PR description)
+
+Required:
+
+- Same outer `<Box>` style (`borderStyle`, `borderColor`, `padding`, `marginTop`, `flexDirection`)
+- Same help text, word-for-word
+- Same fixture constants (`ITEMS.length`, label format, `VIEWPORT`/`HEIGHT`)
+- Same status-line copy and number formatting
+- Same title text ("ScrollView Demo" — not "Scroll View Demo" in one, "ScrollView" in another)
+
+Exception:
+
+- Brand accent color on the title (no need to synchronize — cyan everywhere is fine; if one adapter uses magenta intentionally, that's ok)
+- Framework-idiomatic iteration: `items.map(i => <Text>{i}</Text>)` (React) vs `<For each={items}>{i => <Text>{i}</Text>}</For>` (Solid) — syntax, not visual
+
+Out of scope:
+
+- `examples/<fw>_{esbuild,vite,webpack}/` — bundler integration samples, not cross-adapter component demos. Parity not required; these are allowed to differ per adapter based on what each bundler needs to demonstrate.
+
+Verification:
+
+- When adding a demo to one adapter, before merging: run `node examples/<fw>_showcase/verify.cjs` for all 5 and visually diff the captured frames. Any delta that isn't brand color or iteration syntax = parity violation, fix before merging.
+  </cross_adapter_demo_parity>
+
 ## Project Overview
 
 wolf-tui is a framework-agnostic Terminal User Interface library. Write CLI apps with React, Vue, Angular, SolidJS, or Svelte using JSX/template syntax, Flexbox/Grid layouts (via Taffy), and CSS-like styling.

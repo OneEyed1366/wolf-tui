@@ -199,6 +199,14 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 | `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
 | `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
 | `<FilePicker>` | Filesystem browser with filter mode                                                                                |
+| `<ScrollView>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling                                        |
+| Component      | Description                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
+| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
+| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
+| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
 | `<Gradient>`   | Colored text gradient — preset or custom stops ([ink-gradient](https://github.com/sindresorhus/ink-gradient) port) |
 
 <details>
@@ -267,6 +275,15 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 // FilePicker
 <FilePicker initialPath="." multiSelect onSelect={(paths) => console.log(paths)} />
 
+// ScrollView — uncontrolled, built-in arrows/PageUp/PageDown/Home/End
+<ScrollView height={8} onScroll={(o) => console.log('offset', o)}>
+  {items.map((it, i) => <Text key={i}>{it}</Text>)}
+</ScrollView>
+
+// ScrollView — controlled + imperative handle
+const ref = useRef<IScrollViewHandle>(null)
+<ScrollView height={8} offset={offset} onScroll={setOffset} ref={ref} />
+// ref.current?.scrollToBottom()
 // Gradient — by preset name
 <Gradient name="rainbow">wolf-tui in color</Gradient>
 

@@ -30,6 +30,11 @@ export {
 	ProgressBarComponent,
 	type ProgressBarProps,
 } from './progress-bar/progress-bar.component'
+export {
+	ScrollViewComponent,
+	type IScrollViewProps,
+	type IScrollViewHandle,
+} from './scroll-view/scroll-view.component'
 
 // List Components
 export {

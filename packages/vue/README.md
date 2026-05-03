@@ -271,6 +271,14 @@ Both accept `style` (inline object) and `class`/`className` (CSS classes via `@w
 | `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
 | `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
 | `<FilePicker>` | Filesystem browser with filter mode                                                                                |
+| `<ScrollView>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling                                        |
+| Component      | Description                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
+| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
+| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
+| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
 | `<Gradient>`   | Colored text gradient — preset or custom stops ([ink-gradient](https://github.com/sindresorhus/ink-gradient) port) |
 
 <details>
@@ -335,6 +343,19 @@ Both accept `style` (inline object) and `class`/`className` (CSS classes via `@w
 	<!-- FilePicker -->
 	<FilePicker initialPath="." multiSelect @select="onFiles" />
 
+	<!-- ScrollView — uncontrolled, built-in arrows/PageUp/PageDown/Home/End -->
+	<ScrollView :height="8" :onScroll="(o) => console.log('offset', o)">
+		<Text v-for="(it, i) in items" :key="i">{{ it }}</Text>
+	</ScrollView>
+
+	<!-- ScrollView — imperative handle via template ref -->
+	<ScrollView
+		ref="scrollRef"
+		:height="8"
+		:offset="offset"
+		:onScroll="(o) => (offset = o)"
+	/>
+	<!-- scrollRef.value?.scrollToBottom() -->
 	<!-- Gradient — by preset name (slot for text) -->
 	<Gradient name="rainbow">wolf-tui in color</Gradient>
 

@@ -8,11 +8,19 @@
 	import ComboboxDemo from './demos/ComboboxDemo.svelte'
 	import JsonViewerDemo from './demos/JsonViewerDemo.svelte'
 	import FilePickerDemo from './demos/FilePickerDemo.svelte'
+	import ScrollViewDemo from './demos/ScrollViewDemo.svelte'
 	import GradientDemo from './demos/GradientDemo.svelte'
 	//#endregion Screens
 
 	//#region Menu Data
-	type DemoName = 'timer' | 'treeview' | 'combobox' | 'jsonviewer' | 'filepicker' | 'gradient'
+	type DemoName =
+		| 'timer'
+		| 'treeview'
+		| 'combobox'
+		| 'jsonviewer'
+		| 'filepicker'
+		| 'scrollview'
+		| 'gradient'
 
 	const DEMOS: Array<{ key: DemoName; label: string }> = [
 		{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -20,6 +28,7 @@
 		{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 		{ key: 'jsonviewer', label: 'JsonViewer' },
 		{ key: 'filepicker', label: 'FilePicker' },
+		{ key: 'scrollview', label: 'ScrollView' },
 		{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
 	]
 	//#endregion Menu Data
@@ -58,6 +67,8 @@
 	<JsonViewerDemo onBack={goBack} />
 {:else if activeDemo === 'filepicker'}
 	<FilePickerDemo onBack={goBack} />
+{:else if activeDemo === 'scrollview'}
+	<ScrollViewDemo onBack={goBack} />
 {:else if activeDemo === 'gradient'}
 	<GradientDemo onBack={goBack} />
 {:else}
