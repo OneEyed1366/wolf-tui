@@ -1,6 +1,6 @@
 {
 	"name": "@wolf-tui/css-parser",
-	"version": "1.6.0",
+	"version": "1.7.0",
 	"description": "CSS/SCSS/Less/Stylus parser and code generator for wolfie",
 	"license": "MIT",
 	"type": "module",
