@@ -17,7 +17,15 @@ export default defineConfig({
 	css: {
 		postcss: resolve(__dirname, 'postcss.config.cjs'),
 	},
+	resolve: {
+		// Force Node-target resolution conditions so transitive deps (e.g. cfonts ->
+		// chalk -> supports-color) pick their Node entry instead of the browser one.
+		// Without this, supports-color/browser.js leaks `navigator.userAgent` into
+		// the bundle and crashes at module-init in a Node runtime.
+		conditions: ['node', 'import', 'module', 'default'],
+	},
 	build: {
+		target: 'node18',
 		lib: {
 			entry: resolve(__dirname, 'src/index.tsx'),
 			formats: ['es'],
