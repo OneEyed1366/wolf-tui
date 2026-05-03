@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/OneEyed1366/wolf-tui/compare/create-wolf-tui@v0.4.0...create-wolf-tui@v0.5.0) (2026-05-03)
+
+
+### Features
+
+* **components:** add Table across all 5 adapters ([#29](https://github.com/OneEyed1366/wolf-tui/issues/29)) ([374c836](https://github.com/OneEyed1366/wolf-tui/commit/374c8366e258f1e0aff78fdfd3411574d00cf6c6))
+
 ## [0.4.0](https://github.com/OneEyed1366/wolf-tui/compare/create-wolf-tui@v0.3.0...create-wolf-tui@v0.4.0) (2026-05-03)
 
 ### Features
