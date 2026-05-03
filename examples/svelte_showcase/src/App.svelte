@@ -9,6 +9,9 @@
 	import JsonViewerDemo from './demos/JsonViewerDemo.svelte'
 	import FilePickerDemo from './demos/FilePickerDemo.svelte'
 	import BigTextDemo from './demos/BigTextDemo.svelte'
+	import TableDemo from './demos/TableDemo.svelte'
+	import ScrollViewDemo from './demos/ScrollViewDemo.svelte'
+	import GradientDemo from './demos/GradientDemo.svelte'
 	//#endregion Screens
 
 	//#region Menu Data
@@ -19,6 +22,9 @@
 		| 'jsonviewer'
 		| 'filepicker'
 		| 'bigtext'
+		| 'table'
+		| 'scrollview'
+		| 'gradient'
 
 	const DEMOS: Array<{ key: DemoName; label: string }> = [
 		{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -27,6 +33,9 @@
 		{ key: 'jsonviewer', label: 'JsonViewer' },
 		{ key: 'filepicker', label: 'FilePicker' },
 		{ key: 'bigtext', label: 'BigText (cfonts)' },
+		{ key: 'table', label: 'Table' },
+		{ key: 'scrollview', label: 'ScrollView' },
+		{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
 	]
 	//#endregion Menu Data
 
@@ -66,6 +75,12 @@
 	<FilePickerDemo onBack={goBack} />
 {:else if activeDemo === 'bigtext'}
 	<BigTextDemo onBack={goBack} />
+{:else if activeDemo === 'table'}
+	<TableDemo onBack={goBack} />
+{:else if activeDemo === 'scrollview'}
+	<ScrollViewDemo onBack={goBack} />
+{:else if activeDemo === 'gradient'}
+	<GradientDemo onBack={goBack} />
 {:else}
 	<Box style={{ flexDirection: 'column', padding: 1 }}>
 		<Text style={{ fontWeight: 'bold', color: 'cyan' }}>

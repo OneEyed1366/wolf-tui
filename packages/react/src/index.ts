@@ -18,6 +18,11 @@ export type { Props as TransformProps } from './components/Transform/types'
 export { Newline } from './components/Newline'
 export type { Props as NewlineProps } from './components/Newline/types'
 export { Spacer } from './components/Spacer'
+export { ScrollView } from './components/ScrollView'
+export type {
+	IScrollViewProps,
+	IScrollViewHandle,
+} from './components/ScrollView/types'
 
 export {
 	Alert,
@@ -116,6 +121,20 @@ export {
 	type FilePickerProps,
 	filePickerTheme,
 } from './components/FilePicker'
+export {
+	Table,
+	type TableProps,
+	type TableColumn,
+	type TableCellValue,
+	type TableRow,
+	tableTheme,
+} from './components/Table'
+export {
+	Gradient,
+	type GradientProps,
+	type GradientName,
+	gradientTheme,
+} from './components/Gradient'
 export {
 	UnorderedList,
 	type UnorderedListProps,

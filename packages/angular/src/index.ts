@@ -70,6 +70,8 @@ export {
 	type AlertProps,
 	BadgeComponent,
 	type BadgeProps,
+	GradientComponent,
+	type GradientProps,
 	SpinnerComponent,
 	type SpinnerProps,
 	StatusMessageComponent,
@@ -84,6 +86,9 @@ export {
 	type BigTextBackgroundColor,
 	type BigTextGradient,
 	type BigTextEnv,
+	ScrollViewComponent,
+	type IScrollViewProps,
+	type IScrollViewHandle,
 	// List Components
 	OrderedListComponent,
 	type OrderedListProps,
@@ -125,6 +130,8 @@ export {
 	type JsonViewerProps,
 	FilePickerComponent,
 	type FilePickerProps,
+	TableComponent,
+	type TableProps,
 } from './components'
 
 // Styles

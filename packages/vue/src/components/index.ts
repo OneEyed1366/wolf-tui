@@ -26,6 +26,9 @@ export type { AlertProps, AlertVariant, AlertTheme } from './Alert'
 export { Badge, badgeTheme } from './Badge'
 export type { BadgeProps, BadgeTheme } from './Badge'
 
+export { Gradient, gradientTheme } from './Gradient'
+export type { GradientProps, GradientTheme, GradientName } from './Gradient'
+
 export { Spinner, spinnerTheme } from './Spinner'
 export type { SpinnerProps, SpinnerTheme } from './Spinner'
 
@@ -49,6 +52,8 @@ export type {
 	BigTextGradient,
 	BigTextEnv,
 } from './BigText'
+export { ScrollView } from './ScrollView'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView'
 //#endregion Display Components
 
 //#region List Components
@@ -105,4 +110,13 @@ export type { JsonViewerProps, JsonViewerTheme } from './JsonViewer'
 
 export { FilePicker, filePickerTheme } from './FilePicker'
 export type { FilePickerProps, FilePickerTheme } from './FilePicker'
+
+export { Table, tableTheme } from './Table'
+export type {
+	TableProps,
+	TableTheme,
+	TableColumn,
+	TableCellValue,
+	TableRow,
+} from './Table'
 //#endregion Community Components

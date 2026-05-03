@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Box, Text, Newline, useInput } from '@wolf-tui/svelte'
+	import { Box, Text, Newline, Table, useInput } from '@wolf-tui/svelte'
 	import type { Screen } from '../composables/useInvaders.svelte'
 	import { BRAND } from '../theme'
 
@@ -35,6 +35,13 @@
 		}
 	})
 
+	const scoreRows = MOCK_HIGH_SCORES.map((entry, index) => ({
+		rank: index + 1,
+		name: entry.name,
+		score: entry.score,
+		date: entry.date,
+	}))
+
 	// score prop reserved for future "your score" display
 </script>
 
@@ -44,24 +51,7 @@
 	</Text>
 	<Newline />
 
-	<Box className="flex-col">
-		<Box>
-			<Text className="text-yellow">{'RANK'.padEnd(6)}</Text>
-			<Text className="text-yellow">{'NAME'.padEnd(12)}</Text>
-			<Text className="text-yellow">{'SCORE'.padStart(8)}</Text>
-			<Text className="text-yellow">{'  DATE'.padEnd(12)}</Text>
-		</Box>
-		<Newline />
-
-		{#each MOCK_HIGH_SCORES as entry, index}
-			<Box>
-				<Text className="text-white">{`${index + 1}.`.padEnd(6)}</Text>
-				<Text className="text-green">{entry.name.padEnd(12)}</Text>
-				<Text className="text-cyan">{entry.score.toString().padStart(8)}</Text>
-				<Text className="text-gray">{'  ' + entry.date}</Text>
-			</Box>
-		{/each}
-	</Box>
+	<Table data={scoreRows} columns={['rank', 'name', 'score', 'date']} />
 
 	<Newline />
 	<Text className="text-gray">Press ESC or Q to return to menu</Text>

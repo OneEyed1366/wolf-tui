@@ -160,7 +160,77 @@ async function verify() {
 	const hasFile = fileFrame.includes('FilePicker Demo')
 	checks.push({ name: 'FilePicker renders', pass: hasFile })
 	console.log('FilePicker renders:', hasFile ? 'PASS' : 'FAIL')
+
+	send(ESC)
+	await delay(300)
 	//#endregion FilePicker
+
+	//#region Table
+	console.log('\n--- Table ---')
+	await openDemo(5)
+	const tableFrame = stripAnsi(stdout.get())
+	const hasTable =
+		tableFrame.includes('Table Demo') &&
+		tableFrame.includes('Naruto') &&
+		tableFrame.includes('│')
+	checks.push({ name: 'Table renders', pass: hasTable })
+	console.log('Table renders:', hasTable ? 'PASS' : 'FAIL')
+	//#endregion Table
+	//#region ScrollView
+	console.log('\n--- ScrollView ---')
+	await openDemo(6)
+	let scrollFrame = stripAnsi(stdout.get())
+	console.log(scrollFrame)
+	const hasScrollHeader = scrollFrame.includes('ScrollView Demo')
+	checks.push({ name: 'ScrollView renders', pass: hasScrollHeader })
+	console.log('ScrollView renders:', hasScrollHeader ? 'PASS' : 'FAIL')
+
+	// Initial offset must be 0 and content must include the first item.
+	const initialOffsetOk =
+		scrollFrame.includes('offset=0') && scrollFrame.includes('Item 01')
+	checks.push({ name: 'ScrollView initial offset=0', pass: initialOffsetOk })
+	console.log('ScrollView initial offset=0:', initialOffsetOk ? 'PASS' : 'FAIL')
+
+	// Push DOWN a few times — offset must advance and top item must scroll
+	// off-screen (viewport height = 8).
+	for (let i = 0; i < 10; i++) {
+		send(DOWN)
+		await delay(50)
+	}
+	await delay(200)
+	scrollFrame = stripAnsi(stdout.get())
+	const scrolledOk =
+		scrollFrame.includes('offset=10') && !scrollFrame.includes('Item 01')
+	checks.push({ name: 'ScrollView scrolls on arrow-down', pass: scrolledOk })
+	console.log('ScrollView scrolls on arrow-down:', scrolledOk ? 'PASS' : 'FAIL')
+
+	// Home jumps back to 0.
+	send('\x1b[H') // Home
+	await delay(200)
+	scrollFrame = stripAnsi(stdout.get())
+	const homeOk = scrollFrame.includes('offset=0')
+	checks.push({ name: 'ScrollView Home jumps to top', pass: homeOk })
+	console.log('ScrollView Home jumps to top:', homeOk ? 'PASS' : 'FAIL')
+
+	send(ESC)
+	await delay(300)
+	//#endregion ScrollView
+
+	//#region Gradient
+	console.log('\n--- Gradient ---')
+	await openDemo(7)
+	const gradStripped = stripAnsi(stdout.get())
+	const gradRaw = stdout.get()
+	console.log(gradStripped)
+	const hasGrad = gradStripped.includes('Gradient Demo')
+	const hasColors = /\x1b\[(?:38;[25];\d+(?:;\d+;\d+)?|3[0-7]|9[0-7])m/.test(
+		gradRaw
+	)
+	checks.push({ name: 'Gradient renders', pass: hasGrad })
+	checks.push({ name: 'Gradient emits ANSI colors', pass: hasColors })
+	console.log('Gradient renders:', hasGrad ? 'PASS' : 'FAIL')
+	console.log('Gradient colors:', hasColors ? 'PASS' : 'FAIL')
+	//#endregion Gradient
 
 	//#region Summary
 	console.log('\n=== SUMMARY ===')

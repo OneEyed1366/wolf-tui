@@ -161,7 +161,41 @@ async function verify() {
 	const hasFile = fileFrame.includes('FilePicker Demo')
 	checks.push({ name: 'FilePicker renders', pass: hasFile })
 	console.log('FilePicker renders:', hasFile ? 'OK' : 'FAIL')
+	send(ESC)
+	await delay(300)
 	//#endregion FilePicker
+
+	//#region Table
+	console.log('--- Table ---')
+	await openDemo(5)
+	const tableFrame = stripAnsi(stdout.get())
+	const hasTable =
+		tableFrame.includes('Table Demo') &&
+		tableFrame.includes('Naruto') &&
+		tableFrame.includes('│')
+	checks.push({ name: 'Table renders', pass: hasTable })
+	console.log('Table renders:', hasTable ? 'OK' : 'FAIL')
+	//#endregion Table
+
+	send(ESC)
+	await delay(200)
+	//#endregion FilePicker
+
+	//#region Gradient
+	console.log('--- Gradient ---')
+	await openDemo(7)
+	const gradStripped = stripAnsi(stdout.get())
+	const gradRaw = stdout.get()
+	console.log(gradStripped)
+	const hasGrad = gradStripped.includes('Gradient Demo')
+	const hasColors = /\x1b\[(?:38;[25];\d+(?:;\d+;\d+)?|3[0-7]|9[0-7])m/.test(
+		gradRaw
+	)
+	checks.push({ name: 'Gradient renders', pass: hasGrad })
+	checks.push({ name: 'Gradient emits ANSI colors', pass: hasColors })
+	console.log('Gradient renders:', hasGrad ? 'OK' : 'FAIL')
+	console.log('Gradient colors:', hasColors ? 'OK' : 'FAIL')
+	//#endregion Gradient
 
 	//#region Summary
 	console.log('\n=== SUMMARY ===')

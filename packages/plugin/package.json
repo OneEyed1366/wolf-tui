@@ -1,6 +1,6 @@
 {
 	"name": "@wolf-tui/plugin",
-	"version": "1.5.0",
+	"version": "1.7.0",
 	"description": "Unplugin for wolfie - supports Vite, esbuild, webpack, and Rollup",
 	"license": "MIT",
 	"type": "module",

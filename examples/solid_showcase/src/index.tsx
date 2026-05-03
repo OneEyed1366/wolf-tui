@@ -6,6 +6,9 @@ import { ComboboxDemo } from './demos/ComboboxDemo'
 import { JsonViewerDemo } from './demos/JsonViewerDemo'
 import { FilePickerDemo } from './demos/FilePickerDemo'
 import { BigTextDemo } from './demos/BigTextDemo'
+import { TableDemo } from './demos/TableDemo'
+import { ScrollViewDemo } from './demos/ScrollViewDemo'
+import { GradientDemo } from './demos/GradientDemo'
 
 //#region Menu
 type DemoName =
@@ -15,6 +18,9 @@ type DemoName =
 	| 'jsonviewer'
 	| 'filepicker'
 	| 'bigtext'
+	| 'table'
+	| 'scrollview'
+	| 'gradient'
 
 const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -23,6 +29,9 @@ const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
 	{ key: 'bigtext', label: 'BigText (ASCII Font)' },
+	{ key: 'table', label: 'Table' },
+	{ key: 'scrollview', label: 'ScrollView' },
+	{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
 ]
 //#endregion Menu
 
@@ -50,6 +59,15 @@ export function App() {
 			</Show>
 			<Show when={activeDemo() === 'bigtext'}>
 				<BigTextDemo onBack={goBack} />
+			</Show>
+			<Show when={activeDemo() === 'table'}>
+				<TableDemo onBack={goBack} />
+			</Show>
+			<Show when={activeDemo() === 'scrollview'}>
+				<ScrollViewDemo onBack={goBack} />
+			</Show>
+			<Show when={activeDemo() === 'gradient'}>
+				<GradientDemo onBack={goBack} />
 			</Show>
 			<Show when={activeDemo() === null}>
 				<Menu onSelect={setActiveDemo} />

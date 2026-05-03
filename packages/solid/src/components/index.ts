@@ -23,6 +23,9 @@ export type { TransformProps } from './Transform'
 export { Badge } from './Badge'
 export type { IBadgeProps } from './Badge'
 
+export { Gradient } from './Gradient'
+export type { IGradientProps } from './Gradient'
+
 export { StatusMessage } from './StatusMessage'
 export type {
 	IStatusMessageProps,
@@ -59,6 +62,8 @@ export type {
 	BigTextGradient,
 	BigTextEnv,
 } from '@wolf-tui/shared'
+export { ScrollView } from './ScrollView'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView'
 //#endregion Display Components
 
 //#region Input Components
@@ -104,4 +109,7 @@ export type { IJsonViewerProps, JsonViewerTheme } from './JsonViewer'
 
 export { FilePicker, filePickerTheme } from './FilePicker'
 export type { IFilePickerProps, FilePickerTheme } from './FilePicker'
+
+export { Table, tableTheme } from './Table'
+export type { ITableProps } from './Table'
 //#endregion Community Components

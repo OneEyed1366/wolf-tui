@@ -242,13 +242,30 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 
 ### Community
 
-| Component      | Description                            |
-| -------------- | -------------------------------------- |
-| `<Timer>`      | Count-up, countdown, stopwatch         |
-| `<TreeView>`   | Hierarchical tree with expand/collapse |
-| `<Combobox>`   | Fuzzy-search autocomplete dropdown     |
-| `<JsonViewer>` | Interactive JSON tree viewer           |
-| `<FilePicker>` | Filesystem browser with filter mode    |
+| Component      | Description                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
+| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
+| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
+| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
+| `<Table>`      | Box-drawing table for tabular data                                                                                 |
+| Component      | Description                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
+| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
+| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
+| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
+| `<ScrollView>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling                                        |
+| Component      | Description                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
+| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
+| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
+| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
+| `<Gradient>`   | Colored text gradient — preset or custom stops ([ink-gradient](https://github.com/sindresorhus/ink-gradient) port) |
 
 <details>
 <summary><b>Component examples</b></summary>
@@ -293,6 +310,25 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 
 <!-- FilePicker -->
 <FilePicker initialPath="." multiSelect onSelect={(paths) => console.log(paths)} />
+
+<!-- Table (ink-table parity) -->
+<Table data={rows} columns={['id', 'name']} padding={1} />
+<!-- ScrollView — uncontrolled, built-in arrows/PageUp/PageDown/Home/End -->
+<ScrollView height={8} onScroll={(o) => console.log('offset', o)}>
+  {#each items as it}<Text>{it}</Text>{/each}
+</ScrollView>
+
+<!-- ScrollView — imperative handle via bind:this -->
+<script lang="ts">
+  let scrollRef: ReturnType<typeof ScrollView>
+</script>
+<ScrollView bind:this={scrollRef} height={8} offset={offset} onScroll={(o) => offset = o} />
+<!-- scrollRef.scrollToBottom() -->
+<!-- Gradient — by preset name (uses text prop, not slot) -->
+<Gradient text="wolf-tui in color" name="rainbow" />
+
+<!-- Gradient — custom stops -->
+<Gradient text="Hand-picked stops" colors={['#ff3366', '#ffd700']} />
 ```
 
 </details>
