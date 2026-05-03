@@ -23,6 +23,9 @@ export type { TransformProps } from './Transform'
 export { Badge } from './Badge'
 export type { IBadgeProps } from './Badge'
 
+export { Gradient } from './Gradient'
+export type { IGradientProps } from './Gradient'
+
 export { StatusMessage } from './StatusMessage'
 export type {
 	IStatusMessageProps,

@@ -6,9 +6,16 @@ import TreeViewDemo from './demos/TreeViewDemo.vue'
 import ComboboxDemo from './demos/ComboboxDemo.vue'
 import JsonViewerDemo from './demos/JsonViewerDemo.vue'
 import FilePickerDemo from './demos/FilePickerDemo.vue'
+import GradientDemo from './demos/GradientDemo.vue'
 
 //#region Menu
-type DemoName = 'timer' | 'treeview' | 'combobox' | 'jsonviewer' | 'filepicker'
+type DemoName =
+	| 'timer'
+	| 'treeview'
+	| 'combobox'
+	| 'jsonviewer'
+	| 'filepicker'
+	| 'gradient'
 
 const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -16,6 +23,7 @@ const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
+	{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
 ]
 
 const activeDemo = ref<DemoName | null>(null)
@@ -44,6 +52,7 @@ useInput((_input, key) => {
 	<ComboboxDemo v-if="activeDemo === 'combobox'" :on-back="handleBack" />
 	<JsonViewerDemo v-if="activeDemo === 'jsonviewer'" :on-back="handleBack" />
 	<FilePickerDemo v-if="activeDemo === 'filepicker'" :on-back="handleBack" />
+	<GradientDemo v-if="activeDemo === 'gradient'" :on-back="handleBack" />
 	<!-- #endregion Demos -->
 
 	<!-- #region Menu -->

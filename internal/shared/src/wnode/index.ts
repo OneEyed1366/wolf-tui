@@ -1,6 +1,7 @@
 export * from './types'
 export * from './view-states'
 export * from './render-badge'
+export * from './render-gradient'
 export * from './render-confirm-input'
 export * from './render-spinner'
 export * from './render-status-message'

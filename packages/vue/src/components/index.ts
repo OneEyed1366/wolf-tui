@@ -26,6 +26,9 @@ export type { AlertProps, AlertVariant, AlertTheme } from './Alert'
 export { Badge, badgeTheme } from './Badge'
 export type { BadgeProps, BadgeTheme } from './Badge'
 
+export { Gradient, gradientTheme } from './Gradient'
+export type { GradientProps, GradientTheme, GradientName } from './Gradient'
+
 export { Spinner, spinnerTheme } from './Spinner'
 export type { SpinnerProps, SpinnerTheme } from './Spinner'
 
