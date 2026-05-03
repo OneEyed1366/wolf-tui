@@ -177,6 +177,23 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 
 </details>
 
+<details>
+<summary><b>ScrollView inputs</b></summary>
+
+Renders children inside a fixed-height viewport, clips overflow, and scrolls via `marginTop: -offset`. Built-in key bindings: ↑/↓ (row), PageUp/PageDown (viewport), Home/End. Adapted from [ink-scroll-view](https://github.com/ByteLandTechnology/ink-scroll-view).
+
+| Input                   | Type                       | Default | Description                                        |
+| ----------------------- | -------------------------- | ------- | -------------------------------------------------- |
+| `[height]`              | `number`                   | —       | Viewport height in rows (required)                 |
+| `[offset]`              | `number`                   | —       | Controlled scroll offset — omit for internal state |
+| `[keyBindings]`         | `boolean`                  | `true`  | Enable arrows + page + home/end                    |
+| `(scroll)`              | `(offset: number) => void` | —       | Fires when offset changes                          |
+| `(contentHeightChange)` | `(height: number) => void` | —       | Fires when measured content height changes         |
+
+Imperative handle (via `@ViewChild` or `viewChild()`): `scrollTo(offset)`, `scrollBy(delta)`, `scrollToTop()`, `scrollToBottom()`, `getScrollOffset()`, `getContentHeight()`, `getViewportHeight()`.
+
+</details>
+
 ### Display
 
 | Component                | Selector             | Description                            | Key features                                                   |

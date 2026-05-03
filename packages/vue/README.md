@@ -235,6 +235,23 @@ Both accept `style` (inline object) and `class`/`className` (CSS classes via `@w
 
 </details>
 
+<details>
+<summary><b>ScrollView props</b></summary>
+
+Renders children inside a fixed-height viewport, clips overflow, and scrolls via `marginTop: -offset`. Built-in key bindings: ↑/↓ (row), PageUp/PageDown (viewport), Home/End. Adapted from [ink-scroll-view](https://github.com/ByteLandTechnology/ink-scroll-view).
+
+| Prop                    | Type                       | Default | Description                                        |
+| ----------------------- | -------------------------- | ------- | -------------------------------------------------- |
+| `height`                | `number`                   | —       | Viewport height in rows (required)                 |
+| `offset`                | `number`                   | —       | Controlled scroll offset — omit for internal state |
+| `keyBindings`           | `boolean`                  | `true`  | Enable arrows + page + home/end                    |
+| `onScroll`              | `(offset: number) => void` | —       | Fires when offset changes                          |
+| `onContentHeightChange` | `(height: number) => void` | —       | Fires when measured content height changes         |
+
+Imperative handle (via template `ref` + `defineExpose`): `scrollTo(offset)`, `scrollBy(delta)`, `scrollToTop()`, `scrollToBottom()`, `getScrollOffset()`, `getContentHeight()`, `getViewportHeight()`.
+
+</details>
+
 ### Display
 
 | Component         | Description                            | Key features                                                   |
@@ -432,12 +449,29 @@ const { focusNext, focusPrevious } = useFocusManager()
 
 ### Stream access
 
-| Composable                   | Returns                                     |
-| ---------------------------- | ------------------------------------------- |
-| `useStdin()`                 | `{ stdin, setRawMode, isRawModeSupported }` |
-| `useStdout()`                | `{ stdout, write }`                         |
-| `useStderr()`                | `{ stderr, write }`                         |
-| `useIsScreenReaderEnabled()` | `boolean`                                   |
+| Composable    | Returns                                     |
+| ------------- | ------------------------------------------- |
+| `useStdin()`  | `{ stdin, setRawMode, isRawModeSupported }` |
+| `useStdout()` | `{ stdout, write }`                         |
+| `useStderr()` | `{ stderr, write }`                         |
+
+### Accessibility
+
+| Composable                   | Returns   | Notes                                        |
+| ---------------------------- | --------- | -------------------------------------------- |
+| `useIsScreenReaderEnabled()` | `boolean` | Render alternative output for screen readers |
+
+```vue
+<script setup>
+import { useIsScreenReaderEnabled } from '@wolf-tui/vue'
+
+const srEnabled = useIsScreenReaderEnabled()
+</script>
+
+<template>
+	<Text>{{ srEnabled ? 'Welcome, screen reader user' : 'Welcome' }}</Text>
+</template>
+```
 
 ---
 
