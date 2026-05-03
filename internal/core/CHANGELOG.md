@@ -2,17 +2,15 @@
 
 ## [1.5.0](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.4.0...core@v1.5.0) (2026-04-14)
 
-
 ### Features
 
-* community components + tree-shake + attw fixes ([d83bc4a](https://github.com/OneEyed1366/wolf-tui/commit/d83bc4a5b1cc5fc4150c8c5c8fec16b6ca06fd59))
+- community components + tree-shake + attw fixes ([d83bc4a](https://github.com/OneEyed1366/wolf-tui/commit/d83bc4a5b1cc5fc4150c8c5c8fec16b6ca06fd59))
 
 ## [1.4.0](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.3.2...core@v1.4.0) (2026-04-02)
 
-
 ### Features
 
-* **core:** normalize kebab-case style keys to camelCase at runtime ([b17abe6](https://github.com/OneEyed1366/wolf-tui/commit/b17abe68f08eb83da67db111598f2fcad5d39f29))
+- **core:** normalize kebab-case style keys to camelCase at runtime ([b17abe6](https://github.com/OneEyed1366/wolf-tui/commit/b17abe68f08eb83da67db111598f2fcad5d39f29))
 
 ## [1.3.2](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.3.1...core@v1.3.2) (2026-03-27)
 
