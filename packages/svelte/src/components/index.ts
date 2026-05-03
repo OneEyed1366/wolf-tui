@@ -12,6 +12,7 @@ export { default as Transform } from './Transform.svelte'
 
 //#region Display Components
 export { default as Badge } from './Badge.svelte'
+export { default as Gradient } from './Gradient.svelte'
 export { default as StatusMessage } from './StatusMessage.svelte'
 export { default as Alert } from './Alert.svelte'
 export { default as Spinner } from './Spinner.svelte'
@@ -44,4 +45,6 @@ export { default as Combobox } from './Combobox.svelte'
 export { default as JsonViewer } from './JsonViewer.svelte'
 export { default as FilePicker } from './FilePicker.svelte'
 export { default as Table } from './Table.svelte'
+export { default as ScrollView } from './ScrollView.svelte'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView.types.js'
 //#endregion Community Components

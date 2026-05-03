@@ -70,6 +70,8 @@ export {
 	type AlertProps,
 	BadgeComponent,
 	type BadgeProps,
+	GradientComponent,
+	type GradientProps,
 	SpinnerComponent,
 	type SpinnerProps,
 	StatusMessageComponent,
@@ -77,6 +79,9 @@ export {
 	type StatusMessageProps,
 	ProgressBarComponent,
 	type ProgressBarProps,
+	ScrollViewComponent,
+	type IScrollViewProps,
+	type IScrollViewHandle,
 	// List Components
 	OrderedListComponent,
 	type OrderedListProps,

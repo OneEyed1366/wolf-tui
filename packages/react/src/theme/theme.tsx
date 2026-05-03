@@ -1,6 +1,7 @@
 import { type ReactNode, createContext, useContext } from 'react'
 import { type ITheme, type IComponentTheme } from '@wolf-tui/shared'
 import { badgeTheme } from '../components/Badge'
+import { gradientTheme } from '../components/Gradient'
 import { spinnerTheme } from '../components/Spinner'
 import { progressBarTheme } from '../components/ProgressBar'
 import { statusMessageTheme } from '../components/StatusMessage'
@@ -24,6 +25,7 @@ export { extendTheme } from '@wolf-tui/shared'
 export const defaultTheme: ITheme = {
 	components: {
 		Badge: badgeTheme,
+		Gradient: gradientTheme,
 		Spinner: spinnerTheme,
 		ProgressBar: progressBarTheme,
 		StatusMessage: statusMessageTheme,

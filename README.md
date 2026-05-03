@@ -204,13 +204,16 @@ All adapters share the same component set:
 | **Input**     | `TextInput`, `PasswordInput`, `EmailInput`, `ConfirmInput`, `Select`, `MultiSelect` |
 | **Lists**     | `OrderedList`, `UnorderedList`                                                      |
 | **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`, `Table`                |
+| **Scrolling** | `ScrollView`                                                                        |
+| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`                         |
+| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`, `Gradient`             |
 
 Plus composables/hooks: `useInput`, `useFocus`, `useFocusManager`, stream access, screen reader detection.
 
 <details>
 <summary><b>Community components</b> — Timer, TreeView, Combobox, JsonViewer, FilePicker, Table</summary>
 
-Adapted from the [ink-\* community ecosystem](https://github.com/vadimdemedes/ink/pull/922), available in all 5 adapters:
+Adapted from the [ink-\* community ecosystem](https://github.com/vadimdemedes/ink/pull/922) (Gradient from [ink-gradient](https://github.com/sindresorhus/ink-gradient)), available in all 5 adapters:
 
 | Component    | Description                            | Key features                                              |
 | ------------ | -------------------------------------- | --------------------------------------------------------- |
@@ -221,9 +224,21 @@ Adapted from the [ink-\* community ecosystem](https://github.com/vadimdemedes/in
 | `FilePicker` | Filesystem browser with filter         | Multi-select, symlink support, directory navigation       |
 | `Table`      | Box-drawing table for tabular data     | `ink-table` parity, themable borders/cells, column subset |
 
-```tsx
+````tsx
 // React example
 import { Timer, TreeView, Combobox, JsonViewer, FilePicker, Table } from '@wolf-tui/react'
+| Component    | Description                               | Key features                                                                            |
+| ------------ | ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| `Timer`      | Count-up, countdown, stopwatch            | Lap recording, configurable format, drift-resistant                                     |
+| `TreeView`   | Hierarchical tree with expand/collapse    | Single/multi-select, async lazy loading, virtual scroll                                 |
+| `Combobox`   | Fuzzy-search autocomplete dropdown        | Two-pass fzf-style matching, cursor nav, autofill                                       |
+| `JsonViewer` | Interactive JSON tree viewer              | 16 value types, syntax coloring, circular detection                                     |
+| `FilePicker` | Filesystem browser with filter            | Multi-select, symlink support, directory navigation                                     |
+| `Gradient`   | Colored text gradient (ink-gradient port) | 13 built-in presets (rainbow, pastel, atlas, …) or custom stops; per-char interpolation |
+
+```tsx
+// React example
+import { Timer, TreeView, Combobox, JsonViewer, FilePicker, Gradient } from '@wolf-tui/react'
 
 // Timer with countdown
 <Timer variant="countdown" durationMs={60000} format="human" />
@@ -236,9 +251,41 @@ import { Timer, TreeView, Combobox, JsonViewer, FilePicker, Table } from '@wolf-
 
 // Table with box-drawing borders
 <Table data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]} />
-```
+// Gradient text — by preset name, or custom stops
+<Gradient name="rainbow">wolf-tui in color</Gradient>
+<Gradient colors={['#ff3366', '#ffd700']}>Hand-picked stops</Gradient>
+````
 
 All community components use the shared WNode render architecture — same visual output across all 5 frameworks.
+
+</details>
+
+<details>
+<summary><b>ScrollView</b> — viewport with clipped overflow and built-in keyboard scrolling</summary>
+
+Adapted from [ink-scroll-view](https://github.com/ByteLandTechnology/ink-scroll-view). Renders children inside a fixed-height viewport, clips overflow, and scrolls via `marginTop: -offset`. Built-in key bindings: ↑/↓ (row), PageUp/PageDown (viewport), Home/End.
+
+| Prop                    | Type                       | Default | Description                                        |
+| ----------------------- | -------------------------- | ------- | -------------------------------------------------- |
+| `height`                | `number`                   | —       | Viewport height in rows (required)                 |
+| `offset`                | `number`                   | —       | Controlled scroll offset — omit for internal state |
+| `keyBindings`           | `boolean`                  | `true`  | Enable arrows + page + home/end                    |
+| `onScroll`              | `(offset: number) => void` | —       | Fires when offset changes                          |
+| `onContentHeightChange` | `(height: number) => void` | —       | Fires when measured content height changes         |
+
+Each adapter exposes an imperative handle: `scrollTo(offset)`, `scrollBy(delta)`, `scrollToTop()`, `scrollToBottom()`, `getScrollOffset()`, `getContentHeight()`, `getViewportHeight()` — via `ref` (React/Solid), `defineExpose` (Vue), `bind:this` (Svelte), or `@ViewChild` (Angular).
+
+```tsx
+// React example — uncontrolled + built-in keys
+import { ScrollView, Text } from '@wolf-tui/react'
+;<ScrollView height={8}>
+	{items.map((it, i) => (
+		<Text key={i}>{it}</Text>
+	))}
+</ScrollView>
+```
+
+Try it: `examples/<framework>_showcase` → ScrollView demo.
 
 </details>
 

@@ -1,32 +1,40 @@
 # Changelog
 
-## [1.5.0](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.4.0...css-parser@v1.5.0) (2026-04-14)
-
+## [1.6.0](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.5.0...css-parser@v1.6.0) (2026-05-03)
 
 ### Features
 
-* community components + tree-shake + attw fixes ([d83bc4a](https://github.com/OneEyed1366/wolf-tui/commit/d83bc4a5b1cc5fc4150c8c5c8fec16b6ca06fd59))
-
+- **components:** add Gradient across all 5 adapters ([#30](https://github.com/OneEyed1366/wolf-tui/issues/30)) ([386dab7](https://github.com/OneEyed1366/wolf-tui/commit/386dab72b29c9309378d19d6b27a77e9af0d196c))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * peerDependencies
-    * @wolf-tui/core bumped to 1.5.0
+- The following workspace dependencies were updated
+  - peerDependencies
+    - @wolf-tui/core bumped to 1.6.0
+
+## [1.5.0](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.4.0...css-parser@v1.5.0) (2026-04-14)
+
+### Features
+
+- community components + tree-shake + attw fixes ([d83bc4a](https://github.com/OneEyed1366/wolf-tui/commit/d83bc4a5b1cc5fc4150c8c5c8fec16b6ca06fd59))
+
+### Dependencies
+
+- The following workspace dependencies were updated
+  - peerDependencies
+    - @wolf-tui/core bumped to 1.5.0
 
 ## [1.4.0](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.3.3...css-parser@v1.4.0) (2026-04-02)
 
-
 ### Features
 
-* **create-wolf-tui:** CLI scaffolding tool for wolf-tui projects ([#17](https://github.com/OneEyed1366/wolf-tui/issues/17)) ([a50fe11](https://github.com/OneEyed1366/wolf-tui/commit/a50fe117bebf6fffcbfda9f2b89d4ee2a9f9a513))
-
+- **create-wolf-tui:** CLI scaffolding tool for wolf-tui projects ([#17](https://github.com/OneEyed1366/wolf-tui/issues/17)) ([a50fe11](https://github.com/OneEyed1366/wolf-tui/commit/a50fe117bebf6fffcbfda9f2b89d4ee2a9f9a513))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * peerDependencies
-    * @wolf-tui/core bumped to 1.4.0
+- The following workspace dependencies were updated
+  - peerDependencies
+    - @wolf-tui/core bumped to 1.4.0
 
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/css-parser@v1.2.1...css-parser@v1.3.0) (2026-03-26)
 

@@ -23,6 +23,9 @@ export type { TransformProps } from './Transform'
 export { Badge } from './Badge'
 export type { IBadgeProps } from './Badge'
 
+export { Gradient } from './Gradient'
+export type { IGradientProps } from './Gradient'
+
 export { StatusMessage } from './StatusMessage'
 export type {
 	IStatusMessageProps,
@@ -49,6 +52,9 @@ export type { IOrderedListProps, IOrderedListItemProps } from './OrderedList'
 
 export { ErrorOverview } from './ErrorOverview'
 export type { IErrorOverviewProps } from './ErrorOverview'
+
+export { ScrollView } from './ScrollView'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView'
 //#endregion Display Components
 
 //#region Input Components

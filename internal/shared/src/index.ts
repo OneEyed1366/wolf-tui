@@ -105,3 +105,8 @@ export {
 	type IFileEntry,
 	type EntryKind,
 } from './lib/directory-reader'
+export {
+	getBottomOffset,
+	clampScrollOffset,
+	type IScrollMetrics,
+} from './lib/scroll-utils'

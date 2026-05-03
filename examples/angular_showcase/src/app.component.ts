@@ -6,6 +6,8 @@ import { ComboboxDemoComponent } from './demos/combobox-demo.component'
 import { JsonViewerDemoComponent } from './demos/json-viewer-demo.component'
 import { FilePickerDemoComponent } from './demos/file-picker-demo.component'
 import { TableDemoComponent } from './demos/table-demo.component'
+import { ScrollViewDemoComponent } from './demos/scroll-view-demo.component'
+import { GradientDemoComponent } from './demos/gradient-demo.component'
 
 //#region Types
 type DemoName =
@@ -15,6 +17,8 @@ type DemoName =
 	| 'jsonviewer'
 	| 'filepicker'
 	| 'table'
+	| 'scrollview'
+	| 'gradient'
 
 interface IDemoEntry {
 	key: DemoName
@@ -30,6 +34,8 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
 	{ key: 'table', label: 'Table' },
+	{ key: 'scrollview', label: 'ScrollView' },
+	{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
 ]
 //#endregion Constants
 
@@ -46,6 +52,8 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 		JsonViewerDemoComponent,
 		FilePickerDemoComponent,
 		TableDemoComponent,
+		ScrollViewDemoComponent,
+		GradientDemoComponent,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
@@ -67,6 +75,12 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 			}
 			@case ('table') {
 				<app-table-demo (back)="goBack()" />
+			}
+			@case ('scrollview') {
+				<app-scroll-view-demo (back)="goBack()" />
+			}
+			@case ('gradient') {
+				<app-gradient-demo (back)="goBack()" />
 			}
 			@default {
 				<w-box [style]="{ flexDirection: 'column', padding: 1 }">

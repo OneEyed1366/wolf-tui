@@ -14,6 +14,10 @@ export {
 } from './alert/alert.component'
 export { BadgeComponent, type BadgeProps } from './badge/badge.component'
 export {
+	GradientComponent,
+	type GradientProps,
+} from './gradient/gradient.component'
+export {
 	SpinnerComponent,
 	type SpinnerProps,
 } from './spinner/spinner.component'
@@ -26,6 +30,11 @@ export {
 	ProgressBarComponent,
 	type ProgressBarProps,
 } from './progress-bar/progress-bar.component'
+export {
+	ScrollViewComponent,
+	type IScrollViewProps,
+	type IScrollViewHandle,
+} from './scroll-view/scroll-view.component'
 
 // List Components
 export {

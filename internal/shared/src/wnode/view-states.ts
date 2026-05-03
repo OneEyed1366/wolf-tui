@@ -74,6 +74,29 @@ export type ProgressBarViewState = {
 }
 //#endregion ProgressBar
 
+//#region Gradient
+export type GradientName =
+	| 'atlas'
+	| 'cristal'
+	| 'teen'
+	| 'mind'
+	| 'morning'
+	| 'vice'
+	| 'passion'
+	| 'fruit'
+	| 'instagram'
+	| 'retro'
+	| 'summer'
+	| 'rainbow'
+	| 'pastel'
+
+export type GradientViewState = {
+	text: string
+	name?: GradientName
+	colors?: string[]
+}
+//#endregion Gradient
+
 //#region ErrorOverview
 export type ErrorOverviewStackFrame =
 	| { parsed: true; fn?: string; file?: string; line?: number; column?: number }

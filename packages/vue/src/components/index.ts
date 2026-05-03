@@ -26,6 +26,9 @@ export type { AlertProps, AlertVariant, AlertTheme } from './Alert'
 export { Badge, badgeTheme } from './Badge'
 export type { BadgeProps, BadgeTheme } from './Badge'
 
+export { Gradient, gradientTheme } from './Gradient'
+export type { GradientProps, GradientTheme, GradientName } from './Gradient'
+
 export { Spinner, spinnerTheme } from './Spinner'
 export type { SpinnerProps, SpinnerTheme } from './Spinner'
 
@@ -38,6 +41,9 @@ export type {
 
 export { ProgressBar, progressBarTheme } from './ProgressBar'
 export type { ProgressBarProps, ProgressBarTheme } from './ProgressBar'
+
+export { ScrollView } from './ScrollView'
+export type { IScrollViewProps, IScrollViewHandle } from './ScrollView'
 //#endregion Display Components
 
 //#region List Components
