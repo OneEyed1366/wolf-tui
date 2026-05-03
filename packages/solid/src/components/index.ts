@@ -100,4 +100,7 @@ export type { IJsonViewerProps, JsonViewerTheme } from './JsonViewer'
 
 export { FilePicker, filePickerTheme } from './FilePicker'
 export type { IFilePickerProps, FilePickerTheme } from './FilePicker'
+
+export { Table, tableTheme } from './Table'
+export type { ITableProps } from './Table'
 //#endregion Community Components

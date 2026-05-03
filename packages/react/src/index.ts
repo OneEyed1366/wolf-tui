@@ -112,6 +112,14 @@ export {
 	filePickerTheme,
 } from './components/FilePicker'
 export {
+	Table,
+	type TableProps,
+	type TableColumn,
+	type TableCellValue,
+	type TableRow,
+	tableTheme,
+} from './components/Table'
+export {
 	Gradient,
 	type GradientProps,
 	type GradientName,

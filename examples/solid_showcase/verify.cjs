@@ -161,6 +161,21 @@ async function verify() {
 	const hasFile = fileFrame.includes('FilePicker Demo')
 	checks.push({ name: 'FilePicker renders', pass: hasFile })
 	console.log('FilePicker renders:', hasFile ? 'OK' : 'FAIL')
+	send(ESC)
+	await delay(300)
+	//#endregion FilePicker
+
+	//#region Table
+	console.log('--- Table ---')
+	await openDemo(5)
+	const tableFrame = stripAnsi(stdout.get())
+	const hasTable =
+		tableFrame.includes('Table Demo') &&
+		tableFrame.includes('Naruto') &&
+		tableFrame.includes('│')
+	checks.push({ name: 'Table renders', pass: hasTable })
+	console.log('Table renders:', hasTable ? 'OK' : 'FAIL')
+	//#endregion Table
 
 	send(ESC)
 	await delay(200)
@@ -168,7 +183,7 @@ async function verify() {
 
 	//#region Gradient
 	console.log('--- Gradient ---')
-	await openDemo(5)
+	await openDemo(7)
 	const gradStripped = stripAnsi(stdout.get())
 	const gradRaw = stdout.get()
 	console.log(gradStripped)

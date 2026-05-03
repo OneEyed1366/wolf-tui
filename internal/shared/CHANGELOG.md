@@ -9,17 +9,15 @@
 
 ## [1.6.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.5.0...shared@v1.6.0) (2026-05-03)
 
-
 ### Features
 
-* **components:** add Gradient across all 5 adapters ([#30](https://github.com/OneEyed1366/wolf-tui/issues/30)) ([386dab7](https://github.com/OneEyed1366/wolf-tui/commit/386dab72b29c9309378d19d6b27a77e9af0d196c))
-
+- **components:** add Gradient across all 5 adapters ([#30](https://github.com/OneEyed1366/wolf-tui/issues/30)) ([386dab7](https://github.com/OneEyed1366/wolf-tui/commit/386dab72b29c9309378d19d6b27a77e9af0d196c))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * peerDependencies
-    * @wolf-tui/core bumped to 1.6.0
+- The following workspace dependencies were updated
+  - peerDependencies
+    - @wolf-tui/core bumped to 1.6.0
 
 ## [1.5.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.4.0...shared@v1.5.0) (2026-04-14)
 

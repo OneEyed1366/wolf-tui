@@ -170,12 +170,24 @@ async function verify() {
 	await delay(200)
 	//#endregion FilePicker
 
+	//#region Table
+	console.log('\n--- Table ---')
+	await openDemo(5)
+	let tableFrame = stripAnsi(stdout.get())
+	console.log(tableFrame)
+	const hasTable =
+		tableFrame.includes('Table Demo') &&
+		tableFrame.includes('Naruto') &&
+		tableFrame.includes('│')
+	checks.push({ name: 'Table renders', pass: hasTable })
+	console.log('Table renders:', hasTable ? '✅' : '❌')
+	//#endregion Table
 	send(ESC)
 	await delay(200)
 
 	//#region ScrollView
 	console.log('\n--- ScrollView ---')
-	await openDemo(5)
+	await openDemo(6)
 	let scrollFrame = stripAnsi(stdout.get())
 	console.log(scrollFrame)
 	const hasScroll = scrollFrame.includes('ScrollView Demo')
@@ -209,7 +221,7 @@ async function verify() {
 	//#endregion ScrollView
 	//#region Gradient
 	console.log('\n--- Gradient ---')
-	await openDemo(6)
+	await openDemo(7)
 	const gradStripped = stripAnsi(stdout.get())
 	const gradRaw = stdout.get()
 	console.log(gradStripped)

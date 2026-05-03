@@ -199,6 +199,14 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 | `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
 | `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
 | `<FilePicker>` | Filesystem browser with filter mode                                                                                |
+| `<Table>`      | Box-drawing table for tabular data                                                                                 |
+| Component      | Description                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
+| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
+| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
+| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
+| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
 | `<ScrollView>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling                                        |
 | Component      | Description                                                                                                        |
 | -------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -275,6 +283,8 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 // FilePicker
 <FilePicker initialPath="." multiSelect onSelect={(paths) => console.log(paths)} />
 
+// Table (ink-table parity)
+<Table data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]} columns={['id', 'name']} padding={1} />
 // ScrollView — uncontrolled, built-in arrows/PageUp/PageDown/Home/End
 <ScrollView height={8} onScroll={(o) => console.log('offset', o)}>
   {items.map((it, i) => <Text key={i}>{it}</Text>)}

@@ -7,6 +7,7 @@ import {
 	PasswordInput,
 	EmailInput,
 	Newline,
+	Table,
 	useInput,
 } from '@wolf-tui/vue'
 import type { Screen } from '../composables/useInvaders'
@@ -63,6 +64,15 @@ const isNewHighScore = computed(() => {
 		props.score > (scores.value[scores.value.length - 1]?.score ?? 0)
 	)
 })
+
+const scoreRows = computed(() =>
+	scores.value.map((entry, index) => ({
+		rank: index + 1,
+		name: entry.name,
+		score: entry.score,
+		date: entry.date,
+	}))
+)
 //#endregion Computed
 
 //#region Input Handling
@@ -120,25 +130,7 @@ function handlePasswordSubmit(_password: string) {
 
 		<!-- View Mode -->
 		<template v-if="step === 'view'">
-			<Box :style="{ flexDirection: 'column' }">
-				<Box>
-					<Text class="text-yellow">{{ 'RANK'.padEnd(6) }}</Text>
-					<Text class="text-yellow">{{ 'NAME'.padEnd(12) }}</Text>
-					<Text class="text-yellow">{{ 'SCORE'.padStart(8) }}</Text>
-					<Text class="text-yellow">{{ '  DATE'.padEnd(12) }}</Text>
-				</Box>
-				<Newline />
-
-				<Box v-for="(entry, index) in scores" :key="`score-${index}`">
-					<Text class="text-white">{{ `${index + 1}.`.padEnd(6) }}</Text>
-					<Text class="text-green">{{ entry.name.padEnd(12) }}</Text>
-					<Text class="text-cyan">{{
-						entry.score.toString().padStart(8)
-					}}</Text>
-					<Text class="text-gray">{{ '  ' + entry.date }}</Text>
-					<Newline />
-				</Box>
-			</Box>
+			<Table :data="scoreRows" :columns="['rank', 'name', 'score', 'date']" />
 
 			<Newline />
 			<template v-if="isNewHighScore && score !== undefined">

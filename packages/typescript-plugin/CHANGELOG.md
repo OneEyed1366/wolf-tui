@@ -2,17 +2,15 @@
 
 ## [1.4.0](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.3.0...typescript-plugin@v1.4.0) (2026-05-03)
 
-
 ### Features
 
-* **components:** add Gradient across all 5 adapters ([#30](https://github.com/OneEyed1366/wolf-tui/issues/30)) ([386dab7](https://github.com/OneEyed1366/wolf-tui/commit/386dab72b29c9309378d19d6b27a77e9af0d196c))
-
+- **components:** add Gradient across all 5 adapters ([#30](https://github.com/OneEyed1366/wolf-tui/issues/30)) ([386dab7](https://github.com/OneEyed1366/wolf-tui/commit/386dab72b29c9309378d19d6b27a77e9af0d196c))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * dependencies
-    * @wolf-tui/css-parser bumped to 1.6.0
+- The following workspace dependencies were updated
+  - dependencies
+    - @wolf-tui/css-parser bumped to 1.6.0
 
 ## [1.3.0](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.2.0...typescript-plugin@v1.3.0) (2026-04-14)
 
