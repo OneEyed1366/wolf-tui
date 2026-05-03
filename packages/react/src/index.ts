@@ -112,6 +112,12 @@ export {
 	filePickerTheme,
 } from './components/FilePicker'
 export {
+	Gradient,
+	type GradientProps,
+	type GradientName,
+	gradientTheme,
+} from './components/Gradient'
+export {
 	UnorderedList,
 	type UnorderedListProps,
 	UnorderedListItem,

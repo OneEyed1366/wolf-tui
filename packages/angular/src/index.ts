@@ -70,6 +70,8 @@ export {
 	type AlertProps,
 	BadgeComponent,
 	type BadgeProps,
+	GradientComponent,
+	type GradientProps,
 	SpinnerComponent,
 	type SpinnerProps,
 	StatusMessageComponent,

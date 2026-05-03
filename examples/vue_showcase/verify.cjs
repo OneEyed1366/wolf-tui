@@ -205,6 +205,22 @@ async function verify() {
 	await delay(300)
 	//#endregion ScrollView
 
+	//#region Gradient
+	console.log('\n--- Gradient ---')
+	await openDemo(6)
+	const gradStripped = stripAnsi(stdout.get())
+	const gradRaw = stdout.get()
+	console.log(gradStripped)
+	const hasGrad = gradStripped.includes('Gradient Demo')
+	const hasColors = /\x1b\[(?:38;[25];\d+(?:;\d+;\d+)?|3[0-7]|9[0-7])m/.test(
+		gradRaw
+	)
+	checks.push({ name: 'Gradient renders', pass: hasGrad })
+	checks.push({ name: 'Gradient emits ANSI colors', pass: hasColors })
+	console.log('Gradient renders:', hasGrad ? 'PASS' : 'FAIL')
+	console.log('Gradient colors:', hasColors ? 'PASS' : 'FAIL')
+	//#endregion Gradient
+
 	//#region Summary
 	console.log('\n=== SUMMARY ===')
 	const passed = checks.filter((c) => c.pass).length

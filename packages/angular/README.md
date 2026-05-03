@@ -208,14 +208,22 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 
 ### Community
 
-| Component             | Selector          | Description                                                                 |
-| --------------------- | ----------------- | --------------------------------------------------------------------------- |
-| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch                                              |
-| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse                                      |
-| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown                                          |
-| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer                                                |
-| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode                                         |
-| `ScrollViewComponent` | `<w-scroll-view>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling |
+| Component             | Selector          | Description                                                                                                        |
+| --------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch                                                                                     |
+| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse                                                                             |
+| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown                                                                                 |
+| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer                                                                                       |
+| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode                                                                                |
+| `ScrollViewComponent` | `<w-scroll-view>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling                                        |
+| Component             | Selector          | Description                                                                                                        |
+| --------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch                                                                                     |
+| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse                                                                             |
+| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown                                                                                 |
+| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer                                                                                       |
+| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode                                                                                |
+| `GradientComponent`   | `<w-gradient>`    | Colored text gradient — preset or custom stops ([ink-gradient](https://github.com/sindresorhus/ink-gradient) port) |
 
 <details>
 <summary><b>Component examples</b></summary>
@@ -310,6 +318,14 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 </w-scroll-view>
 <!-- @ViewChild('scrollRef') gives imperative methods:
      scrollRef.scrollToBottom(); scrollRef.scrollBy(4); -->
+<!-- Gradient — by preset name (uses [text] input, not ng-content) -->
+<w-gradient [text]="'wolf-tui in color'" name="rainbow"></w-gradient>
+
+<!-- Gradient — custom stops -->
+<w-gradient
+	[text]="'Hand-picked stops'"
+	[colors]="['#ff3366', '#ffd700']"
+></w-gradient>
 ```
 
 </details>

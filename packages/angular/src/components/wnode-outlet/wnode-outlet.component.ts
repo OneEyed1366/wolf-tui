@@ -75,6 +75,13 @@ export class WNodeOutletComponent implements OnChanges, OnDestroy {
 			Object.assign(el.style, node.props.style)
 		}
 
+		// Forward internal_transform — required for components that colorize per
+		// segment (e.g. Gradient). squashTextNodes invokes it during squash, so
+		// styles on nested wolfie-text would otherwise be dropped.
+		if (node.props.internal_transform !== undefined) {
+			el.internal_transform = node.props.internal_transform
+		}
+
 		this.renderer.appendChild(parent, el)
 
 		// Track only top-level children for cleanup (removeChild is recursive in wolfie)

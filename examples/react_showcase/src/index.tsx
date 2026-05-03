@@ -6,6 +6,7 @@ import { ComboboxDemo } from './demos/ComboboxDemo'
 import { JsonViewerDemo } from './demos/JsonViewerDemo'
 import { FilePickerDemo } from './demos/FilePickerDemo'
 import { ScrollViewDemo } from './demos/ScrollViewDemo'
+import { GradientDemo } from './demos/GradientDemo'
 
 //#region Menu
 type DemoName =
@@ -15,6 +16,7 @@ type DemoName =
 	| 'jsonviewer'
 	| 'filepicker'
 	| 'scrollview'
+	| 'gradient'
 
 const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'timer', label: 'Timer / Countdown / Stopwatch' },
@@ -23,6 +25,7 @@ const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
 	{ key: 'scrollview', label: 'ScrollView' },
+	{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
 ]
 //#endregion Menu
 
@@ -42,6 +45,8 @@ export function App() {
 		return <FilePickerDemo onBack={() => setActiveDemo(null)} />
 	if (activeDemo === 'scrollview')
 		return <ScrollViewDemo onBack={() => setActiveDemo(null)} />
+	if (activeDemo === 'gradient')
+		return <GradientDemo onBack={() => setActiveDemo(null)} />
 
 	return <Menu onSelect={setActiveDemo} />
 }
