@@ -36,6 +36,7 @@ export const vueViteInteraction: ILayer = {
 			target: 'vite.config.ts',
 			slot: 'buildOverride',
 			content: `build: {
+		target: 'node18',
 		lib: {
 			entry: resolve(__dirname, 'src/index.ts'),
 			formats: ['cjs'],

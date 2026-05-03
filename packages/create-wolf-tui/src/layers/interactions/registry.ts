@@ -12,6 +12,7 @@ import { solidWebpackInteraction } from './solid-webpack'
 import { solidEsbuildInteraction } from './solid-esbuild'
 import { solidViteInteraction } from './solid-vite'
 import { reactWebpackInteraction } from './react-webpack'
+import { reactViteInteraction } from './react-vite'
 
 type InteractionKey = `${Framework}:${Bundler}`
 
@@ -28,6 +29,7 @@ const registry = new Map<InteractionKey, ILayer>([
 	['solid:vite', solidViteInteraction],
 	['solid:webpack', solidWebpackInteraction],
 	['solid:esbuild', solidEsbuildInteraction],
+	['react:vite', reactViteInteraction],
 	['react:webpack', reactWebpackInteraction],
 ])
 
