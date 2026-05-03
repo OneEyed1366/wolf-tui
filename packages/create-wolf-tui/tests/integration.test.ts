@@ -32,6 +32,22 @@ describe('compose integration', () => {
 		expect(result.files.has('env.d.ts')).toBe(true)
 		expect(result.files.has('src/index.tsx')).toBe(true)
 		expect(result.files.has('src/App.tsx')).toBe(true)
+
+		// Node-target safety: prevent supports-color/browser leaking
+		// navigator.userAgent into the bundle (cfonts -> chalk -> supports-color)
+		const viteConfig = result.files.get('vite.config.ts')!
+		expect(viteConfig).toContain("target: 'node18'")
+		expect(viteConfig).toContain(
+			"conditions: ['node', 'import', 'module', 'default']"
+		)
+	})
+
+	it('vue + vite scaffolds with target: node18', async () => {
+		const result = await compose(
+			makeConfig({ framework: 'vue', bundler: 'vite' })
+		)
+		const viteConfig = result.files.get('vite.config.ts')!
+		expect(viteConfig).toContain("target: 'node18'")
 	})
 
 	it('composes vue + webpack', async () => {
