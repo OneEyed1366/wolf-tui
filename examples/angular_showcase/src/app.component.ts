@@ -5,6 +5,7 @@ import { TreeViewDemoComponent } from './demos/tree-view-demo.component'
 import { ComboboxDemoComponent } from './demos/combobox-demo.component'
 import { JsonViewerDemoComponent } from './demos/json-viewer-demo.component'
 import { FilePickerDemoComponent } from './demos/file-picker-demo.component'
+import { BigTextDemoComponent } from './demos/big-text-demo.component'
 import { TableDemoComponent } from './demos/table-demo.component'
 import { ScrollViewDemoComponent } from './demos/scroll-view-demo.component'
 import { GradientDemoComponent } from './demos/gradient-demo.component'
@@ -16,6 +17,7 @@ type DemoName =
 	| 'combobox'
 	| 'jsonviewer'
 	| 'filepicker'
+	| 'bigtext'
 	| 'table'
 	| 'scrollview'
 	| 'gradient'
@@ -33,6 +35,7 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 	{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
+	{ key: 'bigtext', label: 'BigText (cfonts banner)' },
 	{ key: 'table', label: 'Table' },
 	{ key: 'scrollview', label: 'ScrollView' },
 	{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
@@ -51,6 +54,7 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 		ComboboxDemoComponent,
 		JsonViewerDemoComponent,
 		FilePickerDemoComponent,
+		BigTextDemoComponent,
 		TableDemoComponent,
 		ScrollViewDemoComponent,
 		GradientDemoComponent,
@@ -72,6 +76,9 @@ const DEMOS: ReadonlyArray<IDemoEntry> = [
 			}
 			@case ('filepicker') {
 				<app-file-picker-demo (back)="goBack()" />
+			}
+			@case ('bigtext') {
+				<app-big-text-demo (back)="goBack()" />
 			}
 			@case ('table') {
 				<app-table-demo (back)="goBack()" />

@@ -31,6 +31,17 @@ export {
 	type ProgressBarProps,
 } from './progress-bar/progress-bar.component'
 export {
+	BigTextComponent,
+	type BigTextProps,
+} from './big-text/big-text.component'
+export type {
+	BigTextFont,
+	BigTextAlign,
+	BigTextBackgroundColor,
+	BigTextGradient,
+	BigTextEnv,
+} from '@wolf-tui/shared'
+export {
 	ScrollViewComponent,
 	type IScrollViewProps,
 	type IScrollViewHandle,

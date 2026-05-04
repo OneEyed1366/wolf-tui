@@ -48,6 +48,7 @@ Each adapter converts WNodes to framework-native elements:
 | --------------------- | ------------------------ | --------------------------------- |
 | `renderAlert`         | `AlertViewState`         | Info/success/error/warning alerts |
 | `renderBadge`         | `BadgeViewState`         | Colored label badges              |
+| `renderBigText`       | `BigTextViewState`       | Large ASCII-font banners (cfonts) |
 | `renderConfirmInput`  | `ConfirmInputViewState`  | Yes/no confirmation prompt        |
 | `renderErrorOverview` | `ErrorOverviewData`      | Error display with stack traces   |
 | `renderGradient`      | `GradientViewState`      | Per-char colored text gradient    |
@@ -177,14 +178,17 @@ Output: ES module at `build/index.js` with TypeScript declarations.
 
 ## Dependencies
 
-| Package          | Role                                       |
-| ---------------- | ------------------------------------------ |
-| `@wolf-tui/core` | Peer — DOM nodes, layout, `Styles` type    |
-| `chalk`          | Peer — terminal color output               |
-| `cli-spinners`   | Spinner animation frames                   |
-| `es-toolkit`     | Utility functions                          |
-| `figures`        | Unicode symbols (checkmarks, arrows, etc.) |
+| Package          | Role                                               |
+| ---------------- | -------------------------------------------------- |
+| `@wolf-tui/core` | Peer — DOM nodes, layout, `Styles` type            |
+| `cfonts`         | ASCII-font rendering for `renderBigText` (GPL-3.0) |
+| `chalk`          | Peer — terminal color output                       |
+| `cli-spinners`   | Spinner animation frames                           |
+| `es-toolkit`     | Utility functions                                  |
+| `figures`        | Unicode symbols (checkmarks, arrows, etc.)         |
 
 ## License
 
-MIT
+MIT, with the following third-party runtime dependency carrying a copyleft license:
+
+- `cfonts` is **GPL-3.0-or-later**. It is only pulled in when consumers use `renderBigText` (or the adapter-level `BigText` component). Downstream projects that ship `renderBigText` must comply with GPL-3.0-or-later for that portion of their bundle.

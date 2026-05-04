@@ -53,6 +53,15 @@ export type { IOrderedListProps, IOrderedListItemProps } from './OrderedList'
 export { ErrorOverview } from './ErrorOverview'
 export type { IErrorOverviewProps } from './ErrorOverview'
 
+export { BigText } from './BigText'
+export type { IBigTextProps } from './BigText'
+export type {
+	BigTextFont,
+	BigTextAlign,
+	BigTextBackgroundColor,
+	BigTextGradient,
+	BigTextEnv,
+} from '@wolf-tui/shared'
 export { ScrollView } from './ScrollView'
 export type { IScrollViewProps, IScrollViewHandle } from './ScrollView'
 //#endregion Display Components

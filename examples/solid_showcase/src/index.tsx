@@ -5,6 +5,7 @@ import { TreeViewDemo } from './demos/TreeViewDemo'
 import { ComboboxDemo } from './demos/ComboboxDemo'
 import { JsonViewerDemo } from './demos/JsonViewerDemo'
 import { FilePickerDemo } from './demos/FilePickerDemo'
+import { BigTextDemo } from './demos/BigTextDemo'
 import { TableDemo } from './demos/TableDemo'
 import { ScrollViewDemo } from './demos/ScrollViewDemo'
 import { GradientDemo } from './demos/GradientDemo'
@@ -16,6 +17,7 @@ type DemoName =
 	| 'combobox'
 	| 'jsonviewer'
 	| 'filepicker'
+	| 'bigtext'
 	| 'table'
 	| 'scrollview'
 	| 'gradient'
@@ -26,6 +28,7 @@ const DEMOS: Array<{ key: DemoName; label: string }> = [
 	{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 	{ key: 'jsonviewer', label: 'JsonViewer' },
 	{ key: 'filepicker', label: 'FilePicker' },
+	{ key: 'bigtext', label: 'BigText (ASCII Font)' },
 	{ key: 'table', label: 'Table' },
 	{ key: 'scrollview', label: 'ScrollView' },
 	{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
@@ -53,6 +56,9 @@ export function App() {
 			</Show>
 			<Show when={activeDemo() === 'filepicker'}>
 				<FilePickerDemo onBack={goBack} />
+			</Show>
+			<Show when={activeDemo() === 'bigtext'}>
+				<BigTextDemo onBack={goBack} />
 			</Show>
 			<Show when={activeDemo() === 'table'}>
 				<TableDemo onBack={goBack} />

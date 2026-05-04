@@ -2,24 +2,21 @@
 
 ## [1.8.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.7.0...shared@v1.8.0) (2026-05-03)
 
-
 ### Features
 
-* **components:** add Table across all 5 adapters ([#29](https://github.com/OneEyed1366/wolf-tui/issues/29)) ([374c836](https://github.com/OneEyed1366/wolf-tui/commit/374c8366e258f1e0aff78fdfd3411574d00cf6c6))
-
+- **components:** add Table across all 5 adapters ([#29](https://github.com/OneEyed1366/wolf-tui/issues/29)) ([374c836](https://github.com/OneEyed1366/wolf-tui/commit/374c8366e258f1e0aff78fdfd3411574d00cf6c6))
 
 ### Dependencies
 
-* The following workspace dependencies were updated
-  * peerDependencies
-    * @wolf-tui/core bumped to 1.7.0
+- The following workspace dependencies were updated
+  - peerDependencies
+    - @wolf-tui/core bumped to 1.7.0
 
 ## [1.7.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.6.0...shared@v1.7.0) (2026-05-03)
 
-
 ### Features
 
-* **components:** add ScrollView across all 5 adapters ([#28](https://github.com/OneEyed1366/wolf-tui/issues/28)) ([6d45210](https://github.com/OneEyed1366/wolf-tui/commit/6d452105be5da094ab37a0d5a1753261b5ecd448))
+- **components:** add ScrollView across all 5 adapters ([#28](https://github.com/OneEyed1366/wolf-tui/issues/28)) ([6d45210](https://github.com/OneEyed1366/wolf-tui/commit/6d452105be5da094ab37a0d5a1753261b5ecd448))
 
 ## [1.6.0](https://github.com/OneEyed1366/wolf-tui/compare/shared@v1.5.0...shared@v1.6.0) (2026-05-03)
 

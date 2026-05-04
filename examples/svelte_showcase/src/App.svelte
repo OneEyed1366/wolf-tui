@@ -8,6 +8,7 @@
 	import ComboboxDemo from './demos/ComboboxDemo.svelte'
 	import JsonViewerDemo from './demos/JsonViewerDemo.svelte'
 	import FilePickerDemo from './demos/FilePickerDemo.svelte'
+	import BigTextDemo from './demos/BigTextDemo.svelte'
 	import TableDemo from './demos/TableDemo.svelte'
 	import ScrollViewDemo from './demos/ScrollViewDemo.svelte'
 	import GradientDemo from './demos/GradientDemo.svelte'
@@ -20,6 +21,7 @@
 		| 'combobox'
 		| 'jsonviewer'
 		| 'filepicker'
+		| 'bigtext'
 		| 'table'
 		| 'scrollview'
 		| 'gradient'
@@ -30,6 +32,7 @@
 		{ key: 'combobox', label: 'Combobox (Autocomplete)' },
 		{ key: 'jsonviewer', label: 'JsonViewer' },
 		{ key: 'filepicker', label: 'FilePicker' },
+		{ key: 'bigtext', label: 'BigText (cfonts)' },
 		{ key: 'table', label: 'Table' },
 		{ key: 'scrollview', label: 'ScrollView' },
 		{ key: 'gradient', label: 'Gradient (ink-gradient port)' },
@@ -70,6 +73,8 @@
 	<JsonViewerDemo onBack={goBack} />
 {:else if activeDemo === 'filepicker'}
 	<FilePickerDemo onBack={goBack} />
+{:else if activeDemo === 'bigtext'}
+	<BigTextDemo onBack={goBack} />
 {:else if activeDemo === 'table'}
 	<TableDemo onBack={goBack} />
 {:else if activeDemo === 'scrollview'}
