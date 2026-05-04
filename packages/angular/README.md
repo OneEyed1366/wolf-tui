@@ -128,14 +128,16 @@ All components use custom element selectors prefixed with `w-`. All are standalo
 
 ### Layout
 
-| Component            | Selector        | Description                              |
-| -------------------- | --------------- | ---------------------------------------- |
-| `BoxComponent`       | `<w-box>`       | Flexbox container — `[style]` or `class` |
-| `TextComponent`      | `<w-text>`      | Styled text — color, bold, etc           |
-| `NewlineComponent`   | `<w-newline>`   | Empty lines (`[count]`)                  |
-| `SpacerComponent`    | `<w-spacer>`    | Fills available flex space               |
-| `StaticComponent`    | `<w-static>`    | Renders items once (no re-renders)       |
-| `TransformComponent` | `<w-transform>` | Applies string transform to children     |
+| Component             | Selector          | Description                                 | Key features                                               |
+| --------------------- | ----------------- | ------------------------------------------- | ---------------------------------------------------------- |
+| `BoxComponent`        | `<w-box>`         | Flexbox/Grid layout container               | All CSS-like flex props, `[style]` object, `class`         |
+| `TextComponent`       | `<w-text>`        | Styled inline text                          | Color, bold/italic/underline, wrap modes                   |
+| `NewlineComponent`    | `<w-newline>`     | Empty lines                                 | `[count]` input                                            |
+| `SpacerComponent`     | `<w-spacer>`      | Fills remaining flex space                  | Pushes siblings apart in flex containers                   |
+| `StaticComponent`     | `<w-static>`      | Renders items once, skips re-renders        | Append-only logs, scroll-back history                      |
+| `TransformComponent`  | `<w-transform>`   | Transforms rendered text of children        | `transform: (line, idx) => string`                         |
+| `ScrollViewComponent` | `<w-scroll-view>` | Fixed-height viewport with clipped overflow | Built-in arrow / PageUp / PageDown / Home / End navigation |
+| `TableComponent`      | `<w-table>`       | Box-drawing table for tabular data          | `ink-table` parity, themable borders/cells, column subset  |
 
 <details>
 <summary><b>Box & Text inputs</b></summary>
@@ -177,61 +179,39 @@ Both accept `[style]` (inline object) and `class`/`[className]` (CSS classes via
 
 ### Display
 
-| Component                | Selector             | Description                            |
-| ------------------------ | -------------------- | -------------------------------------- |
-| `AlertComponent`         | `<w-alert>`          | `variant` + `title` + `message` inputs |
-| `BadgeComponent`         | `<w-badge>`          | `color` + `label` inputs               |
-| `SpinnerComponent`       | `<w-spinner>`        | `type` + `label` inputs                |
-| `ProgressBarComponent`   | `<w-progress-bar>`   | `value` input (0–100)                  |
-| `StatusMessageComponent` | `<w-status-message>` | `variant` + `message` inputs           |
-| `ErrorOverviewComponent` | `<w-error-overview>` | `[error]` input                        |
+| Component                | Selector             | Description                            | Key features                                                   |
+| ------------------------ | -------------------- | -------------------------------------- | -------------------------------------------------------------- |
+| `AlertComponent`         | `<w-alert>`          | Boxed alert message                    | `variant`: `success` / `error` / `warning` / `info` + title    |
+| `BadgeComponent`         | `<w-badge>`          | Inline coloured label                  | `color` input, content projection = label                      |
+| `SpinnerComponent`       | `<w-spinner>`        | Animated loading spinner               | 80+ `type`s (dots, line, arc, …), optional `label`             |
+| `ProgressBarComponent`   | `<w-progress-bar>`   | Horizontal progress bar                | `value` 0–100, custom characters, themable colors              |
+| `StatusMessageComponent` | `<w-status-message>` | One-line status with icon              | `variant`: `success` / `error` / `warning` / `info`            |
+| `ErrorOverviewComponent` | `<w-error-overview>` | Formatted error display                | Pretty stack trace, source frame highlight                     |
+| `GradientComponent`      | `<w-gradient>`       | Coloured text gradient                 | 13 presets or custom hex stops, per-character interpolation    |
+| `BigTextComponent`       | `<w-big-text>`       | ASCII-art figlet-style banner          | `cfonts` engine, multiple fonts, gradients, alignment          |
+| `TimerComponent`         | `<w-timer>`          | Count-up, countdown, or stopwatch      | Lap recording, configurable format, drift-resistant            |
+| `TreeViewComponent`      | `<w-tree-view>`      | Hierarchical tree with expand/collapse | Single/multi-select, async lazy loading, virtual scroll        |
+| `JsonViewerComponent`    | `<w-json-viewer>`    | Interactive JSON tree viewer           | 16 value types, syntax colouring, circular-reference detection |
+| `FilePickerComponent`    | `<w-file-picker>`    | Filesystem browser with filter mode    | Multi-select, symlinks, directory navigation                   |
 
 ### Input
 
-| Component                | Selector             | Description                                      |
-| ------------------------ | -------------------- | ------------------------------------------------ |
-| `TextInputComponent`     | `<w-text-input>`     | Uncontrolled — `(valueChange)` / `(submitValue)` |
-| `PasswordInputComponent` | `<w-password-input>` | Masked text input                                |
-| `EmailInputComponent`    | `<w-email-input>`    | Email with domain suggestions                    |
-| `ConfirmInputComponent`  | `<w-confirm-input>`  | `(confirm)` / `(cancel)` outputs                 |
-| `SelectComponent`        | `<w-select>`         | `[options]` input, `(selectChange)` output       |
-| `MultiSelectComponent`   | `<w-multi-select>`   | `[options]` input, `(selectionChange)` output    |
+| Component                | Selector             | Description                         | Key features                                                   |
+| ------------------------ | -------------------- | ----------------------------------- | -------------------------------------------------------------- |
+| `TextInputComponent`     | `<w-text-input>`     | Single-line text field              | `(valueChange)` / `(submitValue)`, placeholder, mask           |
+| `PasswordInputComponent` | `<w-password-input>` | Masked text input                   | Configurable mask character                                    |
+| `EmailInputComponent`    | `<w-email-input>`    | Email field with domain suggestions | Auto-completes top-100 email domains                           |
+| `ConfirmInputComponent`  | `<w-confirm-input>`  | Yes / No prompt                     | y / n keys, `(confirm)` / `(cancel)` outputs                   |
+| `SelectComponent`        | `<w-select>`         | Single-selection picker             | Keyboard nav, themed indicator, `[options]` + `(selectChange)` |
+| `MultiSelectComponent`   | `<w-multi-select>`   | Multi-selection picker              | Toggle with space, submit with enter                           |
+| `ComboboxComponent`      | `<w-combobox>`       | Fuzzy-search autocomplete dropdown  | Two-pass fzf-style matching, cursor nav, autofill              |
 
 ### Lists
 
-| Component                    | Selector                  |
-| ---------------------------- | ------------------------- |
-| `OrderedListComponent`       | `<w-ordered-list>`        |
-| `OrderedListItemComponent`   | `<w-ordered-list-item>`   |
-| `UnorderedListComponent`     | `<w-unordered-list>`      |
-| `UnorderedListItemComponent` | `<w-unordered-list-item>` |
-
-### Community
-
-| Component             | Selector          | Description                                                                                                        |
-| --------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch                                                                                     |
-| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse                                                                             |
-| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown                                                                                 |
-| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer                                                                                       |
-| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode                                                                                |
-| `TableComponent`      | `<w-table>`       | Box-drawing table for tabular data                                                                                 |
-| Component             | Selector          | Description                                                                                                        |
-| --------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch                                                                                     |
-| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse                                                                             |
-| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown                                                                                 |
-| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer                                                                                       |
-| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode                                                                                |
-| `ScrollViewComponent` | `<w-scroll-view>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling                                        |
-| Component             | Selector          | Description                                                                                                        |
-| --------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `TimerComponent`      | `<w-timer>`       | Count-up, countdown, stopwatch                                                                                     |
-| `TreeViewComponent`   | `<w-tree-view>`   | Hierarchical tree with expand/collapse                                                                             |
-| `ComboboxComponent`   | `<w-combobox>`    | Fuzzy-search autocomplete dropdown                                                                                 |
-| `JsonViewerComponent` | `<w-json-viewer>` | Interactive JSON tree viewer                                                                                       |
-| `FilePickerComponent` | `<w-file-picker>` | Filesystem browser with filter mode                                                                                |
-| `GradientComponent`   | `<w-gradient>`    | Colored text gradient — preset or custom stops ([ink-gradient](https://github.com/sindresorhus/ink-gradient) port) |
+| Component                | Selector             | Description   | Key features                             |
+| ------------------------ | -------------------- | ------------- | ---------------------------------------- |
+| `OrderedListComponent`   | `<w-ordered-list>`   | Numbered list | Wraps `<w-ordered-list-item>` children   |
+| `UnorderedListComponent` | `<w-unordered-list>` | Bulleted list | Wraps `<w-unordered-list-item>` children |
 
 <details>
 <summary><b>Component examples</b></summary>

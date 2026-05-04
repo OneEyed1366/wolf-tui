@@ -195,50 +195,74 @@ Each adapter has a detailed README with full API docs, Vite/esbuild/webpack conf
 
 ## Components
 
-All adapters share the same component set:
+All adapters share the same component set — same visual output across all 5 frameworks via the shared WNode render architecture.
 
-| Category      | Components                                                                          |
-| ------------- | ----------------------------------------------------------------------------------- |
-| **Layout**    | `Box`, `Text`, `Spacer`, `Newline`, `Static`, `Transform`                           |
-| **Display**   | `Alert`, `Badge`, `Spinner`, `ProgressBar`, `StatusMessage`, `ErrorOverview`        |
-| **Input**     | `TextInput`, `PasswordInput`, `EmailInput`, `ConfirmInput`, `Select`, `MultiSelect` |
-| **Lists**     | `OrderedList`, `UnorderedList`                                                      |
-| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`, `Table`                |
-| **Scrolling** | `ScrollView`                                                                        |
-| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`                         |
-| **Community** | `Timer`, `TreeView`, `Combobox`, `JsonViewer`, `FilePicker`, `Gradient`             |
+| Category    | Components                                                                                                                                           |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Layout**  | `Box`, `Text`, `Newline`, `Spacer`, `Static`, `Transform`, `ScrollView`, `Table`                                                                     |
+| **Display** | `Alert`, `Badge`, `Spinner`, `ProgressBar`, `StatusMessage`, `ErrorOverview`, `Gradient`, `BigText`, `Timer`, `TreeView`, `JsonViewer`, `FilePicker` |
+| **Input**   | `TextInput`, `PasswordInput`, `EmailInput`, `ConfirmInput`, `Select`, `MultiSelect`, `Combobox`                                                      |
+| **Lists**   | `OrderedList`, `UnorderedList`                                                                                                                       |
 
 Plus composables/hooks: `useInput`, `useFocus`, `useFocusManager`, stream access, screen reader detection.
 
 <details>
-<summary><b>Community components</b> — Timer, TreeView, Combobox, JsonViewer, FilePicker, Table</summary>
+<summary><b>Component reference</b> — Description + Key features</summary>
 
-Adapted from the [ink-\* community ecosystem](https://github.com/vadimdemedes/ink/pull/922) (Gradient from [ink-gradient](https://github.com/sindresorhus/ink-gradient)), available in all 5 adapters:
+Adapted (where applicable) from the [ink-\* community ecosystem](https://github.com/vadimdemedes/ink/pull/922) (Gradient from [ink-gradient](https://github.com/sindresorhus/ink-gradient), BigText from [ink-big-text](https://github.com/sindresorhus/ink-big-text)). Available in all 5 adapters with identical APIs.
 
-| Component    | Description                            | Key features                                              |
-| ------------ | -------------------------------------- | --------------------------------------------------------- |
-| `Timer`      | Count-up, countdown, stopwatch         | Lap recording, configurable format, drift-resistant       |
-| `TreeView`   | Hierarchical tree with expand/collapse | Single/multi-select, async lazy loading, virtual scroll   |
-| `Combobox`   | Fuzzy-search autocomplete dropdown     | Two-pass fzf-style matching, cursor nav, autofill         |
-| `JsonViewer` | Interactive JSON tree viewer           | 16 value types, syntax coloring, circular detection       |
-| `FilePicker` | Filesystem browser with filter         | Multi-select, symlink support, directory navigation       |
-| `Table`      | Box-drawing table for tabular data     | `ink-table` parity, themable borders/cells, column subset |
+**Layout**
 
-````tsx
-// React example
-import { Timer, TreeView, Combobox, JsonViewer, FilePicker, Table } from '@wolf-tui/react'
-| Component    | Description                               | Key features                                                                            |
-| ------------ | ----------------------------------------- | --------------------------------------------------------------------------------------- |
-| `Timer`      | Count-up, countdown, stopwatch            | Lap recording, configurable format, drift-resistant                                     |
-| `TreeView`   | Hierarchical tree with expand/collapse    | Single/multi-select, async lazy loading, virtual scroll                                 |
-| `Combobox`   | Fuzzy-search autocomplete dropdown        | Two-pass fzf-style matching, cursor nav, autofill                                       |
-| `JsonViewer` | Interactive JSON tree viewer              | 16 value types, syntax coloring, circular detection                                     |
-| `FilePicker` | Filesystem browser with filter            | Multi-select, symlink support, directory navigation                                     |
-| `Gradient`   | Colored text gradient (ink-gradient port) | 13 built-in presets (rainbow, pastel, atlas, …) or custom stops; per-char interpolation |
+| Component    | Description                                 | Key features                                               |
+| ------------ | ------------------------------------------- | ---------------------------------------------------------- |
+| `Box`        | Flexbox/Grid layout container               | All CSS-like flex props, `style` object, `className`       |
+| `Text`       | Styled inline text                          | Color, bold/italic/underline, wrap modes                   |
+| `Newline`    | Empty lines                                 | `count` prop                                               |
+| `Spacer`     | Fills remaining flex space                  | Pushes siblings apart in flex containers                   |
+| `Static`     | Renders items once, skips re-renders        | Append-only logs, scroll-back history                      |
+| `Transform`  | Transforms rendered text of children        | `transform: (line, idx) => string`                         |
+| `ScrollView` | Fixed-height viewport with clipped overflow | Built-in arrow / PageUp / PageDown / Home / End navigation |
+| `Table`      | Box-drawing table for tabular data          | `ink-table` parity, themable borders/cells, column subset  |
+
+**Display**
+
+| Component       | Description                            | Key features                                                   |
+| --------------- | -------------------------------------- | -------------------------------------------------------------- |
+| `Alert`         | Boxed alert message                    | `variant`: `success` / `error` / `warning` / `info` + title    |
+| `Badge`         | Inline coloured label                  | `color` prop                                                   |
+| `Spinner`       | Animated loading spinner               | 80+ `type`s (dots, line, arc, …), optional `label`             |
+| `ProgressBar`   | Horizontal progress bar                | `value` 0–100, custom characters, themable colors              |
+| `StatusMessage` | One-line status with icon              | `variant`: `success` / `error` / `warning` / `info`            |
+| `ErrorOverview` | Formatted error display                | Pretty stack trace, source frame highlight                     |
+| `Gradient`      | Coloured text gradient                 | 13 presets or custom hex stops, per-character interpolation    |
+| `BigText`       | ASCII-art figlet-style banner          | `cfonts` engine, multiple fonts, gradients, alignment          |
+| `Timer`         | Count-up, countdown, or stopwatch      | Lap recording, configurable format, drift-resistant            |
+| `TreeView`      | Hierarchical tree with expand/collapse | Single/multi-select, async lazy loading, virtual scroll        |
+| `JsonViewer`    | Interactive JSON tree viewer           | 16 value types, syntax colouring, circular-reference detection |
+| `FilePicker`    | Filesystem browser with filter mode    | Multi-select, symlinks, directory navigation                   |
+
+**Input**
+
+| Component       | Description                         | Key features                                            |
+| --------------- | ----------------------------------- | ------------------------------------------------------- |
+| `TextInput`     | Single-line text field              | `onChange` / `onSubmit`, placeholder, mask, suggestions |
+| `PasswordInput` | Masked text input                   | Configurable mask character                             |
+| `EmailInput`    | Email field with domain suggestions | Auto-completes top-100 email domains                    |
+| `ConfirmInput`  | Yes / No prompt                     | y / n keys, customizable defaults                       |
+| `Select`        | Single-selection picker             | Keyboard nav, themed indicator, `options` array         |
+| `MultiSelect`   | Multi-selection picker              | Toggle with space, submit with enter                    |
+| `Combobox`      | Fuzzy-search autocomplete dropdown  | Two-pass fzf-style matching, cursor nav, autofill       |
+
+**Lists**
+
+| Component       | Description   | Key features                 |
+| --------------- | ------------- | ---------------------------- |
+| `OrderedList`   | Numbered list | `OrderedListItem` children   |
+| `UnorderedList` | Bulleted list | `UnorderedListItem` children |
 
 ```tsx
 // React example
-import { Timer, TreeView, Combobox, JsonViewer, FilePicker, Gradient } from '@wolf-tui/react'
+import { Timer, JsonViewer, FilePicker, Table, Gradient, BigText } from '@wolf-tui/react'
 
 // Timer with countdown
 <Timer variant="countdown" durationMs={60000} format="human" />
@@ -251,12 +275,14 @@ import { Timer, TreeView, Combobox, JsonViewer, FilePicker, Gradient } from '@wo
 
 // Table with box-drawing borders
 <Table data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]} />
+
 // Gradient text — by preset name, or custom stops
 <Gradient name="rainbow">wolf-tui in color</Gradient>
 <Gradient colors={['#ff3366', '#ffd700']}>Hand-picked stops</Gradient>
-````
 
-All community components use the shared WNode render architecture — same visual output across all 5 frameworks.
+// BigText figlet-style banner
+<BigText text="WOLF" font="block" gradient="rainbow" />
+```
 
 </details>
 

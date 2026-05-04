@@ -108,14 +108,16 @@ clear() // Clear terminal output
 
 ### Layout
 
-| Component     | Description                                           |
-| ------------- | ----------------------------------------------------- |
-| `<Box>`       | Flexbox container — `style` or `className` for layout |
-| `<Text>`      | Styled text — color, bold, underline, etc             |
-| `<Newline>`   | Empty lines (`count` prop)                            |
-| `<Spacer>`    | Fills available flex space                            |
-| `<Static>`    | Renders items once (no re-renders)                    |
-| `<Transform>` | Applies string transform to children                  |
+| Component      | Description                                 | Key features                                               |
+| -------------- | ------------------------------------------- | ---------------------------------------------------------- |
+| `<Box>`        | Flexbox/Grid layout container               | All CSS-like flex props, `style` object, `className`       |
+| `<Text>`       | Styled inline text                          | Color, bold/italic/underline, wrap modes                   |
+| `<Newline>`    | Empty lines                                 | `count` prop                                               |
+| `<Spacer>`     | Fills remaining flex space                  | Pushes siblings apart in flex containers                   |
+| `<Static>`     | Renders items once, skips re-renders        | Append-only logs, scroll-back history                      |
+| `<Transform>`  | Transforms rendered text of children        | `transform: (line, idx) => string`                         |
+| `<ScrollView>` | Fixed-height viewport with clipped overflow | Built-in arrow / PageUp / PageDown / Home / End navigation |
+| `<Table>`      | Box-drawing table for tabular data          | `ink-table` parity, themable borders/cells, column subset  |
 
 <details>
 <summary><b>Box & Text props</b></summary>
@@ -163,59 +165,39 @@ Both accept `style` (inline object) and `className` (CSS classes via `@wolf-tui/
 
 ### Display
 
-| Component         | Description                                                         |
-| ----------------- | ------------------------------------------------------------------- |
-| `<Alert>`         | Styled alert box — `variant`: `success`, `error`, `warning`, `info` |
-| `<Badge>`         | Inline colored badge                                                |
-| `<Spinner>`       | Animated spinner with `type`                                        |
-| `<ProgressBar>`   | Progress bar (value 0–100)                                          |
-| `<StatusMessage>` | Status with icon — `variant`: `success`, `error`, `warning`, `info` |
-| `<ErrorOverview>` | Formatted error display with stack trace                            |
+| Component         | Description                            | Key features                                                   |
+| ----------------- | -------------------------------------- | -------------------------------------------------------------- |
+| `<Alert>`         | Boxed alert message                    | `variant`: `success` / `error` / `warning` / `info` + title    |
+| `<Badge>`         | Inline coloured label                  | `color` prop, children = label                                 |
+| `<Spinner>`       | Animated loading spinner               | 80+ `type`s (dots, line, arc, …), optional `label`             |
+| `<ProgressBar>`   | Horizontal progress bar                | `value` 0–100, custom characters, themable colors              |
+| `<StatusMessage>` | One-line status with icon              | `variant`: `success` / `error` / `warning` / `info`            |
+| `<ErrorOverview>` | Formatted error display                | Pretty stack trace, source frame highlight                     |
+| `<Gradient>`      | Coloured text gradient                 | 13 presets or custom hex stops, per-character interpolation    |
+| `<BigText>`       | ASCII-art figlet-style banner          | `cfonts` engine, multiple fonts, gradients, alignment          |
+| `<Timer>`         | Count-up, countdown, or stopwatch      | Lap recording, configurable format, drift-resistant            |
+| `<TreeView>`      | Hierarchical tree with expand/collapse | Single/multi-select, async lazy loading, virtual scroll        |
+| `<JsonViewer>`    | Interactive JSON tree viewer           | 16 value types, syntax colouring, circular-reference detection |
+| `<FilePicker>`    | Filesystem browser with filter mode    | Multi-select, symlinks, directory navigation                   |
 
 ### Input
 
-| Component         | Description                             |
-| ----------------- | --------------------------------------- |
-| `<TextInput>`     | Text field with `onChange` / `onSubmit` |
-| `<PasswordInput>` | Masked text input                       |
-| `<EmailInput>`    | Email input with domain suggestions     |
-| `<ConfirmInput>`  | Yes/No prompt                           |
-| `<Select>`        | Single selection from `options` array   |
-| `<MultiSelect>`   | Multiple selection from `options` array |
+| Component         | Description                         | Key features                                            |
+| ----------------- | ----------------------------------- | ------------------------------------------------------- |
+| `<TextInput>`     | Single-line text field              | `onChange` / `onSubmit`, placeholder, mask, suggestions |
+| `<PasswordInput>` | Masked text input                   | Configurable mask character                             |
+| `<EmailInput>`    | Email field with domain suggestions | Auto-completes top-100 email domains                    |
+| `<ConfirmInput>`  | Yes / No prompt                     | y / n keys, customizable defaults                       |
+| `<Select>`        | Single-selection picker             | Keyboard nav, themed indicator, `options` array         |
+| `<MultiSelect>`   | Multi-selection picker              | Toggle with space, submit with enter                    |
+| `<Combobox>`      | Fuzzy-search autocomplete dropdown  | Two-pass fzf-style matching, cursor nav, autofill       |
 
 ### Lists
 
-| Component         | Description   |
-| ----------------- | ------------- |
-| `<OrderedList>`   | Numbered list |
-| `<UnorderedList>` | Bulleted list |
-
-### Community
-
-| Component      | Description                                                                                                        |
-| -------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
-| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
-| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
-| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
-| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
-| `<Table>`      | Box-drawing table for tabular data                                                                                 |
-| Component      | Description                                                                                                        |
-| -------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
-| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
-| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
-| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
-| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
-| `<ScrollView>` | Fixed-height viewport with clipped overflow and built-in keyboard scrolling                                        |
-| Component      | Description                                                                                                        |
-| -------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `<Timer>`      | Count-up, countdown, stopwatch                                                                                     |
-| `<TreeView>`   | Hierarchical tree with expand/collapse                                                                             |
-| `<Combobox>`   | Fuzzy-search autocomplete dropdown                                                                                 |
-| `<JsonViewer>` | Interactive JSON tree viewer                                                                                       |
-| `<FilePicker>` | Filesystem browser with filter mode                                                                                |
-| `<Gradient>`   | Colored text gradient — preset or custom stops ([ink-gradient](https://github.com/sindresorhus/ink-gradient) port) |
+| Component         | Description   | Key features                   |
+| ----------------- | ------------- | ------------------------------ |
+| `<OrderedList>`   | Numbered list | `<OrderedListItem>` children   |
+| `<UnorderedList>` | Bulleted list | `<UnorderedListItem>` children |
 
 <details>
 <summary><b>Component examples</b></summary>
