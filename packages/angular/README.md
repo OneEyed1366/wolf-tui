@@ -401,6 +401,25 @@ Focus management — `focusNext()`, `focusPrevious()`, `focus(id)`, `activeFocus
 | `StdoutService` | `stdout`, `write()`                           |
 | `StderrService` | `stderr`, `write()`                           |
 
+### Accessibility
+
+| API                             | Returns   | Notes                                                             |
+| ------------------------------- | --------- | ----------------------------------------------------------------- |
+| `injectIsScreenReaderEnabled()` | `boolean` | Injection function — must be called in an injection context       |
+| `AccessibilityService`          | service   | `isScreenReaderEnabled` getter — when DI-class style is preferred |
+
+```typescript
+import { Component, signal } from '@angular/core'
+import { injectIsScreenReaderEnabled } from '@wolf-tui/angular'
+
+@Component({
+	/* … */
+})
+export class MyComponent {
+	private srEnabled = injectIsScreenReaderEnabled()
+}
+```
+
 <details>
 <summary><b>DI tokens for advanced use</b></summary>
 

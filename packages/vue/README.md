@@ -432,11 +432,12 @@ const { focusNext, focusPrevious } = useFocusManager()
 
 ### Stream access
 
-| Composable    | Returns                                     |
-| ------------- | ------------------------------------------- |
-| `useStdin()`  | `{ stdin, setRawMode, isRawModeSupported }` |
-| `useStdout()` | `{ stdout, write }`                         |
-| `useStderr()` | `{ stderr, write }`                         |
+| Composable                   | Returns                                     |
+| ---------------------------- | ------------------------------------------- |
+| `useStdin()`                 | `{ stdin, setRawMode, isRawModeSupported }` |
+| `useStdout()`                | `{ stdout, write }`                         |
+| `useStderr()`                | `{ stderr, write }`                         |
+| `useIsScreenReaderEnabled()` | `boolean`                                   |
 
 ---
 

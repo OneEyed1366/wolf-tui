@@ -286,35 +286,6 @@ import { Timer, JsonViewer, FilePicker, Table, Gradient, BigText } from '@wolf-t
 
 </details>
 
-<details>
-<summary><b>ScrollView</b> — viewport with clipped overflow and built-in keyboard scrolling</summary>
-
-Adapted from [ink-scroll-view](https://github.com/ByteLandTechnology/ink-scroll-view). Renders children inside a fixed-height viewport, clips overflow, and scrolls via `marginTop: -offset`. Built-in key bindings: ↑/↓ (row), PageUp/PageDown (viewport), Home/End.
-
-| Prop                    | Type                       | Default | Description                                        |
-| ----------------------- | -------------------------- | ------- | -------------------------------------------------- |
-| `height`                | `number`                   | —       | Viewport height in rows (required)                 |
-| `offset`                | `number`                   | —       | Controlled scroll offset — omit for internal state |
-| `keyBindings`           | `boolean`                  | `true`  | Enable arrows + page + home/end                    |
-| `onScroll`              | `(offset: number) => void` | —       | Fires when offset changes                          |
-| `onContentHeightChange` | `(height: number) => void` | —       | Fires when measured content height changes         |
-
-Each adapter exposes an imperative handle: `scrollTo(offset)`, `scrollBy(delta)`, `scrollToTop()`, `scrollToBottom()`, `getScrollOffset()`, `getContentHeight()`, `getViewportHeight()` — via `ref` (React/Solid), `defineExpose` (Vue), `bind:this` (Svelte), or `@ViewChild` (Angular).
-
-```tsx
-// React example — uncontrolled + built-in keys
-import { ScrollView, Text } from '@wolf-tui/react'
-;<ScrollView height={8}>
-	{items.map((it, i) => (
-		<Text key={i}>{it}</Text>
-	))}
-</ScrollView>
-```
-
-Try it: `examples/<framework>_showcase` → ScrollView demo.
-
-</details>
-
 See individual adapter READMEs for API details and prop reference.
 
 ---

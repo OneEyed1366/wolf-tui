@@ -13,3 +13,7 @@ export {
 	type Focusable,
 	type FocusOptions,
 } from './focus.service'
+export {
+	AccessibilityService,
+	injectIsScreenReaderEnabled,
+} from './accessibility.service'

@@ -643,6 +643,7 @@ export { useFocusManager } from './composables/use-focus-manager'
 export { useStdin } from './composables/use-stdin'
 export { useStdout } from './composables/use-stdout'
 export { useStderr } from './composables/use-stderr'
+export { useIsScreenReaderEnabled } from './composables/use-is-screen-reader-enabled'
 
 // Re-export Vue APIs
 export {
