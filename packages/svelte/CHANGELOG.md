@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.7.0](https://github.com/OneEyed1366/wolf-tui/compare/svelte@v1.6.0...svelte@v1.7.0) (2026-05-04)
+
+
+### Features
+
+* **components:** add BigText across all 5 adapters ([#27](https://github.com/OneEyed1366/wolf-tui/issues/27)) ([651112d](https://github.com/OneEyed1366/wolf-tui/commit/651112d68fcbcc899a7b8c246ba513e1745c1c4a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/core bumped to 1.8.0
+    * @wolf-tui/shared bumped to 1.9.0
+  * devDependencies
+    * @wolf-tui/css-parser bumped to 1.8.0
+    * @wolf-tui/plugin bumped to 1.8.0
+
 ## [1.6.0](https://github.com/OneEyed1366/wolf-tui/compare/svelte@v1.5.0...svelte@v1.6.0) (2026-05-03)
 
 ### Features

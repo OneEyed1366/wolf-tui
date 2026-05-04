@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.9.0](https://github.com/OneEyed1366/wolf-tui/compare/angular@v1.8.0...angular@v1.9.0) (2026-05-04)
+
+
+### Features
+
+* **components:** add BigText across all 5 adapters ([#27](https://github.com/OneEyed1366/wolf-tui/issues/27)) ([651112d](https://github.com/OneEyed1366/wolf-tui/commit/651112d68fcbcc899a7b8c246ba513e1745c1c4a))
+* **vue,angular:** add screen-reader-enabled composable/helper ([b0a0342](https://github.com/OneEyed1366/wolf-tui/commit/b0a034293f9b12ec3b50f39002cf91a549d15e0d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/core bumped to 1.8.0
+    * @wolf-tui/shared bumped to 1.9.0
+  * devDependencies
+    * @wolf-tui/css-parser bumped to 1.8.0
+    * @wolf-tui/plugin bumped to 1.8.0
+
 ## [1.8.0](https://github.com/OneEyed1366/wolf-tui/compare/angular@v1.7.0...angular@v1.8.0) (2026-05-03)
 
 ### Features

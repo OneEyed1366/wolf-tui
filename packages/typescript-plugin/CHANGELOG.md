@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.5.0...typescript-plugin@v1.6.0) (2026-05-04)
+
+
+### Features
+
+* **components:** add BigText across all 5 adapters ([#27](https://github.com/OneEyed1366/wolf-tui/issues/27)) ([651112d](https://github.com/OneEyed1366/wolf-tui/commit/651112d68fcbcc899a7b8c246ba513e1745c1c4a))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/css-parser bumped to 1.8.0
+
 ## [1.5.0](https://github.com/OneEyed1366/wolf-tui/compare/typescript-plugin@v1.4.0...typescript-plugin@v1.5.0) (2026-05-03)
 
 ### Features

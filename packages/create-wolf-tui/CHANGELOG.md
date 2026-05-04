@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0](https://github.com/OneEyed1366/wolf-tui/compare/create-wolf-tui@v0.5.0...create-wolf-tui@v0.6.0) (2026-05-04)
+
+
+### Features
+
+* **components:** add BigText across all 5 adapters ([#27](https://github.com/OneEyed1366/wolf-tui/issues/27)) ([651112d](https://github.com/OneEyed1366/wolf-tui/commit/651112d68fcbcc899a7b8c246ba513e1745c1c4a))
+* **create-wolf-tui:** add react-vite layer with Node resolve conditions, target node18 for vue-vite ([33e5188](https://github.com/OneEyed1366/wolf-tui/commit/33e518861baa9bb865b5b443d1f35a070ad0d678))
+
 ## [0.5.0](https://github.com/OneEyed1366/wolf-tui/compare/create-wolf-tui@v0.4.0...create-wolf-tui@v0.5.0) (2026-05-03)
 
 ### Features
