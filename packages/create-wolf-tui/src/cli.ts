@@ -34,6 +34,7 @@ interface ICliFlags {
 	css?: string
 	lint?: boolean
 	git?: boolean
+	test?: boolean
 	yes?: boolean
 	name?: string
 }
@@ -70,6 +71,14 @@ export function parseFlags(argv: string[]): ICliFlags {
 		}
 		if (arg === '--no-git') {
 			flags.git = false
+			continue
+		}
+		if (arg === '--test') {
+			flags.test = true
+			continue
+		}
+		if (arg === '--no-test') {
+			flags.test = false
 			continue
 		}
 		if (arg === '--yes' || arg === '-y') {
@@ -249,6 +258,21 @@ export async function runCli(argv: string[]): Promise<void> {
 		git = result
 	}
 
+	// Test
+	let test: boolean
+	if (flags.test !== undefined) {
+		test = flags.test
+	} else if (flags.yes) {
+		test = false
+	} else {
+		const result = await confirm({ message: 'Add Vitest testing setup?' })
+		if (isCancel(result)) {
+			cancel('Cancelled.')
+			process.exit(0)
+		}
+		test = result
+	}
+
 	// Install
 	let install: boolean
 	if (flags.yes) {
@@ -274,6 +298,7 @@ export async function runCli(argv: string[]): Promise<void> {
 		cssPreprocessor,
 		lint,
 		git,
+		test,
 		install,
 		targetDir,
 	}

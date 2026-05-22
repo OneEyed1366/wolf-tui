@@ -182,6 +182,7 @@ import { sassLayer } from './layers/css/sass'
 import { lessLayer } from './layers/css/less'
 import { stylusLayer } from './layers/css/stylus'
 import { lintLayer } from './layers/lint'
+import { testLayer } from './layers/test'
 import type { Framework, Bundler, CssPreprocessor } from './types'
 
 const frameworkLayers: Record<Framework, ILayer> = {
@@ -229,6 +230,10 @@ export function collectLayers(config: IProjectConfig): ILayer[] {
 
 	if (config.lint) {
 		layers.push(lintLayer(config.framework))
+	}
+
+	if (config.test) {
+		layers.push(testLayer(config.bundler))
 	}
 
 	return layers

@@ -60,6 +60,7 @@ export interface IProjectConfig {
 	cssPreprocessor?: CssPreprocessor
 	lint: boolean
 	git: boolean
+	test: boolean
 	install: boolean
 	targetDir: string
 	overwrite?: boolean
