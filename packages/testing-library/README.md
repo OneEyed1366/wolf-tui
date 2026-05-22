@@ -106,7 +106,7 @@ This library provides in-memory implementations of Node.js stream interfaces (`N
 
 - **`MockStdout` / `MockStderr`**: Captures rendered frames instead of writing them to the terminal. Provides methods like `.lastFrame()` to access the most recently rendered output.
 - **`MockStdin`**: Simulates terminal input. Use `await stdin.write(sequence)` to send keystrokes to your application in tests.
-- **`stripAnsi`**: A zero-dependency utility that removes ANSI color and layout escape codes from strings, making assertions straightforward.
+- **`stripAnsi`**: Removes ANSI color and layout escape codes from strings with a single regex — no third-party `strip-ansi` dependency.
 - **`KEYS`**: A collection of common ANSI escape sequences (e.g., `KEYS.UP`, `KEYS.ENTER`) for use with `MockStdin`.
 
 </details>
@@ -117,14 +117,18 @@ This library provides in-memory implementations of Node.js stream interfaces (`N
 
 ### `MockStdout` / `MockStderr`
 
-- `lastFrame(): string`: Returns the most recent frame output.
+- `constructor(columns?: number, rows?: number)`: `MockStdout` accepts initial terminal dimensions (default `80 × 24`). `MockStderr` takes no arguments.
+- `lastFrame(): string | undefined`: Returns the most recent frame output (`undefined` if nothing rendered yet).
 - `frames: string[]`: Array of all captured frames.
-- `clear()`: Clears the captured frames.
+- `frameCount(): number`: Number of frames captured.
+- `getFrame(index: number): string`: Returns the frame at a specific index.
+- `clear(): void`: Clears the captured frames.
 
 ### `MockStdin`
 
 - `constructor(stdout: MockStdout)`: Requires `MockStdout` reference to sync rendering events.
-- `write(data: string | Buffer): Promise<void>`: Send an async keystroke that resolves when the `stdout` successfully catches the render loop frame update.
+- `write(data: string | Buffer): Promise<void>`: Sends a keystroke and resolves once `stdout` emits the resulting frame (or after a 50ms safety timeout if no render happens).
+- Implements the bare `NodeJS.ReadStream` surface used by wolf-tui: `setRawMode`, `setEncoding`, `ref`, `unref`, `read`, plus `data` / `readable` events.
 
 ### `stripAnsi(str: string): string`
 
