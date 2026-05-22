@@ -22,6 +22,7 @@ export default defineConfig({
 			input: {
 				index: resolve(__dirname, 'src/index.ts'),
 				'styles/index': resolve(__dirname, 'src/styles/index.ts'),
+				'testing/index': resolve(__dirname, 'src/testing/index.ts'),
 			},
 			output: {
 				// Cannot use preserveModules — it outputs *.svelte.js files that

@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green)](https://nodejs.org/)
 
-[Quick Start](#quick-start) · [Packages](#packages) · [Components](#components) · [Styling](#styling) · [Architecture](#architecture) · [Development](#development)
+[Quick Start](#quick-start) · [Packages](#packages) · [Components](#components) · [Styling](#styling) · [Testing](#testing) · [Architecture](#architecture) · [Development](#development)
 
 ---
 
@@ -187,6 +187,7 @@ Each adapter has a detailed README with full API docs, Vite/esbuild/webpack conf
 | [@wolf-tui/angular](packages/angular/README.md)                     | Angular 17+ adapter                        | [README](packages/angular/README.md)           |
 | [@wolf-tui/solid](packages/solid/README.md)                         | SolidJS 1.9+ adapter                       | [README](packages/solid/README.md)             |
 | [@wolf-tui/svelte](packages/svelte/README.md)                       | Svelte 5+ adapter                          | [README](packages/svelte/README.md)            |
+| [@wolf-tui/testing-library](packages/testing-library/README.md)     | Framework-agnostic headless testing utils  | [README](packages/testing-library/README.md)   |
 | [@wolf-tui/plugin](packages/plugin/README.md)                       | Build plugin (Vite/esbuild/webpack/Rollup) | [README](packages/plugin/README.md)            |
 | [@wolf-tui/typescript-plugin](packages/typescript-plugin/README.md) | TypeScript plugin for CSS module types     | [README](packages/typescript-plugin/README.md) |
 | [@wolf-tui/css-parser](internal/css-parser/README.md)               | CSS/SCSS/LESS/Stylus parser                | Internal                                       |
@@ -335,6 +336,38 @@ All CSS approaches resolve to terminal styles at build time — no runtime CSS e
 - Tailwind arbitrary values: `text-[cyan]`, `bg-[#ff0]`
 
 </details>
+
+---
+
+## Testing
+
+Every adapter ships a `/testing` subpath that swaps the real terminal for virtual streams, so components can be exercised headlessly under Vitest, Jest, or Node's test runner. The same API works across all five frameworks — pick your adapter's import and the rest is identical.
+
+```tsx
+import { afterEach, test, expect } from 'vitest'
+import {
+	render,
+	cleanup,
+	KEYS,
+	delay,
+	stripAnsi,
+} from '@wolf-tui/react/testing'
+import { App } from './App'
+
+afterEach(cleanup)
+
+test('navigates the menu', async () => {
+	const { stdin, lastFrame } = render(<App />, { columns: 80, rows: 24 })
+
+	await stdin.write(KEYS.DOWN)
+	await stdin.write(KEYS.ENTER)
+	await delay(100)
+
+	expect(stripAnsi(lastFrame() ?? '')).toContain('Selection: Option B')
+})
+```
+
+Scaffold a project with `npm create wolf-tui -- --test` to get Vitest, `@wolf-tui/testing-library`, and a pre-wired `test/setup.ts` out of the box. See [@wolf-tui/testing-library](packages/testing-library/README.md) for the full API.
 
 ---
 

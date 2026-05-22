@@ -25,6 +25,7 @@ export default defineConfig(({ command }) => {
 				input: {
 					index: resolve(__dirname, 'src/index.ts'),
 					'styles/index': resolve(__dirname, 'src/styles/index.ts'),
+					'testing/index': resolve(__dirname, 'src/testing/index.ts'),
 				},
 				output: {
 					// Maintain file structure for better tree-shaking

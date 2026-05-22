@@ -11,6 +11,7 @@ function makeConfig(overrides: Partial<IProjectConfig>): IProjectConfig {
 		tailwind: false,
 		lint: false,
 		git: false,
+		test: false,
 		install: false,
 		targetDir: '/tmp/wolf-test',
 		...overrides,
@@ -256,6 +257,22 @@ describe('compose integration', () => {
 		expect(scripts['start']).toContain('dist/index.js')
 		expect(scripts['start']).not.toContain('.cjs')
 	})
+
+	it('testLayer generates setupFiles in vite.config.ts if bundler is vite', async () => {
+		const result = await compose(makeConfig({ bundler: 'vite', test: true }))
+		expect(result.files.has('test/setup.ts')).toBe(true)
+		expect(result.files.has('vitest.config.ts')).toBe(false)
+		const viteConfig = result.files.get('vite.config.ts')!
+		expect(viteConfig).toContain("setupFiles: ['./test/setup.ts']")
+	})
+
+	it('testLayer generates vitest.config.ts if bundler is not vite', async () => {
+		const result = await compose(makeConfig({ bundler: 'webpack', test: true }))
+		expect(result.files.has('test/setup.ts')).toBe(true)
+		expect(result.files.has('vitest.config.ts')).toBe(true)
+		const vitestConfig = result.files.get('vitest.config.ts')!
+		expect(vitestConfig).toContain("setupFiles: ['./test/setup.ts']")
+	})
 })
 
 describe('parseFlags — CSS handling', () => {
@@ -279,5 +296,15 @@ describe('parseFlags — CSS handling', () => {
 	it('no --css → css is undefined', () => {
 		const flags = parseFlags(['--framework', 'react'])
 		expect(flags.css).toBeUndefined()
+	})
+
+	it('--test → test is true', () => {
+		const flags = parseFlags(['--test'])
+		expect(flags.test).toBe(true)
+	})
+
+	it('--no-test → test is false', () => {
+		const flags = parseFlags(['--no-test'])
+		expect(flags.test).toBe(false)
 	})
 })
