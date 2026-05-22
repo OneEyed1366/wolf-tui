@@ -3,7 +3,7 @@ process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS } from '@wolf-tui/vue/testing'
+import { render, KEYS, delay } from '@wolf-tui/vue/testing'
 import stripAnsiMod from 'strip-ansi'
 import chalk from 'chalk'
 
@@ -19,7 +19,6 @@ describe('Vue Showcase Integration', () => {
 		const { stdout, stdin, unmount } = render(App, { columns: 80, rows: 30 })
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
-		const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 		const send = (key: string) => stdin.write(key)
 
 		let currentIndex = 0

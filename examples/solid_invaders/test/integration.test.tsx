@@ -3,7 +3,7 @@ process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS } from '@wolf-tui/solid/testing'
+import { render, KEYS, delay } from '@wolf-tui/solid/testing'
 import { App } from '../src/index'
 import chalk from 'chalk'
 
@@ -15,7 +15,6 @@ describe('Solid Invaders Integration', () => {
 	it('runs the integration workflow', async () => {
 		const { stdout, stdin, unmount } = render(App, { columns: 80, rows: 24 })
 
-		const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 		await delay(300)
 		expect(stdout.frames.length).toBeGreaterThan(0)
 

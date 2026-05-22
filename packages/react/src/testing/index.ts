@@ -4,9 +4,10 @@ import {
 	MockStderr,
 	MockStdin,
 	KEYS,
+	delay,
 } from '@wolf-tui/testing-library'
 
-export { KEYS }
+export { KEYS, delay }
 
 export interface RenderOptions {
 	columns?: number

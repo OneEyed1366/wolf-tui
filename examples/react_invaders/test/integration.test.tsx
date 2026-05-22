@@ -4,7 +4,7 @@ process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
 import React from 'react'
-import { render, KEYS } from '@wolf-tui/react/testing'
+import { render, KEYS, delay } from '@wolf-tui/react/testing'
 import { App } from '../src/App'
 import stripAnsiMod from 'strip-ansi'
 import chalk from 'chalk'
@@ -23,7 +23,6 @@ describe('React Invaders Integration', () => {
 		)
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
-		const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 		const send = (key: string) => stdin.write(key)
 
 		await delay(100)

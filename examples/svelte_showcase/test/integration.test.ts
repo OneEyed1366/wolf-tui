@@ -3,7 +3,7 @@ process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS } from '@wolf-tui/svelte/testing'
+import { render, KEYS, delay } from '@wolf-tui/svelte/testing'
 import stripAnsiMod from 'strip-ansi'
 import chalk from 'chalk'
 
@@ -18,7 +18,6 @@ describe('Svelte Showcase Integration', () => {
 		const { App } = await import('../dist/index.js')
 		const { stdout, stdin, unmount } = render(App, { columns: 80, rows: 30 })
 
-		const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 		await delay(300)
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
