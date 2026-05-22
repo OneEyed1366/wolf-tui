@@ -614,6 +614,38 @@ import styles from './App.module.css'
 
 ---
 
+## Testing
+
+Import the testing-aware `render` from `@wolf-tui/solid/testing` to drive components headlessly. It wires up virtual `stdout`/`stdin`, registers the instance for global `cleanup()`, and re-exports `KEYS`, `delay`, `stripAnsi`, and `cleanup` from `@wolf-tui/testing-library`.
+
+```tsx
+import { afterEach, test, expect } from 'vitest'
+import {
+	render,
+	cleanup,
+	KEYS,
+	delay,
+	stripAnsi,
+} from '@wolf-tui/solid/testing'
+import { App } from './App'
+
+afterEach(cleanup)
+
+test('navigates the menu', async () => {
+	const { stdin, lastFrame } = render(App, { columns: 80, rows: 24 })
+
+	await stdin.write(KEYS.DOWN)
+	await stdin.write(KEYS.ENTER)
+	await delay(100)
+
+	expect(stripAnsi(lastFrame() ?? '')).toContain('Selection: Option B')
+})
+```
+
+Run `npm create wolf-tui -- --test` to get Vitest, `@wolf-tui/testing-library`, and a pre-wired `test/setup.ts` scaffolded automatically. See the [testing-library README](../testing-library/README.md) for the full API.
+
+---
+
 ## Part of wolf-tui
 
 This is the Solid adapter for [wolf-tui](../../README.md) — a framework-agnostic terminal UI library. The same layout engine (Taffy/flexbox) and component render functions power adapters for React, Vue, Angular, and Svelte.

@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green)](https://nodejs.org/)
 
-[Quick Start](#quick-start) · [Packages](#packages) · [Components](#components) · [Styling](#styling) · [Architecture](#architecture) · [Development](#development)
+[Quick Start](#quick-start) · [Packages](#packages) · [Components](#components) · [Styling](#styling) · [Testing](#testing) · [Architecture](#architecture) · [Development](#development)
 
 ---
 
@@ -336,6 +336,38 @@ All CSS approaches resolve to terminal styles at build time — no runtime CSS e
 - Tailwind arbitrary values: `text-[cyan]`, `bg-[#ff0]`
 
 </details>
+
+---
+
+## Testing
+
+Every adapter ships a `/testing` subpath that swaps the real terminal for virtual streams, so components can be exercised headlessly under Vitest, Jest, or Node's test runner. The same API works across all five frameworks — pick your adapter's import and the rest is identical.
+
+```tsx
+import { afterEach, test, expect } from 'vitest'
+import {
+	render,
+	cleanup,
+	KEYS,
+	delay,
+	stripAnsi,
+} from '@wolf-tui/react/testing'
+import { App } from './App'
+
+afterEach(cleanup)
+
+test('navigates the menu', async () => {
+	const { stdin, lastFrame } = render(<App />, { columns: 80, rows: 24 })
+
+	await stdin.write(KEYS.DOWN)
+	await stdin.write(KEYS.ENTER)
+	await delay(100)
+
+	expect(stripAnsi(lastFrame() ?? '')).toContain('Selection: Option B')
+})
+```
+
+Scaffold a project with `npm create wolf-tui -- --test` to get Vitest, `@wolf-tui/testing-library`, and a pre-wired `test/setup.ts` out of the box. See [@wolf-tui/testing-library](packages/testing-library/README.md) for the full API.
 
 ---
 

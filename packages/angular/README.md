@@ -517,6 +517,36 @@ effect(() => {
 
 ---
 
+## Testing
+
+Import the testing-aware `render` from `@wolf-tui/angular/testing` to drive components headlessly. It wires up virtual `stdout`/`stdin`, registers the instance for global `cleanup()`, and re-exports `KEYS`, `delay`, `stripAnsi`, and `cleanup` from `@wolf-tui/testing-library`. Note that `render()` is async because Angular bootstrap is asynchronous.
+
+```ts
+import 'zone.js'
+import '@angular/compiler'
+import { afterEach, test, expect } from 'vitest'
+import { render, cleanup, KEYS, stripAnsi } from '@wolf-tui/angular/testing'
+import { AppComponent } from './app.component'
+
+afterEach(cleanup)
+
+test('navigates the menu', async () => {
+	const { stdin, lastFrame } = await render(AppComponent, {
+		columns: 80,
+		rows: 24,
+	})
+
+	await stdin.write(KEYS.DOWN)
+	await stdin.write(KEYS.ENTER)
+
+	expect(stripAnsi(lastFrame() ?? '')).toContain('Selection: Option B')
+})
+```
+
+`zone.js` and `@angular/compiler` must be imported at the top of every test file so that Angular's JIT injector and change detection work under the test runner. Run `npm create wolf-tui -- --test` to get Vitest, `@wolf-tui/testing-library`, and a pre-wired `test/setup.ts` scaffolded automatically. See the [testing-library README](../testing-library/README.md) for the full API.
+
+---
+
 ## Part of wolf-tui
 
 This is the Angular adapter for [wolf-tui](../../README.md) — a framework-agnostic terminal UI library. The same layout engine (Taffy/flexbox) and component render functions power adapters for React, Vue, Solid, and Svelte.
