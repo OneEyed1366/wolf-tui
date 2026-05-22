@@ -2,8 +2,14 @@
 process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
-import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS, delay, stripAnsi } from '@wolf-tui/svelte/testing'
+import { describe, it, expect, beforeAll, afterEach } from 'vitest'
+import {
+	render,
+	cleanup,
+	KEYS,
+	delay,
+	stripAnsi,
+} from '@wolf-tui/svelte/testing'
 
 import chalk from 'chalk'
 
@@ -12,9 +18,11 @@ describe('Svelte Showcase Integration', () => {
 		chalk.level = 3
 	})
 
+	afterEach(cleanup)
+
 	it('runs the integration workflow', async () => {
 		const { App } = await import('../dist/index.js')
-		const { stdout, stdin, unmount } = render(App, { columns: 80, rows: 30 })
+		const { stdout, stdin } = render(App, { columns: 80, rows: 30 })
 
 		await delay(300)
 		expect(stdout.frames.length).toBeGreaterThan(0)
@@ -130,6 +138,5 @@ describe('Svelte Showcase Integration', () => {
 		for (const c of checks) {
 			expect(c.pass, c.name).toBe(true)
 		}
-		unmount()
 	}, 15000)
 })

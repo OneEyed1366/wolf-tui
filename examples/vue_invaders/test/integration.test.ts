@@ -2,8 +2,8 @@
 process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
-import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS, delay, stripAnsi } from '@wolf-tui/vue/testing'
+import { describe, it, expect, beforeAll, afterEach } from 'vitest'
+import { render, cleanup, KEYS, delay, stripAnsi } from '@wolf-tui/vue/testing'
 
 import chalk from 'chalk'
 
@@ -12,9 +12,11 @@ describe('Vue Invaders Integration', () => {
 		chalk.level = 3
 	})
 
+	afterEach(cleanup)
+
 	it('runs the integration workflow', async () => {
 		const { App } = await import('../dist/index.js')
-		const { stdout, stdin, unmount } = render(App, { columns: 80, rows: 24 })
+		const { stdout, stdin } = render(App, { columns: 80, rows: 24 })
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
 		const send = (key: string) => stdin.write(key)
@@ -61,7 +63,5 @@ describe('Vue Invaders Integration', () => {
 		const gameFrame = stripAnsi(stdout.get())
 		expect(gameFrame).toContain('SCORE')
 		expect(gameFrame).toContain('^')
-
-		unmount()
 	}, 15000)
 })

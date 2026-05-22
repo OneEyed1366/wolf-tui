@@ -2,9 +2,15 @@
 process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterEach } from 'vitest'
 import React from 'react'
-import { render, KEYS, delay, stripAnsi } from '@wolf-tui/react/testing'
+import {
+	render,
+	cleanup,
+	KEYS,
+	delay,
+	stripAnsi,
+} from '@wolf-tui/react/testing'
 
 import chalk from 'chalk'
 
@@ -13,12 +19,14 @@ describe('React Showcase Integration', () => {
 		chalk.level = 3
 	})
 
+	afterEach(cleanup)
+
 	it('navigates through all community component demos and verifies rendering', async () => {
 		const { App } = await import('../src/index')
-		const { stdout, stdin, lastFrame, unmount } = render(
-			React.createElement(App),
-			{ columns: 80, rows: 30 }
-		)
+		const { stdout, stdin, lastFrame } = render(React.createElement(App), {
+			columns: 80,
+			rows: 30,
+		})
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
 		const send = (key: string) => stdin.write(key)
@@ -114,7 +122,5 @@ describe('React Showcase Integration', () => {
 		expect(hasColors).toBe(true)
 		await send(KEYS.ESC)
 		await delay(200)
-
-		unmount()
 	}, 15000)
 })

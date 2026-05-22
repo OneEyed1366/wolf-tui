@@ -2,9 +2,15 @@
 process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterEach } from 'vitest'
 import React from 'react'
-import { render, KEYS, delay, stripAnsi } from '@wolf-tui/react/testing'
+import {
+	render,
+	cleanup,
+	KEYS,
+	delay,
+	stripAnsi,
+} from '@wolf-tui/react/testing'
 import { App } from '../src/App'
 
 import chalk from 'chalk'
@@ -14,11 +20,13 @@ describe('React Invaders Integration', () => {
 		chalk.level = 3
 	})
 
+	afterEach(cleanup)
+
 	it('navigates through menu screens and starts the game', async () => {
-		const { stdout, stdin, lastFrame, unmount } = render(
-			React.createElement(App),
-			{ columns: 80, rows: 24 }
-		)
+		const { stdout, stdin, lastFrame } = render(React.createElement(App), {
+			columns: 80,
+			rows: 24,
+		})
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
 		const send = (key: string) => stdin.write(key)
@@ -70,7 +78,5 @@ describe('React Invaders Integration', () => {
 		const gameFrame = stripAnsi(lastFrame() ?? '')
 		expect(gameFrame).toContain('SCORE')
 		expect(gameFrame).toContain('^')
-
-		unmount()
 	}, 15000)
 })

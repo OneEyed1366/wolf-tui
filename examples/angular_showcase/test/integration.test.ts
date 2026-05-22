@@ -4,10 +4,10 @@ process.env.FORCE_COLOR = '3'
 
 import 'zone.js'
 import '@angular/compiler'
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterEach } from 'vitest'
 import chalk from 'chalk'
 import { AppComponent } from '../src/app.component'
-import { render, KEYS, stripAnsi } from '@wolf-tui/angular/testing'
+import { render, cleanup, KEYS, stripAnsi } from '@wolf-tui/angular/testing'
 import { NgZone } from '@angular/core'
 
 describe('angular_showcase Integration', () => {
@@ -15,12 +15,14 @@ describe('angular_showcase Integration', () => {
 		chalk.level = 3
 	})
 
+	afterEach(cleanup)
+
 	it('runs the integration workflow', async () => {
 		const ngZone = new NgZone({ enableLongStackTrace: false })
 		const delay = (ms: number) =>
 			new Promise((r) => ngZone.runOutsideAngular(() => setTimeout(r, ms)))
 
-		const { stdout, stdin, unmount } = await render(AppComponent, {
+		const { stdout, stdin } = await render(AppComponent, {
 			columns: 80,
 			rows: 30,
 		})
@@ -148,6 +150,5 @@ describe('angular_showcase Integration', () => {
 		for (const c of checks) {
 			expect(c.pass, c.name).toBe(true)
 		}
-		unmount()
 	}, 15000)
 })

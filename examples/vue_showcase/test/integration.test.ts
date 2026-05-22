@@ -2,8 +2,8 @@
 process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
-import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS, delay, stripAnsi } from '@wolf-tui/vue/testing'
+import { describe, it, expect, beforeAll, afterEach } from 'vitest'
+import { render, cleanup, KEYS, delay, stripAnsi } from '@wolf-tui/vue/testing'
 
 import chalk from 'chalk'
 
@@ -12,9 +12,11 @@ describe('Vue Showcase Integration', () => {
 		chalk.level = 3
 	})
 
+	afterEach(cleanup)
+
 	it('navigates through all community component demos and verifies rendering', async () => {
 		const { App } = await import('../dist/index.js')
-		const { stdout, stdin, unmount } = render(App, { columns: 80, rows: 30 })
+		const { stdout, stdin } = render(App, { columns: 80, rows: 30 })
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
 		const send = (key: string) => stdin.write(key)
@@ -158,6 +160,5 @@ describe('Vue Showcase Integration', () => {
 		for (const c of checks) {
 			expect(c.pass, c.name).toBe(true)
 		}
-		unmount()
 	}, 15000)
 })
