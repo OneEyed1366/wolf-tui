@@ -4,12 +4,10 @@ process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
 import React from 'react'
-import { render, KEYS, delay } from '@wolf-tui/react/testing'
+import { render, KEYS, delay, stripAnsi } from '@wolf-tui/react/testing'
 import { App } from '../src/App'
-import stripAnsiMod from 'strip-ansi'
-import chalk from 'chalk'
 
-const stripAnsi = (stripAnsiMod as any).default ?? stripAnsiMod
+import chalk from 'chalk'
 
 describe('React Invaders Integration', () => {
 	beforeAll(() => {

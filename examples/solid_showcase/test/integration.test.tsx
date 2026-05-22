@@ -3,12 +3,10 @@ process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS, delay } from '@wolf-tui/solid/testing'
+import { render, KEYS, delay, stripAnsi } from '@wolf-tui/solid/testing'
 import { App } from '../src/index'
-import stripAnsiMod from 'strip-ansi'
-import chalk from 'chalk'
 
-const stripAnsi = (stripAnsiMod as any).default ?? stripAnsiMod
+import chalk from 'chalk'
 
 describe('Solid Showcase Integration', () => {
 	beforeAll(() => {

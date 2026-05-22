@@ -3,11 +3,9 @@ process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, KEYS, delay } from '@wolf-tui/svelte/testing'
-import stripAnsiMod from 'strip-ansi'
-import chalk from 'chalk'
+import { render, KEYS, delay, stripAnsi } from '@wolf-tui/svelte/testing'
 
-const stripAnsi = (stripAnsiMod as any).default ?? stripAnsiMod
+import chalk from 'chalk'
 
 describe('Svelte Showcase Integration', () => {
 	beforeAll(() => {

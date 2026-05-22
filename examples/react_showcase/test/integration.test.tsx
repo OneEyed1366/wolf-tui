@@ -4,11 +4,9 @@ process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
 import React from 'react'
-import { render, KEYS, delay } from '@wolf-tui/react/testing'
-import stripAnsiMod from 'strip-ansi'
-import chalk from 'chalk'
+import { render, KEYS, delay, stripAnsi } from '@wolf-tui/react/testing'
 
-const stripAnsi = (stripAnsiMod as any).default ?? stripAnsiMod
+import chalk from 'chalk'
 
 describe('React Showcase Integration', () => {
 	beforeAll(() => {

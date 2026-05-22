@@ -7,11 +7,8 @@ import '@angular/compiler'
 import { describe, it, expect, beforeAll } from 'vitest'
 import chalk from 'chalk'
 import { AppComponent } from '../src/app.component'
-import { render, KEYS } from '@wolf-tui/angular/testing'
+import { render, KEYS, stripAnsi } from '@wolf-tui/angular/testing'
 import { NgZone } from '@angular/core'
-import stripAnsiMod from 'strip-ansi'
-
-const stripAnsi = (stripAnsiMod as any).default ?? stripAnsiMod
 
 describe('angular_showcase Integration', () => {
 	beforeAll(() => {
