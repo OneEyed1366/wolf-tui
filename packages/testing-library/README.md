@@ -27,31 +27,51 @@ If you've used `ink-testing-library`, you already know the fix: virtual streams.
 
 ## See It Work
 
-Write tests that feel like standard DOM assertions, without the DOM:
+Recommended: import the testing-aware `render` from your adapter's `/testing` subpath. It wires up the virtual streams for you and re-exports the helpers from this library:
 
-```typescript
+```tsx
 import { test, expect } from 'vitest'
-import { render } from '@wolf-tui/react' // or /vue, /solid, etc.
-import { MockStdout, MockStdin, stripAnsi, KEYS, delay } from '@wolf-tui/testing-library'
-import { MyComponent } from './MyComponent'
+import React from 'react'
+import { render, KEYS, delay, stripAnsi } from '@wolf-tui/react/testing'
+import { App } from './App'
 
-test('handles user input', async () => {
-  const stdout = new MockStdout()
-  const stdin = new MockStdin(stdout) // Links to stdout for visual sync
+test('navigates menu', async () => {
+	const { stdin, lastFrame, unmount } = render(React.createElement(App), {
+		columns: 80,
+		rows: 24,
+	})
 
-  render(<MyComponent />, { stdout, stdin })
+	await stdin.write(KEYS.DOWN)
+	await stdin.write(KEYS.ENTER)
+	await delay(100)
 
-  // Send keystrokes and wait for render loop
-  await stdin.write(KEYS.DOWN)
-  await stdin.write(KEYS.ENTER)
-
-  // Safety buffer if needed
-  await delay(100)
-
-  // Assert on human-readable text
-  expect(stripAnsi(stdout.lastFrame())).toContain('Selection: Option B')
+	expect(stripAnsi(lastFrame() ?? '')).toContain('Selection: Option B')
+	unmount()
 })
 ```
+
+<details>
+<summary><b>Using <code>@wolf-tui/testing-library</code> directly</b> — for custom render setups</summary>
+
+If your adapter doesn't have a `/testing` entry point yet, or you need finer control, wire the streams up yourself:
+
+```typescript
+import { MockStdout, MockStdin, stripAnsi, KEYS, delay } from '@wolf-tui/testing-library'
+import { render } from '@wolf-tui/react'
+import { App } from './App'
+
+const stdout = new MockStdout(80, 24)
+const stdin = new MockStdin(stdout) // MockStdin needs MockStdout for frame sync
+
+render(<App />, { stdout, stdin })
+
+await stdin.write(KEYS.DOWN)
+await delay(100)
+
+expect(stripAnsi(stdout.lastFrame() ?? '')).toContain('Option B')
+```
+
+</details>
 
 ---
 

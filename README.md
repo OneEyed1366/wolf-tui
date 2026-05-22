@@ -187,6 +187,7 @@ Each adapter has a detailed README with full API docs, Vite/esbuild/webpack conf
 | [@wolf-tui/angular](packages/angular/README.md)                     | Angular 17+ adapter                        | [README](packages/angular/README.md)           |
 | [@wolf-tui/solid](packages/solid/README.md)                         | SolidJS 1.9+ adapter                       | [README](packages/solid/README.md)             |
 | [@wolf-tui/svelte](packages/svelte/README.md)                       | Svelte 5+ adapter                          | [README](packages/svelte/README.md)            |
+| [@wolf-tui/testing-library](packages/testing-library/README.md)     | Framework-agnostic headless testing utils  | [README](packages/testing-library/README.md)   |
 | [@wolf-tui/plugin](packages/plugin/README.md)                       | Build plugin (Vite/esbuild/webpack/Rollup) | [README](packages/plugin/README.md)            |
 | [@wolf-tui/typescript-plugin](packages/typescript-plugin/README.md) | TypeScript plugin for CSS module types     | [README](packages/typescript-plugin/README.md) |
 | [@wolf-tui/css-parser](internal/css-parser/README.md)               | CSS/SCSS/LESS/Stylus parser                | Internal                                       |
