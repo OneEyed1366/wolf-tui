@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.10.0](https://github.com/OneEyed1366/wolf-tui/compare/vue@v1.9.0...vue@v1.10.0) (2026-05-22)
+
+
+### Features
+
+* **testing-library:** framework-agnostic headless testing toolkit ([#35](https://github.com/OneEyed1366/wolf-tui/issues/35)) ([9e7e09f](https://github.com/OneEyed1366/wolf-tui/commit/9e7e09f850d2cbbec832cfacc561da37bf19064c))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @wolf-tui/core bumped to 1.9.0
+    * @wolf-tui/shared bumped to 1.10.0
+  * devDependencies
+    * @wolf-tui/css-parser bumped to 1.9.0
+    * @wolf-tui/plugin bumped to 1.9.0
+
 ## [1.9.0](https://github.com/OneEyed1366/wolf-tui/compare/vue@v1.8.0...vue@v1.9.0) (2026-05-04)
 
 ### Features
