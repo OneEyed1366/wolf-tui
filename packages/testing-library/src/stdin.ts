@@ -1,15 +1,20 @@
 import { EventEmitter } from 'node:events'
 import type { MockStdout } from './stdout.js'
 
+export interface MockStdinOptions {
+	isTTY?: boolean
+}
+
 export class MockStdin extends EventEmitter {
-	public readonly isTTY = true
+	public readonly isTTY: boolean
 	private buffer: string[] = []
 	private stdout: MockStdout
 	private rawModeEnabled = false
 
-	constructor(stdout: MockStdout) {
+	constructor(stdout: MockStdout, options: MockStdinOptions = {}) {
 		super()
 		this.stdout = stdout
+		this.isTTY = options.isTTY ?? true
 	}
 
 	setRawMode(value: boolean): void {
@@ -19,6 +24,8 @@ export class MockStdin extends EventEmitter {
 	setEncoding(): void {}
 	ref(): void {}
 	unref(): void {}
+	resume(): void {}
+	pause(): void {}
 
 	read(): string | null {
 		return this.buffer.shift() ?? null

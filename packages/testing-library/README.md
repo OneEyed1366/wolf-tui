@@ -27,16 +27,24 @@ If you've used `ink-testing-library`, you already know the fix: virtual streams.
 
 ## See It Work
 
-Recommended: import the testing-aware `render` from your adapter's `/testing` subpath. It wires up the virtual streams for you and re-exports the helpers from this library:
+Recommended: import the testing-aware `render` from your adapter's `/testing` subpath. It wires up the virtual streams for you, registers the instance for global cleanup, and re-exports the helpers from this library:
 
 ```tsx
-import { test, expect } from 'vitest'
+import { afterEach, test, expect } from 'vitest'
 import React from 'react'
-import { render, KEYS, delay, stripAnsi } from '@wolf-tui/react/testing'
+import {
+	render,
+	cleanup,
+	KEYS,
+	delay,
+	stripAnsi,
+} from '@wolf-tui/react/testing'
 import { App } from './App'
 
+afterEach(cleanup) // unmounts every instance created via render()
+
 test('navigates menu', async () => {
-	const { stdin, lastFrame, unmount } = render(React.createElement(App), {
+	const { stdin, lastFrame } = render(React.createElement(App), {
 		columns: 80,
 		rows: 24,
 	})
@@ -46,7 +54,6 @@ test('navigates menu', async () => {
 	await delay(100)
 
 	expect(stripAnsi(lastFrame() ?? '')).toContain('Selection: Option B')
-	unmount()
 })
 ```
 
@@ -126,9 +133,9 @@ This library provides in-memory implementations of Node.js stream interfaces (`N
 
 ### `MockStdin`
 
-- `constructor(stdout: MockStdout)`: Requires `MockStdout` reference to sync rendering events.
+- `constructor(stdout: MockStdout, options?: { isTTY?: boolean })`: Requires `MockStdout` to sync rendering events; pass `{ isTTY: false }` to simulate non-interactive input.
 - `write(data: string | Buffer): Promise<void>`: Sends a keystroke and resolves once `stdout` emits the resulting frame (or after a 50ms safety timeout if no render happens).
-- Implements the bare `NodeJS.ReadStream` surface used by wolf-tui: `setRawMode`, `setEncoding`, `ref`, `unref`, `read`, plus `data` / `readable` events.
+- Implements the bare `NodeJS.ReadStream` surface used by wolf-tui: `setRawMode`, `setEncoding`, `ref`, `unref`, `resume`, `pause`, `read`, plus `data` / `readable` events.
 
 ### `stripAnsi(str: string): string`
 
@@ -144,6 +151,29 @@ Dictionary containing ANSI sequences for keys:
 ### `delay(ms: number): Promise<void>`
 
 Helper for async tests to wait for rendering to settle.
+
+### `cleanup(): Promise<void>`
+
+Unmounts every render instance created via an adapter's `/testing` `render()`. Wire it into your test runner once and stop tracking instances by hand:
+
+```ts
+import { afterEach } from 'vitest'
+import { cleanup } from '@wolf-tui/testing-library'
+// or: import { cleanup } from '@wolf-tui/react/testing'
+
+afterEach(cleanup)
+```
+
+For custom render setups that don't go through an adapter, register manually:
+
+```ts
+import { registerInstance, unregisterInstance } from '@wolf-tui/testing-library'
+
+const handle = { unmount: () => myInstance.unmount() }
+registerInstance(handle)
+// later, on manual teardown:
+unregisterInstance(handle)
+```
 
 ---
 
