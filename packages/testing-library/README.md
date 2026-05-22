@@ -32,21 +32,21 @@ Write tests that feel like standard DOM assertions, without the DOM:
 ```typescript
 import { test, expect } from 'vitest'
 import { render } from '@wolf-tui/react' // or /vue, /solid, etc.
-import { MockStdout, MockStdin, stripAnsi, KEYS } from '@wolf-tui/testing-library'
+import { MockStdout, MockStdin, stripAnsi, KEYS, delay } from '@wolf-tui/testing-library'
 import { MyComponent } from './MyComponent'
 
 test('handles user input', async () => {
   const stdout = new MockStdout()
-  const stdin = new MockStdin()
+  const stdin = new MockStdin(stdout) // Links to stdout for visual sync
 
   render(<MyComponent />, { stdout, stdin })
 
-  // Send keystrokes
-  stdin.emit('data', KEYS.Down)
-  stdin.emit('data', KEYS.Enter)
+  // Send keystrokes and wait for render loop
+  await stdin.write(KEYS.DOWN)
+  await stdin.write(KEYS.ENTER)
 
-  // Wait for the render loop to process
-  await new Promise(r => setTimeout(r, 0))
+  // Safety buffer if needed
+  await delay(100)
 
   // Assert on human-readable text
   expect(stripAnsi(stdout.lastFrame())).toContain('Selection: Option B')
@@ -69,7 +69,7 @@ chalk.level = 3 // Force 16m colors
 ```
 
 3. **Import what you need:**
-   Most `wolf-tui` adapters export these utilities directly from a `/testing` subpath (e.g., `@wolf-tui/react/testing`), but you can also use this library directly if needed.
+   Most `wolf-tui` adapters export these utilities directly from a `/testing` subpath (e.g., `@wolf-tui/react/testing`) wrapping them seamlessly, but you can also use this library directly if needed.
 
 ---
 
@@ -81,9 +81,9 @@ This library provides in-memory implementations of Node.js stream interfaces (`N
 <summary><b>Details</b> — The Virtual Streams</summary>
 
 - **`MockStdout` / `MockStderr`**: Captures rendered frames instead of writing them to the terminal. Provides methods like `.lastFrame()` to access the most recently rendered output.
-- **`MockStdin`**: Simulates terminal input. Use `.emit('data', sequence)` to send keystrokes to your application.
+- **`MockStdin`**: Simulates terminal input. Use `await stdin.write(sequence)` to send keystrokes to your application in tests.
 - **`stripAnsi`**: A zero-dependency utility that removes ANSI color and layout escape codes from strings, making assertions straightforward.
-- **`KEYS`**: A collection of common ANSI escape sequences (e.g., `KEYS.Up`, `KEYS.Enter`) for use with `MockStdin`.
+- **`KEYS`**: A collection of common ANSI escape sequences (e.g., `KEYS.UP`, `KEYS.ENTER`) for use with `MockStdin`.
 
 </details>
 
@@ -99,7 +99,8 @@ This library provides in-memory implementations of Node.js stream interfaces (`N
 
 ### `MockStdin`
 
-- `emit(event: 'data', chunk: Buffer | string)`: Send a keystroke.
+- `constructor(stdout: MockStdout)`: Requires `MockStdout` reference to sync rendering events.
+- `write(data: string | Buffer): Promise<void>`: Send an async keystroke that resolves when the `stdout` successfully catches the render loop frame update.
 
 ### `stripAnsi(str: string): string`
 
@@ -109,8 +110,8 @@ Strips ANSI escape codes from a string.
 
 Dictionary containing ANSI sequences for keys:
 
-- `KEYS.Up`, `KEYS.Down`, `KEYS.Left`, `KEYS.Right`
-- `KEYS.Enter`, `KEYS.Escape`, `KEYS.Space`, `KEYS.Backspace`, `KEYS.Tab`
+- `KEYS.UP`, `KEYS.DOWN`, `KEYS.LEFT`, `KEYS.RIGHT`
+- `KEYS.ENTER`, `KEYS.ESC`, `KEYS.SPACE`, `KEYS.HOME`
 
 ### `delay(ms: number): Promise<void>`
 
