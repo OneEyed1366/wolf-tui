@@ -1730,6 +1730,49 @@ importers:
         specifier: ^4.5.0
         version: 4.5.4(@types/node@24.12.0)(rollup@4.59.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
 
+  packages/testing-library:
+    dependencies:
+      '@angular/core':
+        specifier: '>=18.0.0'
+        version: 19.2.19(rxjs@7.8.2)(zone.js@0.16.1)
+      '@wolf-tui/angular':
+        specifier: workspace:*
+        version: link:../angular
+      '@wolf-tui/core':
+        specifier: workspace:^
+        version: link:../../internal/core
+      '@wolf-tui/react':
+        specifier: workspace:*
+        version: link:../react
+      '@wolf-tui/shared':
+        specifier: workspace:*
+        version: link:../../internal/shared
+      '@wolf-tui/solid':
+        specifier: workspace:*
+        version: link:../solid
+      '@wolf-tui/svelte':
+        specifier: workspace:*
+        version: link:../svelte
+      '@wolf-tui/vue':
+        specifier: workspace:*
+        version: link:../vue
+      react:
+        specifier: '>=19.0.0'
+        version: 19.2.4
+      solid-js:
+        specifier: '>=1.0.0'
+        version: 1.9.11
+      svelte:
+        specifier: '>=5.0.0'
+        version: 5.53.12
+      vue:
+        specifier: '>=3.0.0'
+        version: 3.5.30(typescript@5.9.3)
+    devDependencies:
+      '@wolf-tui/build-config':
+        specifier: workspace:*
+        version: link:../../internal/build-config
+
   packages/typescript-plugin:
     dependencies:
       '@wolf-tui/css-parser':

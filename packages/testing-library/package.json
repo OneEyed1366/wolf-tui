@@ -1,0 +1,69 @@
+{
+	"name": "@wolf-tui/testing-library",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "./build/core/index.js",
+	"types": "./build/core/index.d.ts",
+	"exports": {
+		"./react": {
+			"types": "./build/react/index.d.ts",
+			"default": "./build/react/index.js"
+		},
+		"./vue": {
+			"types": "./build/vue/index.d.ts",
+			"default": "./build/vue/index.js"
+		},
+		"./angular": {
+			"types": "./build/angular/index.d.ts",
+			"default": "./build/angular/index.js"
+		},
+		"./solid": {
+			"types": "./build/solid/index.d.ts",
+			"default": "./build/solid/index.js"
+		},
+		"./svelte": {
+			"types": "./build/svelte/index.d.ts",
+			"default": "./build/svelte/index.js"
+		}
+	},
+	"scripts": {
+		"dev": "vite build --watch",
+		"build": "vite build"
+	},
+	"dependencies": {
+		"@wolf-tui/core": "workspace:^",
+		"@wolf-tui/shared": "workspace:*"
+	},
+	"devDependencies": {
+		"@wolf-tui/build-config": "workspace:*"
+	},
+	"peerDependencies": {
+		"@wolf-tui/react": "workspace:*",
+		"@wolf-tui/vue": "workspace:*",
+		"@wolf-tui/angular": "workspace:*",
+		"@wolf-tui/solid": "workspace:*",
+		"@wolf-tui/svelte": "workspace:*",
+		"react": ">=19.0.0",
+		"vue": ">=3.0.0",
+		"@angular/core": ">=18.0.0",
+		"solid-js": ">=1.0.0",
+		"svelte": ">=5.0.0"
+	},
+	"peerDependenciesMeta": {
+		"@wolf-tui/react": {
+			"optional": true
+		},
+		"@wolf-tui/vue": {
+			"optional": true
+		},
+		"@wolf-tui/angular": {
+			"optional": true
+		},
+		"@wolf-tui/solid": {
+			"optional": true
+		},
+		"@wolf-tui/svelte": {
+			"optional": true
+		}
+	}
+}
