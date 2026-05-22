@@ -6,9 +6,12 @@ import {
 	KEYS,
 	delay,
 	stripAnsi,
+	cleanup,
+	registerInstance,
+	unregisterInstance,
 } from '@wolf-tui/testing-library'
 
-export { KEYS, delay, stripAnsi }
+export { KEYS, delay, stripAnsi, cleanup }
 
 export interface RenderOptions {
 	columns?: number
@@ -29,9 +32,18 @@ export function render(node: any, options: RenderOptions = {}) {
 		patchConsole: false,
 	})
 
+	const handle = {
+		unmount: () => rawInstance.unmount(),
+		cleanup: () => rawInstance.cleanup(),
+	}
+	registerInstance(handle)
+
 	return {
 		rerender: (newNode: any) => rawInstance.rerender(newNode),
-		unmount: () => rawInstance.unmount(),
+		unmount: () => {
+			unregisterInstance(handle)
+			rawInstance.unmount()
+		},
 		cleanup: () => rawInstance.cleanup(),
 		clear: () => rawInstance.clear(),
 		get frames() {
