@@ -27,24 +27,21 @@ describe('React Showcase Integration', () => {
 		const send = (key: string) => stdin.write(key)
 
 		const DOWN = '\x1b[B'
-		const UP = '\x1b[A'
 		const RIGHT = '\x1b[C'
 		const ENTER = '\r'
 		const ESC = '\x1b'
 
-		await delay(100)
-		expect(stripAnsi(lastFrame() ?? '')).toContain('Timer / Countdown')
-
 		async function openDemo(menuIndex: number) {
-			for (let i = 0; i < 5; i++) await send(UP)
-			await delay(50)
 			for (let i = 0; i < menuIndex; i++) {
 				await send(DOWN)
-				await delay(50)
+				await delay(150)
 			}
 			await send(ENTER)
 			await delay(300)
 		}
+
+		await delay(100)
+		expect(stripAnsi(lastFrame() ?? '')).toContain('Timer / Countdown')
 
 		// Timer Demo
 		await openDemo(0)
@@ -87,7 +84,7 @@ describe('React Showcase Integration', () => {
 		await delay(200)
 
 		// Table Demo
-		await openDemo(6) // wait, index 5 is BigText, table is at index 6 (based on list starting from timer (0))
+		await openDemo(6)
 		const tableFrame = stripAnsi(lastFrame() ?? '')
 		expect(tableFrame).toContain('Table Demo')
 		expect(tableFrame).toContain('Naruto')

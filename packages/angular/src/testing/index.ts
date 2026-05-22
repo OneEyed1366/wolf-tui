@@ -1,33 +1,36 @@
-import { render as wolfieRender } from '@wolf-tui/solid'
-import { MockStdout, MockStderr, MockStdin } from '../core/index.js'
+import { renderWolfie } from '../bootstrap'
+import { MockStdout, MockStderr, MockStdin } from '@wolf-tui/testing-library'
 
 export interface RenderOptions {
 	columns?: number
 	rows?: number
-	theme?: any
+	providers?: any[]
 }
 
-export function render(component: any, options: RenderOptions = {}) {
+export async function render(
+	component: any,
+	options: RenderOptions = {}
+): Promise<any> {
 	const stdout = new MockStdout(options.columns, options.rows)
 	const stderr = new MockStderr()
 	const stdin = new MockStdin(stdout)
 
-	const rawInstance = wolfieRender(component, {
+	const rawInstance = await renderWolfie(component, {
 		stdout: stdout as any,
 		stderr: stderr as any,
 		stdin: stdin as any,
 		debug: false,
 		maxFps: 30,
 		exitOnCtrlC: false,
-		theme: options.theme,
+		providers: options.providers,
 		incrementalRendering: false,
 	})
 
 	return {
-		rerender: (newComp: any) => rawInstance.render(newComp),
+		rerender: () => rawInstance.rerender(),
 		unmount: () => rawInstance.unmount(),
 		cleanup: () => {},
-		clear: () => {},
+		clear: () => rawInstance.clear(),
 		get frames() {
 			return stdout.frames
 		},

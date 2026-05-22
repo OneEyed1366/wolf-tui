@@ -15,6 +15,18 @@ export class MockStderr extends EventEmitter {
 		return this.frames[this.frames.length - 1]
 	}
 
+	get(): string {
+		return this.lastFrame() ?? ''
+	}
+
+	frameCount(): number {
+		return this.frames.length
+	}
+
+	getFrame(index: number): string {
+		return this.frames[index] ?? ''
+	}
+
 	clear(): void {
 		this.frames = []
 	}

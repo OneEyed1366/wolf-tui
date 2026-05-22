@@ -8,7 +8,8 @@
 		"build": "vite build",
 		"start": "node dist/index.cjs",
 		"play": "vite build && node dist/index.cjs",
-		"verify": "WOLFIE_VERIFY=1 node verify.cjs"
+		"verify": "WOLFIE_VERIFY=1 node verify.cjs",
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"@wolf-tui/angular": "workspace:*",

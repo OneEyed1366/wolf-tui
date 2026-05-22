@@ -21,6 +21,10 @@
 		"./styles": {
 			"types": "./build/styles/index.d.ts",
 			"default": "./build/styles/index.js"
+		},
+		"./testing": {
+			"types": "./build/testing/index.d.ts",
+			"default": "./build/testing/index.js"
 		}
 	},
 	"engines": {
@@ -54,6 +58,7 @@
 	"dependencies": {
 		"@wolf-tui/core": "workspace:^",
 		"@wolf-tui/shared": "workspace:*",
+		"@wolf-tui/testing-library": "workspace:*",
 		"chalk": "^5.0.0",
 		"ansi-escapes": "^7.2.0",
 		"ansi-styles": "^6.2.1",

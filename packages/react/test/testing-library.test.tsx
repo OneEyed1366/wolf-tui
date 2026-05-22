@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import React, { useState } from 'react'
-import { Text } from '@wolf-tui/react'
-import { useInput } from '@wolf-tui/react'
-import { render } from '../src/react/index.js'
+import { Text } from '../src/index.js'
+import { useInput } from '../src/hooks/use-input.js'
+import { render } from '../src/testing/index.js'
 
 describe('React testing library adapter', () => {
 	it('renders simple text component', () => {

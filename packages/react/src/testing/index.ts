@@ -1,5 +1,5 @@
-import { render as wolfieRender } from '@wolf-tui/react'
-import { MockStdout, MockStderr, MockStdin } from '../core/index.js'
+import wolfieRender from '../render'
+import { MockStdout, MockStderr, MockStdin } from '@wolf-tui/testing-library'
 
 export interface RenderOptions {
 	columns?: number

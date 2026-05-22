@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { describe, it, expect } from 'vitest'
 import { defineComponent, ref, h } from 'vue'
-import { Text } from '@wolf-tui/vue'
-import { useInput } from '@wolf-tui/vue'
-import { render } from '../src/vue/index.js'
+import { Text } from '../src/components'
+import { useInput } from '../src/composables/use-input'
+import { render } from '../src/testing/index'
 
 describe('Vue testing library adapter', () => {
 	it('renders simple text component', async () => {

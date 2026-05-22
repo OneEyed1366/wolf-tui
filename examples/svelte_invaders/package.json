@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "vite build && node --conditions=browser dist/index.js",
 		"build": "vite build",
-		"start": "node --conditions=browser dist/index.js"
+		"start": "node --conditions=browser dist/index.js",
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"@wolf-tui/svelte": "workspace:*",

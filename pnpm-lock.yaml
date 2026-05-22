@@ -1312,6 +1312,9 @@ importers:
       '@wolf-tui/shared':
         specifier: workspace:*
         version: link:../../internal/shared
+      '@wolf-tui/testing-library':
+        specifier: workspace:*
+        version: link:../testing-library
       ansi-escapes:
         specifier: ^7.2.0
         version: 7.3.0
@@ -1471,6 +1474,9 @@ importers:
       '@wolf-tui/shared':
         specifier: workspace:*
         version: link:../../internal/shared
+      '@wolf-tui/testing-library':
+        specifier: workspace:*
+        version: link:../testing-library
       ansi-escapes:
         specifier: ^7.2.0
         version: 7.3.0
@@ -1565,6 +1571,9 @@ importers:
       '@wolf-tui/shared':
         specifier: workspace:*
         version: link:../../internal/shared
+      '@wolf-tui/testing-library':
+        specifier: workspace:*
+        version: link:../testing-library
       ansi-escapes:
         specifier: ^7.2.0
         version: 7.3.0
@@ -1650,6 +1659,9 @@ importers:
       '@wolf-tui/shared':
         specifier: workspace:*
         version: link:../../internal/shared
+      '@wolf-tui/testing-library':
+        specifier: workspace:*
+        version: link:../testing-library
       ansi-escapes:
         specifier: ^7.2.0
         version: 7.3.0
@@ -1732,42 +1744,12 @@ importers:
 
   packages/testing-library:
     dependencies:
-      '@angular/core':
-        specifier: '>=18.0.0'
-        version: 19.2.19(rxjs@7.8.2)(zone.js@0.16.1)
-      '@wolf-tui/angular':
-        specifier: workspace:*
-        version: link:../angular
       '@wolf-tui/core':
         specifier: workspace:^
         version: link:../../internal/core
-      '@wolf-tui/react':
-        specifier: workspace:*
-        version: link:../react
       '@wolf-tui/shared':
         specifier: workspace:*
         version: link:../../internal/shared
-      '@wolf-tui/solid':
-        specifier: workspace:*
-        version: link:../solid
-      '@wolf-tui/svelte':
-        specifier: workspace:*
-        version: link:../svelte
-      '@wolf-tui/vue':
-        specifier: workspace:*
-        version: link:../vue
-      react:
-        specifier: '>=19.0.0'
-        version: 19.2.4
-      solid-js:
-        specifier: '>=1.0.0'
-        version: 1.9.11
-      svelte:
-        specifier: '>=5.0.0'
-        version: 5.53.12
-      vue:
-        specifier: '>=3.0.0'
-        version: 3.5.30(typescript@5.9.3)
     devDependencies:
       '@wolf-tui/build-config':
         specifier: workspace:*
@@ -1800,6 +1782,9 @@ importers:
       '@wolf-tui/shared':
         specifier: workspace:*
         version: link:../../internal/shared
+      '@wolf-tui/testing-library':
+        specifier: workspace:*
+        version: link:../testing-library
       ansi-escapes:
         specifier: ^7.2.0
         version: 7.3.0

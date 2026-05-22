@@ -5,7 +5,7 @@ import { createDtsPlugin } from '@wolf-tui/build-config'
 export default defineConfig({
 	build: {
 		lib: {
-			entry: resolve(__dirname, 'src/core/index.ts'),
+			entry: resolve(__dirname, 'src/index.ts'),
 			formats: ['es'],
 			fileName: 'index',
 		},
@@ -15,12 +15,7 @@ export default defineConfig({
 		target: 'node20',
 		rollupOptions: {
 			input: {
-				'core/index': resolve(__dirname, 'src/core/index.ts'),
-				'react/index': resolve(__dirname, 'src/react/index.ts'),
-				'vue/index': resolve(__dirname, 'src/vue/index.ts'),
-				'angular/index': resolve(__dirname, 'src/angular/index.ts'),
-				'solid/index': resolve(__dirname, 'src/solid/index.ts'),
-				'svelte/index': resolve(__dirname, 'src/svelte/index.ts'),
+				index: resolve(__dirname, 'src/index.ts'),
 			},
 			output: {
 				preserveModules: true,

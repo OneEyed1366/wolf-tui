@@ -1,12 +1,13 @@
-import { render as wolfieRender } from '@wolf-tui/vue'
-import { MockStdout, MockStderr, MockStdin } from '../core/index.js'
+import { render as wolfieRender } from '../index'
+import { MockStdout, MockStderr, MockStdin } from '@wolf-tui/testing-library'
 
 export interface RenderOptions {
 	columns?: number
 	rows?: number
+	theme?: any
 }
 
-export function render(component: any, options: RenderOptions = {}) {
+export function render(component: any, options: RenderOptions = {}): any {
 	const stdout = new MockStdout(options.columns, options.rows)
 	const stderr = new MockStderr()
 	const stdin = new MockStdin(stdout)
@@ -18,10 +19,12 @@ export function render(component: any, options: RenderOptions = {}) {
 		debug: false,
 		maxFps: 30,
 		exitOnCtrlC: false,
+		theme: options.theme,
+		incrementalRendering: false,
 	})
 
 	return {
-		rerender: (newComponent: any) => rawInstance.render(newComponent),
+		rerender: (newComp: any) => rawInstance.render(newComp),
 		unmount: () => rawInstance.unmount(),
 		cleanup: () => {},
 		clear: () => {},
