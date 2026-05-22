@@ -1743,13 +1743,6 @@ importers:
         version: 4.5.4(@types/node@24.12.0)(rollup@4.59.0)(typescript@5.9.3)(vite@6.4.1(@types/node@24.12.0)(jiti@2.6.1)(less@4.6.2)(lightningcss@1.31.1)(sass@1.98.0)(stylus@0.64.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
 
   packages/testing-library:
-    dependencies:
-      '@wolf-tui/core':
-        specifier: workspace:^
-        version: link:../../internal/core
-      '@wolf-tui/shared':
-        specifier: workspace:*
-        version: link:../../internal/shared
     devDependencies:
       '@wolf-tui/build-config':
         specifier: workspace:*

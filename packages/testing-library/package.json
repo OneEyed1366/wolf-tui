@@ -14,10 +14,6 @@
 		"dev": "vite build --watch",
 		"build": "vite build"
 	},
-	"dependencies": {
-		"@wolf-tui/core": "workspace:^",
-		"@wolf-tui/shared": "workspace:*"
-	},
 	"devDependencies": {
 		"@wolf-tui/build-config": "workspace:*"
 	}
