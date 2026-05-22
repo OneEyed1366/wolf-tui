@@ -5,6 +5,7 @@ export const VERSIONS: Record<string, string> = {
 	'@wolf-tui/angular': '^1.9.0',
 	'@wolf-tui/solid': '^1.9.0',
 	'@wolf-tui/svelte': '^1.7.0',
+	'@wolf-tui/testing-library': '^1.0.0',
 	'@wolf-tui/plugin': '^1.8.0',
 	'@wolf-tui/typescript-plugin': '^1.6.0',
 	'@wolf-tui/core': '^1.8.0',

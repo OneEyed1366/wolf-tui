@@ -41,7 +41,8 @@ The CLI walks you through:
 5. **CSS preprocessor** — None, Sass/SCSS, Less, or Stylus
 6. **ESLint + Prettier** — yes/no
 7. **Git init** — yes/no
-8. **Install dependencies** — yes/no
+8. **Vitest testing setup** — yes/no (adds `@wolf-tui/testing-library`, config, and `test/setup.ts`)
+9. **Install dependencies** — yes/no
 
 Output: a ready-to-run project with `src/`, `package.json`, `tsconfig.json`, bundler config, and a starter app.
 
@@ -124,6 +125,7 @@ npm create wolf-tui my-app -- -f angular -b esbuild --no-lint --no-git -y
 | `--css <presets>`      |       | Comma-separated: `tailwind`, `sass`, `less`, `stylus` |
 | `--lint` / `--no-lint` |       | ESLint + Prettier                                     |
 | `--git` / `--no-git`   |       | Git init                                              |
+| `--test` / `--no-test` |       | Vitest + `@wolf-tui/testing-library` setup            |
 | `--yes`                | `-y`  | Accept defaults, skip prompts                         |
 
 Positional argument is the project name: `npm create wolf-tui my-app`.
@@ -139,15 +141,20 @@ my-wolf-app/
     App.tsx            # Starter component
     styles/            # Only if Tailwind or preprocessor selected
       tailwind.css
-  package.json         # Dependencies, scripts (dev, build)
+  test/
+    setup.ts           # Only if --test selected (forces chalk.level = 3)
+  package.json         # Dependencies, scripts (dev, build, test)
   tsconfig.json        # Strict TS, framework-specific JSX settings
   vite.config.ts       # Bundler config (or webpack.config.js / build.js)
+  vitest.config.ts     # Only if --test selected with a non-Vite bundler
   env.d.ts             # Only with Vite
   postcss.config.cjs   # Only if Tailwind selected
   eslint.config.js     # Only if lint selected
   .prettierrc.json     # Only if lint selected
   .gitignore
 ```
+
+When `--test` is enabled, the generated project gets `vitest`, `chalk`, and `@wolf-tui/testing-library` as devDependencies, a `test` script, and a `test/setup.ts` that forces ANSI colors so frames render deterministically in CI. With Vite, the test config is injected into `vite.config.ts`; otherwise a standalone `vitest.config.ts` is emitted.
 
 The starter app is a counter with keyboard input — up/down arrows to change the value, `q` to quit. Same pattern across all frameworks.
 

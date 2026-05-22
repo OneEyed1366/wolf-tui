@@ -84,9 +84,13 @@ For Vitest, add a setup file:
 
 ```typescript
 // test/setup.ts
-import { chalk } from '@wolf-tui/core'
-chalk.level = 3 // Force 16m colors
+import chalk from 'chalk'
+
+process.env.FORCE_COLOR = '3'
+chalk.level = 3 // Force 16m colors in headless test runs
 ```
+
+Reference it from `vitest.config.ts` via `test.setupFiles`. The `create-wolf-tui` scaffolder generates this automatically when `--test` is enabled.
 
 3. **Import what you need:**
    Most `wolf-tui` adapters export these utilities directly from a `/testing` subpath (e.g., `@wolf-tui/react/testing`) wrapping them seamlessly, but you can also use this library directly if needed.

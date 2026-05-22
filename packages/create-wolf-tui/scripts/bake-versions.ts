@@ -11,6 +11,7 @@ const packageDirs = [
 	'packages/angular',
 	'packages/solid',
 	'packages/svelte',
+	'packages/testing-library',
 	'packages/plugin',
 	'packages/typescript-plugin',
 	'internal/core',

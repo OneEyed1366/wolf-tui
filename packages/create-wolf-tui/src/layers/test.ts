@@ -1,4 +1,5 @@
 import type { ILayer } from '../types'
+import { VERSIONS } from '../versions.gen'
 
 export function testLayer(bundler: 'vite' | 'webpack' | 'esbuild'): ILayer {
 	const isVite = bundler === 'vite'
@@ -9,7 +10,8 @@ export function testLayer(bundler: 'vite' | 'webpack' | 'esbuild'): ILayer {
 			devDependencies: {
 				vitest: '^3.0.0',
 				chalk: '^5.0.0',
-				'strip-ansi': '^7.0.0',
+				'@wolf-tui/testing-library':
+					VERSIONS['@wolf-tui/testing-library'] ?? '^1.0.0',
 			},
 			scripts: {
 				test: 'vitest run',
