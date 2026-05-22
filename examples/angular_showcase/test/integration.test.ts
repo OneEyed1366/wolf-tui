@@ -7,7 +7,7 @@ import '@angular/compiler'
 import { describe, it, expect, beforeAll } from 'vitest'
 import chalk from 'chalk'
 import { AppComponent } from '../src/app.component'
-import { render } from '@wolf-tui/angular/testing'
+import { render, KEYS } from '@wolf-tui/angular/testing'
 import { NgZone } from '@angular/core'
 import stripAnsiMod from 'strip-ansi'
 
@@ -29,28 +29,22 @@ describe('angular_showcase Integration', () => {
 		})
 		expect(stdout.frames.length).toBeGreaterThan(0)
 
-		const DOWN = '\x1b[B'
-		const UP = '\x1b[A'
-		const RIGHT = '\x1b[C'
-		const ENTER = '\r'
-		const ESC = '\x1b'
-
 		const send = (key) => stdin.write(key)
 
 		let currentIndex = 0
 		async function openDemo(menuIndex) {
 			if (currentIndex < menuIndex) {
 				for (let i = currentIndex; i < menuIndex; i++) {
-					send(DOWN)
+					send(KEYS.DOWN)
 					await delay(150)
 				}
 			} else if (currentIndex > menuIndex) {
 				for (let i = currentIndex; i > menuIndex; i--) {
-					send(UP)
+					send(KEYS.UP)
 					await delay(150)
 				}
 			}
-			send(ENTER)
+			send(KEYS.ENTER)
 			await delay(300)
 			currentIndex = menuIndex
 		}
@@ -67,7 +61,7 @@ describe('angular_showcase Integration', () => {
 			name: 'Timer renders',
 			pass: timerFrame.includes('Timer Demo'),
 		})
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(500)
 
 		// TreeView Demo
@@ -77,7 +71,7 @@ describe('angular_showcase Integration', () => {
 			name: 'TreeView renders',
 			pass: treeFrame.includes('TreeView Demo'),
 		})
-		stdin.write(RIGHT)
+		stdin.write(KEYS.RIGHT)
 		await delay(100)
 		treeFrame = stripAnsi(stdout.get())
 		const hasExpanded =
@@ -85,7 +79,7 @@ describe('angular_showcase Integration', () => {
 			treeFrame.includes('utils') ||
 			treeFrame.includes('index.ts')
 		checks.push({ name: 'TreeView expand works', pass: hasExpanded })
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(500)
 
 		// Combobox Demo
@@ -95,9 +89,9 @@ describe('angular_showcase Integration', () => {
 			name: 'Combobox renders',
 			pass: comboFrame.includes('Combobox Demo'),
 		})
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(100)
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(500)
 
 		// JsonViewer Demo
@@ -107,7 +101,7 @@ describe('angular_showcase Integration', () => {
 			name: 'JsonViewer renders',
 			pass: jsonFrame.includes('JsonViewer Demo'),
 		})
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(500)
 
 		// FilePicker Demo
@@ -127,7 +121,7 @@ describe('angular_showcase Integration', () => {
 				fileFrame.includes('build/') || fileFrame.includes('node_modules/')
 		}
 		checks.push({ name: 'FilePicker renders', pass: hasFile })
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(500)
 
 		// Table Demo
@@ -138,7 +132,7 @@ describe('angular_showcase Integration', () => {
 			tableFrame.includes('Naruto') &&
 			tableFrame.includes('│')
 		checks.push({ name: 'Table renders', pass: hasTable })
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(500)
 
 		// Gradient Demo
@@ -151,7 +145,7 @@ describe('angular_showcase Integration', () => {
 		)
 		checks.push({ name: 'Gradient renders', pass: hasGrad })
 		checks.push({ name: 'Gradient emits ANSI colors', pass: hasColors })
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(500)
 
 		for (const c of checks) {

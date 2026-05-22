@@ -1,5 +1,12 @@
 import wolfieRender from '../render'
-import { MockStdout, MockStderr, MockStdin } from '@wolf-tui/testing-library'
+import {
+	MockStdout,
+	MockStderr,
+	MockStdin,
+	KEYS,
+} from '@wolf-tui/testing-library'
+
+export { KEYS }
 
 export interface RenderOptions {
 	columns?: number

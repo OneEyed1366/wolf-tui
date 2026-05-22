@@ -7,7 +7,7 @@ import '@angular/compiler'
 import { describe, it, expect, beforeAll } from 'vitest'
 import chalk from 'chalk'
 import { AppComponent } from '../src/app.component'
-import { render } from '@wolf-tui/angular/testing'
+import { render, KEYS } from '@wolf-tui/angular/testing'
 import { NgZone } from '@angular/core'
 import stripAnsiMod from 'strip-ansi'
 
@@ -23,11 +23,6 @@ describe('angular_invaders Integration', () => {
 		const delay = (ms: number) =>
 			new Promise((r) => ngZone.runOutsideAngular(() => setTimeout(r, ms)))
 
-		const DOWN = '\x1b[B'
-		const UP = '\x1b[A'
-		const ENTER = '\r'
-		const ESC = '\x1b'
-
 		const { stdout, stdin, unmount } = await render(AppComponent, {
 			columns: 80,
 			rows: 24,
@@ -38,49 +33,49 @@ describe('angular_invaders Integration', () => {
 		expect(stripAnsi(stdout.get())).toContain('Start Game')
 
 		// Help: Down×3, Enter
-		stdin.write(DOWN)
+		stdin.write(KEYS.DOWN)
 		await delay(300)
-		stdin.write(DOWN)
+		stdin.write(KEYS.DOWN)
 		await delay(300)
-		stdin.write(DOWN)
+		stdin.write(KEYS.DOWN)
 		await delay(300)
-		stdin.write(ENTER)
+		stdin.write(KEYS.ENTER)
 		await delay(300)
 		expect(stripAnsi(stdout.get())).toContain('HELP')
 
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(300)
 
 		// Settings: Down×2, Enter
-		stdin.write(DOWN)
+		stdin.write(KEYS.DOWN)
 		await delay(300)
-		stdin.write(DOWN)
+		stdin.write(KEYS.DOWN)
 		await delay(300)
-		stdin.write(ENTER)
+		stdin.write(KEYS.ENTER)
 		await delay(300)
 
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(300)
 
 		// High Scores: Down×1, Enter
-		stdin.write(DOWN)
+		stdin.write(KEYS.DOWN)
 		await delay(300)
-		stdin.write(ENTER)
+		stdin.write(KEYS.ENTER)
 		await delay(300)
 
-		stdin.write(ESC)
+		stdin.write(KEYS.ESC)
 		await delay(300)
 
 		// Start Game: wrap back to top, Enter
-		stdin.write(UP)
+		stdin.write(KEYS.UP)
 		await delay(300)
-		stdin.write(UP)
+		stdin.write(KEYS.UP)
 		await delay(300)
-		stdin.write(UP)
+		stdin.write(KEYS.UP)
 		await delay(300)
-		stdin.write(UP)
+		stdin.write(KEYS.UP)
 		await delay(300)
-		stdin.write(ENTER)
+		stdin.write(KEYS.ENTER)
 		await delay(500)
 
 		unmount()

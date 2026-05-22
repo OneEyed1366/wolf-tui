@@ -4,7 +4,7 @@ process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
 import React from 'react'
-import { render } from '@wolf-tui/react/testing'
+import { render, KEYS } from '@wolf-tui/react/testing'
 import stripAnsiMod from 'strip-ansi'
 import chalk from 'chalk'
 
@@ -26,17 +26,12 @@ describe('React Showcase Integration', () => {
 		const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 		const send = (key: string) => stdin.write(key)
 
-		const DOWN = '\x1b[B'
-		const RIGHT = '\x1b[C'
-		const ENTER = '\r'
-		const ESC = '\x1b'
-
 		async function openDemo(menuIndex: number) {
 			for (let i = 0; i < menuIndex; i++) {
-				await send(DOWN)
+				await send(KEYS.DOWN)
 				await delay(150)
 			}
-			await send(ENTER)
+			await send(KEYS.ENTER)
 			await delay(300)
 		}
 
@@ -46,13 +41,13 @@ describe('React Showcase Integration', () => {
 		// Timer Demo
 		await openDemo(0)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('Timer Demo')
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		// TreeView Demo
 		await openDemo(1)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('TreeView Demo')
-		await send(RIGHT)
+		await send(KEYS.RIGHT)
 		await delay(100)
 		const treeFrame = stripAnsi(lastFrame() ?? '')
 		expect(
@@ -60,27 +55,27 @@ describe('React Showcase Integration', () => {
 				treeFrame.includes('utils') ||
 				treeFrame.includes('index.ts')
 		).toBe(true)
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		// Combobox Demo
 		await openDemo(2)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('Combobox Demo')
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(100)
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		// JsonViewer Demo
 		await openDemo(3)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('JsonViewer Demo')
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		// FilePicker Demo
 		await openDemo(4)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('FilePicker Demo')
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		// Table Demo
@@ -89,7 +84,7 @@ describe('React Showcase Integration', () => {
 		expect(tableFrame).toContain('Table Demo')
 		expect(tableFrame).toContain('Naruto')
 		expect(tableFrame).toContain('│')
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		// ScrollView Demo
@@ -100,15 +95,15 @@ describe('React Showcase Integration', () => {
 		expect(itemMatchesBefore).toBeGreaterThan(0)
 		expect(itemMatchesBefore).toBeLessThanOrEqual(10)
 
-		await send(DOWN)
+		await send(KEYS.DOWN)
 		await delay(50)
-		await send(DOWN)
+		await send(KEYS.DOWN)
 		await delay(50)
-		await send(DOWN)
+		await send(KEYS.DOWN)
 		await delay(100)
 		scrollFrame = stripAnsi(lastFrame() ?? '')
 		expect(scrollFrame).toContain('offset=3')
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		// Gradient Demo
@@ -120,7 +115,7 @@ describe('React Showcase Integration', () => {
 			gradRaw
 		)
 		expect(hasColors).toBe(true)
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(200)
 
 		unmount()

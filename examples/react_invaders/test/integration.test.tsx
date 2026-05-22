@@ -4,7 +4,7 @@ process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
 import React from 'react'
-import { render } from '@wolf-tui/react/testing'
+import { render, KEYS } from '@wolf-tui/react/testing'
 import { App } from '../src/App'
 import stripAnsiMod from 'strip-ansi'
 import chalk from 'chalk'
@@ -26,53 +26,48 @@ describe('React Invaders Integration', () => {
 		const delay = (ms: number) => new Promise((r) => setTimeout(r, ms))
 		const send = (key: string) => stdin.write(key)
 
-		const DOWN = '\x1b[B'
-		const UP = '\x1b[A'
-		const ENTER = '\r'
-		const ESC = '\x1b'
-
 		await delay(100)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('Start Game')
 
 		// Help: Down×3, Enter
-		await send(DOWN)
-		await send(DOWN)
-		await send(DOWN)
-		await send(ENTER)
+		await send(KEYS.DOWN)
+		await send(KEYS.DOWN)
+		await send(KEYS.DOWN)
+		await send(KEYS.ENTER)
 		await delay(100)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('Controls')
 
 		// Escape back to menu
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(100)
 
 		// Settings: Down×2, Enter
-		await send(DOWN)
-		await send(DOWN)
-		await send(ENTER)
+		await send(KEYS.DOWN)
+		await send(KEYS.DOWN)
+		await send(KEYS.ENTER)
 		await delay(100)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('Difficulty')
 
 		// Escape back to menu
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(100)
 
 		// High Scores: Down×1, Enter
-		await send(DOWN)
-		await send(ENTER)
+		await send(KEYS.DOWN)
+		await send(KEYS.ENTER)
 		await delay(100)
 		expect(stripAnsi(lastFrame() ?? '')).toContain('HIGH SCORES')
 
 		// Escape back to menu
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(100)
 
 		// Start Game: wrap back to top, Enter
-		await send(UP)
-		await send(UP)
-		await send(UP)
-		await send(UP)
-		await send(ENTER)
+		await send(KEYS.UP)
+		await send(KEYS.UP)
+		await send(KEYS.UP)
+		await send(KEYS.UP)
+		await send(KEYS.ENTER)
 		await delay(200)
 
 		const gameFrame = stripAnsi(lastFrame() ?? '')

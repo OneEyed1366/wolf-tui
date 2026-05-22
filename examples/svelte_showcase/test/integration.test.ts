@@ -3,7 +3,7 @@ process.env.WOLFIE_VERIFY = '1'
 process.env.FORCE_COLOR = '3'
 
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render } from '@wolf-tui/svelte/testing'
+import { render, KEYS } from '@wolf-tui/svelte/testing'
 import stripAnsiMod from 'strip-ansi'
 import chalk from 'chalk'
 
@@ -24,26 +24,20 @@ describe('Svelte Showcase Integration', () => {
 
 		const send = (key: string) => stdin.write(key)
 
-		const DOWN = '\x1b[B'
-		const UP = '\x1b[A'
-		const RIGHT = '\x1b[C'
-		const ENTER = '\r'
-		const ESC = '\x1b'
-
 		let currentIndex = 0
 		async function openDemo(menuIndex: number) {
 			if (currentIndex < menuIndex) {
 				for (let i = currentIndex; i < menuIndex; i++) {
-					send(DOWN)
+					send(KEYS.DOWN)
 					await delay(150)
 				}
 			} else if (currentIndex > menuIndex) {
 				for (let i = currentIndex; i > menuIndex; i--) {
-					send(UP)
+					send(KEYS.UP)
 					await delay(150)
 				}
 			}
-			send(ENTER)
+			send(KEYS.ENTER)
 			await delay(300)
 			currentIndex = menuIndex
 		}
@@ -57,7 +51,7 @@ describe('Svelte Showcase Integration', () => {
 			name: 'Timer renders',
 			pass: timerFrame.includes('Timer Demo'),
 		})
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(300)
 
 		// TreeView Demo
@@ -67,7 +61,7 @@ describe('Svelte Showcase Integration', () => {
 			name: 'TreeView renders',
 			pass: treeFrame.includes('TreeView Demo'),
 		})
-		await send(RIGHT)
+		await send(KEYS.RIGHT)
 		await delay(100)
 		treeFrame = stripAnsi(stdout.get())
 		const hasExpanded =
@@ -75,7 +69,7 @@ describe('Svelte Showcase Integration', () => {
 			treeFrame.includes('utils') ||
 			treeFrame.includes('index.ts')
 		checks.push({ name: 'TreeView expand works', pass: hasExpanded })
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(300)
 
 		// Combobox Demo
@@ -85,9 +79,9 @@ describe('Svelte Showcase Integration', () => {
 			name: 'Combobox renders',
 			pass: comboFrame.includes('Combobox Demo'),
 		})
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(100)
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(300)
 
 		// JsonViewer Demo
@@ -97,7 +91,7 @@ describe('Svelte Showcase Integration', () => {
 			name: 'JsonViewer renders',
 			pass: jsonFrame.includes('JsonViewer Demo'),
 		})
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(300)
 
 		// FilePicker Demo
@@ -107,7 +101,7 @@ describe('Svelte Showcase Integration', () => {
 			name: 'FilePicker renders',
 			pass: fileFrame.includes('FilePicker Demo'),
 		})
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(500)
 
 		// Table Demo
@@ -118,7 +112,7 @@ describe('Svelte Showcase Integration', () => {
 			tableFrame.includes('Naruto') &&
 			tableFrame.includes('│')
 		checks.push({ name: 'Table renders', pass: hasTable })
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(300)
 
 		// Gradient Demo
@@ -133,7 +127,7 @@ describe('Svelte Showcase Integration', () => {
 			gradRaw
 		)
 		checks.push({ name: 'Gradient emits ANSI colors', pass: hasColors })
-		await send(ESC)
+		await send(KEYS.ESC)
 		await delay(300)
 
 		for (const c of checks) {
