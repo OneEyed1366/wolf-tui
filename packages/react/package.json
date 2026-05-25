@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/react",
 	"version": "1.10.0",
-	"description": "React adapter for Wolfie",
+	"description": "React adapter for wolf-tui — write terminal user interfaces using React 19+ and Taffy layout engine.",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -43,9 +43,13 @@
 	],
 	"keywords": [
 		"react",
+		"react19",
 		"cli",
 		"jsx",
 		"stdout",
+		"tui",
+		"terminal",
+		"terminal-ui",
 		"components",
 		"command-line",
 		"preact",

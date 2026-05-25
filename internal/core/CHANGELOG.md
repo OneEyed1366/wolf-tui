@@ -2,10 +2,9 @@
 
 ## [1.9.0](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.8.0...core@v1.9.0) (2026-05-22)
 
-
 ### Features
 
-* **testing-library:** framework-agnostic headless testing toolkit ([#35](https://github.com/OneEyed1366/wolf-tui/issues/35)) ([9e7e09f](https://github.com/OneEyed1366/wolf-tui/commit/9e7e09f850d2cbbec832cfacc561da37bf19064c))
+- **testing-library:** framework-agnostic headless testing toolkit ([#35](https://github.com/OneEyed1366/wolf-tui/issues/35)) ([9e7e09f](https://github.com/OneEyed1366/wolf-tui/commit/9e7e09f850d2cbbec832cfacc561da37bf19064c))
 
 ## [1.8.0](https://github.com/OneEyed1366/wolf-tui/compare/core@v1.7.0...core@v1.8.0) (2026-05-04)
 

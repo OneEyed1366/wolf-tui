@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/typescript-plugin",
 	"version": "1.7.0",
-	"description": "TypeScript language service plugin for CSS module types in Wolfie",
+	"description": "TypeScript language service plugin for CSS module types in wolf-tui terminal applications.",
 	"license": "MIT",
 	"main": "./build/index.js",
 	"types": "./types.d.ts",
@@ -40,5 +40,14 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"typescript",
+		"typescript-plugin",
+		"language-service",
+		"css-modules",
+		"tui",
+		"terminal",
+		"wolf-tui"
+	]
 }
