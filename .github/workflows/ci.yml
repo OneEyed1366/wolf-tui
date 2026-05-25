@@ -277,35 +277,16 @@ jobs:
         if: steps.download-build.outcome == 'failure'
         run: pnpm build
 
-      - name: Move binaries into platform packages
-        working-directory: internal/core
-        run: |
-          for f in *.node; do
-            # wolfie-layout.darwin-arm64.node → darwin-arm64
-            platform="${f#wolfie-layout.}"
-            platform="${platform%.node}"
-            if [ -d "npm/$platform" ]; then
-              cp "$f" "npm/$platform/$f"
-              echo "Copied $f → npm/$platform/"
-            fi
-          done
-
-      - name: List platform packages
-        run: ls -la internal/core/npm/*/
-
-      - name: Publish platform packages
-        working-directory: internal/core
-        run: |
-          for dir in npm/*/; do
-            if [ -f "$dir/package.json" ]; then
-              echo "Publishing $dir..."
-              npm publish "$dir" --access public || true
-            fi
-          done
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: List native bindings
+        run: ls -la internal/core/*.node
 
       - name: Publish workspace packages
+        # @wolf-tui/core has a `prepublishOnly: napi prepublish -t npm` hook
+        # that copies *.node files into internal/core/npm/<platform>/,
+        # bumps each platform package.json to the current core version, and
+        # publishes them alongside the main package. GITHUB_TOKEN is needed
+        # because napi probes the GitHub release API even with --gh-release off.
         run: pnpm -r publish --no-git-checks --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
