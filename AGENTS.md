@@ -71,24 +71,28 @@ wolf-tui is a framework-agnostic Terminal User Interface library. Write CLI apps
   └──────────────────┘  └──────────────────┘  └──────────────────────┘
 ```
 
-Bundler examples also exist per framework: `examples/<fw>_{esbuild,vite,webpack}/` (`solid_vite` uses `solid_invaders` as reference — scaffolding supported via `create-wolf-tui`)
+Bundler integration samples live in `examples/<fw>_{esbuild,vite,webpack}/`. Not every combination exists today — Solid currently ships `solid_esbuild` and `solid_webpack` (no `solid_vite`); React/Vue/Angular/Svelte have all three. All bundler combos can be regenerated via `create-wolf-tui` (`packages/create-wolf-tui`).
 
 Workspace: **pnpm** monorepo. Node >= 20, pnpm >= 9.
 
 ## Monorepo Commands
 
-| Command             | Description                                       |
-| ------------------- | ------------------------------------------------- |
-| `pnpm dev`          | Watch mode for all packages (parallel)            |
-| `pnpm build`        | Build all packages                                |
-| `pnpm test`         | Run all unit tests                                |
-| `pnpm test:e2e`     | Run E2E screenshot tests (24 tests across 5 apps) |
-| `pnpm lint`         | ESLint check                                      |
-| `pnpm lint:fix`     | ESLint auto-fix                                   |
-| `pnpm format`       | Prettier format                                   |
-| `pnpm format:check` | Prettier check                                    |
-| `pnpm typecheck`    | `tsc --build --noEmit`                            |
-| `pnpm check`        | Lint + build + typecheck + test (full CI gate)    |
+| Command             | Description                                                         |
+| ------------------- | ------------------------------------------------------------------- |
+| `pnpm build`        | Build all packages (recursive)                                      |
+| `pnpm test`         | Run all unit tests (recursive)                                      |
+| `pnpm test:related` | Run only tests related to staged changes                            |
+| `pnpm test:e2e`     | Run E2E screenshot tests (24 tests across 5 apps)                   |
+| `pnpm lint`         | ESLint check                                                        |
+| `pnpm lint:fix`     | ESLint auto-fix                                                     |
+| `pnpm format`       | Prettier format (write)                                             |
+| `pnpm format:check` | Prettier check                                                      |
+| `pnpm typecheck`    | `tsc --build --noEmit`                                              |
+| `pnpm check`        | `concurrently (lint, build)` + `typecheck` + `test` (full CI gate)  |
+| `pnpm benchmark`    | Run a benchmark script via `vite-node` (pass file path as argument) |
+
+> [!NOTE]
+> There is no `pnpm dev` script at the root. To watch a specific package, use `pnpm --filter <pkg> dev` (each package defines its own `dev` script — typically `vite build --watch`).
 
 ### Per-Package Build
 
@@ -108,20 +112,81 @@ pnpm --filter @wolf-tui/svelte-game-invaders build
 
 ### Dev with Logging
 
-```bash
-pnpm dev:log:react    # WOLFIE_LOG=1 for react-invaders
-pnpm dev:log:vue      # WOLFIE_LOG=1 for vue-invaders
-pnpm dev:log:angular  # WOLFIE_LOG=1 for angular-invaders
-```
+Logging is opt-in via the `WOLFIE_LOG` environment variable. There is no dedicated `dev:log:*` script — set it inline when running `verify.cjs` (see [WOLFIE_LOG section](#wolfie_log--internal-logging) below).
 
 ## CI & Release Process
 
-- **Release Please**: The project uses `release-please` to automate version bumps, changelog generation, and GitHub releases.
-- **Commit Types**: Only specific Conventional Commits (like `feat:`, `fix:`) trigger a new release PR. Commits prefixed with `chore:`, `docs:`, `test:`, or `refactor:` will **not** trigger a version bump by default.
-- **Manual NPM Publish**: If you need to force publish to npm without bumping package versions (e.g., updating `package.json` metadata for SEO), you must manually trigger the `ci.yml` workflow with the `force_publish` input set to `true`:
-  ```bash
-  gh workflow run ci.yml -f force_publish=true
-  ```
+The full pipeline lives in `.github/workflows/ci.yml`. Triggered on every push to `master` and via `workflow_dispatch`.
+
+### Jobs (in order)
+
+1. **`native`** — builds Rust `.node` bindings for 5 platforms (linux x64/arm64, macOS Intel/ARM, Windows x64) via napi-rs
+2. **`collect-native`** — merges all 5 platform artifacts into a single `wolfie-core-node` artifact
+3. **`checks`** — runs `pnpm check` (lint + build + typecheck + test). Uploads `build-output` artifact for reuse downstream
+4. **`e2e`** — Playwright screenshot tests
+5. **`release`** — `googleapis/release-please-action@v4` creates or updates the release PR
+6. **`auto-merge-release`** — auto-merges the release PR using `PAT_TOKEN` (release-please defaults stay green)
+7. **`publish`** — runs only if a release was created OR `force_publish=true`. Executes `pnpm -r publish` with `NPM_TOKEN` and `PAT_TOKEN`
+
+### Release Please
+
+- Config: `.release-please-config.json` (one entry per publishable package, component name = npm name without scope)
+- Manifest: `.release-please-manifest.json` (tracks current released version per path)
+- **Only `feat:`, `fix:`, and `deps:` commits are "releasable units"** that trigger a release PR. `chore:`, `docs:`, `test:`, `refactor:`, `style:`, `ci:`, `build:` are NOT releasable — they show up in the changelog only if explicitly configured. Breaking changes (`feat!:`, `fix!:`, or footer `BREAKING CHANGE:`) trigger a major version bump. See [release-please README](https://github.com/googleapis/release-please#step-1-ensure-releasable-units-are-merged) for the full list.
+- The release PR is titled `chore: release master` and lives on branch `release-please--branches--master`.
+
+### napi prepublish hook
+
+`@wolf-tui/core` has a `"prepublishOnly": "napi prepublish -t npm"` hook that runs automatically before `pnpm -r publish`. **It does NOT copy `*.node` files** — that's done by an inline bash loop in the `publish` job (step `Move binaries into platform packages`). What `napi prepublish` actually does:
+
+1. Bumps each `internal/core/npm/<platform>/package.json` to the current `@wolf-tui/core` version
+2. Publishes platform packages alongside the main package
+
+Required CI sequence:
+
+1. Download the `wolfie-core-node` artifact into `internal/core/` (gives us `*.node` + `index.cjs`)
+2. Move binaries: shell loop copies `wolfie-layout.<platform>.node` → `internal/core/npm/<platform>/`
+3. `pnpm -r publish` runs, triggering `prepublishOnly` → npm publish of `@wolf-tui/core` + 5 platform packages
+
+A `GITHUB_TOKEN`/`PAT_TOKEN` is required because napi probes the GitHub release API even with `--gh-release off`.
+
+### Manual workflow_dispatch inputs
+
+```bash
+# Force-republish all packages without a release PR
+# (e.g., to update package.json metadata after merging a `chore:` commit)
+gh workflow run ci.yml -f force_publish=true
+
+# Skip lint/build/typecheck/test (rarely needed — emergency reruns)
+gh workflow run ci.yml -f skip_checks=true
+
+# Skip only Playwright E2E (faster iteration when E2E is flaky)
+gh workflow run ci.yml -f skip_e2e=true
+```
+
+### Aggregated GitHub Releases
+
+After a successful publish, `scripts/group-releases.mjs` collapses the 11 per-package GitHub releases that release-please created into a single `release-YYYY-MM-DD` release containing the merged changelog. Per-package git tags and npm versions stay intact.
+
+## Package Metadata Standards
+
+All publishable packages MUST have these fields in `package.json` for npm discoverability and search engine indexing:
+
+| Field           | Required | Notes                                                                                                       |
+| --------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
+| `name`          | yes      | Always scoped under `@wolf-tui/*` (except `create-wolf-tui` for npx scaffolding)                            |
+| `description`   | yes      | Full sentence with framework names, mention "wolf-tui" and "Taffy" where relevant — npm uses this in search |
+| `keywords`      | yes      | At minimum: `tui`, `terminal`, `terminal-ui`, `wolf-tui` + framework-specific tags                          |
+| `repository`    | yes      | `{ type, url, directory }` — `directory` enables monorepo-aware npm links                                   |
+| `homepage`      | yes      | Deep link to package README on master: `https://github.com/OneEyed1366/wolf-tui/tree/master/<path>#readme`  |
+| `bugs.url`      | yes      | Always the monorepo Issues page                                                                             |
+| `author`        | yes      | `A.Prokopenko <psevdoproger@gmail.com>`                                                                     |
+| `license`       | yes      | `MIT`                                                                                                       |
+| `publishConfig` | yes      | `{ "access": "public" }` for public scoped packages                                                         |
+
+Internal-only packages use `"private": true` (e.g., `internal/build-config`, `internal/spec`) and skip the SEO fields. They are not published to npm.
+
+When updating metadata only (no code changes), use a `chore(seo):` or `docs(meta):` commit — then manually trigger `force_publish=true` (see above) to push updated metadata to the npm registry.
 
 ## Package Build Notes
 
@@ -215,7 +280,7 @@ Parent `[prop]="expr"` bindings don't propagate to child signal inputs — input
 
 ### Layout Stretching Bug (Host Elements)
 
-When Angular removes a host element from a non-host parent, its children's Taffy layout nodes are orphaned. Root cause: `removeChildNode()` in `internal/core/src/dom.ts` checks `removeNode.layoutNodeId !== undefined` — fails for host elements (undefined). Diagnosed but not yet fully fixed.
+When Angular removes a host element from a non-host parent, its children's Taffy layout nodes can be orphaned. `removeChildNode()` in `internal/core/src/dom.ts` now checks both `removeNode.layoutNodeId !== undefined` **and** `removeNode.parentNode?.layoutNodeId !== undefined` before calling `layoutTree.removeChild`. This guards the napi crash, but the underlying orphan-children case may still cause layout drift in deeply nested host-element trees — re-verify any new Angular Box/Text composition patterns with `verify.cjs` snapshots before merging.
 
 ## Known Quirks (Svelte)
 
@@ -328,3 +393,21 @@ This two-step debug path replaces unbounded cross-adapter diffing.
 | OrderedList, UnorderedList | Item content is user JSX subtrees — not plain data                                                                                 |
 | Static                     | Special renderer semantics that bypass the WNode pipeline entirely                                                                 |
 | Transform                  | `transform: (text) => string` function prop cannot be WNode data                                                                   |
+
+## Key Files Reference
+
+When debugging or extending the project, these are the files agents most commonly need to inspect:
+
+| Path                                      | Purpose                                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------------------- |
+| `.github/workflows/ci.yml`                | Full CI/CD pipeline: native build, tests, release-please, npm publish                 |
+| `.release-please-config.json`             | Per-package release-please configuration (components, paths, versioning strategy)     |
+| `.release-please-manifest.json`           | Current released version per package — DO NOT edit by hand                            |
+| `internal/core/src/dom.ts`                | DOM tree management + Taffy layout integration (`removeChildNode`, `appendChildNode`) |
+| `internal/shared/src/wnode/`              | Pure render functions shared across all 5 adapters (see WNode Render Philosophy)      |
+| `internal/shared/src/render-scheduler.ts` | Frame throttling, `maxFps`, `debug` mode logic                                        |
+| `scripts/group-releases.mjs`              | Post-publish aggregation of per-package GitHub releases into a single dated release   |
+| `scripts/analyze-log.cjs`                 | WOLFIE_LOG JSONL analysis (--summary, --cat, --diff)                                  |
+| `pnpm-workspace.yaml`                     | Workspace package globs                                                               |
+| `tsconfig.base.json`                      | Shared TS config inherited by all packages                                            |
+| `eslint.config.js`                        | Flat ESLint config (root only — packages do not override)                             |
