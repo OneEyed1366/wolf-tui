@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/shared",
 	"version": "1.10.0",
-	"description": "Shared framework-agnostic logic for wolfie adapters",
+	"description": "Shared framework-agnostic rendering, input parsing, and theme logic for wolf-tui adapters.",
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
@@ -49,5 +49,13 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"shared",
+		"rendering",
+		"wolf-tui"
+	]
 }

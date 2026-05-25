@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/css-parser",
 	"version": "1.9.0",
-	"description": "CSS/SCSS/Less/Stylus parser and code generator for wolfie",
+	"description": "CSS, SCSS, Less, Stylus, and Tailwind CSS parser and code generator for wolf-tui terminal components.",
 	"license": "MIT",
 	"type": "module",
 	"bin": {
@@ -79,5 +79,16 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"css",
+		"parser",
+		"scss",
+		"less",
+		"stylus",
+		"tailwind",
+		"tui",
+		"terminal",
+		"wolf-tui"
+	]
 }

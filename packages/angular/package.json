@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/angular",
 	"version": "1.10.0",
-	"description": "Angular adapter for Wolfie",
+	"description": "Angular adapter for wolf-tui — write terminal user interfaces using Angular 17+ and Taffy layout engine.",
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
@@ -87,5 +87,18 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"angular",
+		"cli",
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"stdout",
+		"components",
+		"command-line",
+		"render",
+		"colors",
+		"text"
+	]
 }

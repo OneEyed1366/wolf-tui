@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/plugin",
 	"version": "1.9.0",
-	"description": "Unplugin for wolfie - supports Vite, esbuild, webpack, and Rollup",
+	"description": "Vite, esbuild, webpack, and Rollup build plugin for wolf-tui terminal CSS and styling resolution.",
 	"license": "MIT",
 	"type": "module",
 	"exports": {
@@ -85,5 +85,18 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"unplugin",
+		"vite",
+		"esbuild",
+		"webpack",
+		"rollup",
+		"plugin",
+		"wolf-tui",
+		"tui",
+		"terminal",
+		"css",
+		"styles"
+	]
 }

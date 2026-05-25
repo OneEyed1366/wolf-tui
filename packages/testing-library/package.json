@@ -16,5 +16,23 @@
 	},
 	"devDependencies": {
 		"@wolf-tui/build-config": "workspace:*"
-	}
+	},
+	"description": "Framework-agnostic headless testing library for wolf-tui terminal components.",
+	"keywords": [
+		"testing",
+		"headless",
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"wolf-tui",
+		"vitest",
+		"jest"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/OneEyed1366/wolf-tui.git",
+		"directory": "packages/testing-library"
+	},
+	"homepage": "https://github.com/OneEyed1366/wolf-tui/tree/master/packages/testing-library#readme",
+	"author": "A.Prokopenko <psevdoproger@gmail.com>"
 }

@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/core",
 	"version": "1.9.0",
-	"description": "Framework-agnostic TUI core library",
+	"description": "Framework-agnostic TUI core library for wolf-tui featuring Taffy layout engine and ANSI rendering.",
 	"license": "MIT",
 	"type": "module",
 	"napi": {
@@ -80,5 +80,18 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"cli",
+		"taffy",
+		"flexbox",
+		"grid",
+		"layout-engine",
+		"rust",
+		"ansi",
+		"wolf-tui"
+	]
 }

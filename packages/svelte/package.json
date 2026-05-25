@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/svelte",
 	"version": "1.8.0",
-	"description": "Svelte 5 adapter for Wolfie",
+	"description": "Svelte 5 adapter for wolf-tui — write terminal user interfaces using Svelte 5 and Taffy layout engine.",
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
@@ -80,5 +80,19 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"svelte",
+		"svelte5",
+		"cli",
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"stdout",
+		"components",
+		"command-line",
+		"render",
+		"colors",
+		"text"
+	]
 }

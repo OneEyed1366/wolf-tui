@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/vue",
 	"version": "1.10.0",
-	"description": "Vue 3 adapter for Wolfie",
+	"description": "Vue 3 adapter for wolf-tui — write terminal user interfaces using Vue 3 and Taffy layout engine.",
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
@@ -88,5 +88,19 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"vue",
+		"vue3",
+		"cli",
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"stdout",
+		"components",
+		"command-line",
+		"render",
+		"colors",
+		"text"
+	]
 }

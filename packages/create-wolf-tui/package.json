@@ -1,7 +1,7 @@
 {
 	"name": "create-wolf-tui",
 	"version": "0.7.0",
-	"description": "Scaffold wolf-tui terminal UI projects",
+	"description": "Scaffold wolf-tui terminal UI projects for React, Vue, Angular, SolidJS, and Svelte.",
 	"license": "MIT",
 	"type": "module",
 	"bin": {
@@ -46,5 +46,19 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"scaffold",
+		"generator",
+		"cli",
+		"create-app",
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"react",
+		"vue",
+		"angular",
+		"solidjs",
+		"svelte"
+	]
 }

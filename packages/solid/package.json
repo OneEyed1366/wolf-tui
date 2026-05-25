@@ -1,7 +1,7 @@
 {
 	"name": "@wolf-tui/solid",
 	"version": "1.10.0",
-	"description": "SolidJS adapter for Wolfie",
+	"description": "SolidJS adapter for wolf-tui — write terminal user interfaces using SolidJS and Taffy layout engine.",
 	"license": "MIT",
 	"type": "module",
 	"sideEffects": false,
@@ -85,5 +85,19 @@
 	"bugs": {
 		"url": "https://github.com/OneEyed1366/wolf-tui/issues"
 	},
-	"author": "A.Prokopenko <psevdoproger@gmail.com>"
+	"author": "A.Prokopenko <psevdoproger@gmail.com>",
+	"keywords": [
+		"solid",
+		"solidjs",
+		"cli",
+		"tui",
+		"terminal",
+		"terminal-ui",
+		"stdout",
+		"components",
+		"command-line",
+		"render",
+		"colors",
+		"text"
+	]
 }
