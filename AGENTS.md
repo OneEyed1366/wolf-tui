@@ -114,6 +114,15 @@ pnpm dev:log:vue      # WOLFIE_LOG=1 for vue-invaders
 pnpm dev:log:angular  # WOLFIE_LOG=1 for angular-invaders
 ```
 
+## CI & Release Process
+
+- **Release Please**: The project uses `release-please` to automate version bumps, changelog generation, and GitHub releases.
+- **Commit Types**: Only specific Conventional Commits (like `feat:`, `fix:`) trigger a new release PR. Commits prefixed with `chore:`, `docs:`, `test:`, or `refactor:` will **not** trigger a version bump by default.
+- **Manual NPM Publish**: If you need to force publish to npm without bumping package versions (e.g., updating `package.json` metadata for SEO), you must manually trigger the `ci.yml` workflow with the `force_publish` input set to `true`:
+  ```bash
+  gh workflow run ci.yml -f force_publish=true
+  ```
+
 ## Package Build Notes
 
 - **React / Vue / Solid / Svelte** — Vite lib mode, outputs ES modules (`dist/index.js`)
