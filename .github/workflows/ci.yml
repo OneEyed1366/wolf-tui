@@ -306,3 +306,22 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+  group-releases:
+    name: Group GitHub releases
+    needs: [release, publish]
+    if: ${{ !cancelled() && needs.release.outputs.releases_created == 'true' && needs.publish.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Aggregate per-package releases into one dated release
+        run: node scripts/group-releases.mjs
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PATHS_RELEASED: ${{ needs.release.outputs.paths_released }}
