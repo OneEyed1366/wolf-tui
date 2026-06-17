@@ -9,3 +9,9 @@ node_modules
 .worktrees
 .clipboard/
 /scaffolds
+
+# Claude Code: keep agents/skills/references/CLAUDE.md tracked, ignore local & generated state
+.claude/settings.local.json
+.claude/agents/ruvector.db
+.claude/agents/.ruvector/
+.codegraph/
