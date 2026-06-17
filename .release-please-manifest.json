@@ -1,6 +1,6 @@
 {
 	"packages/react": "1.10.0",
-	"packages/vue": "1.10.0",
+	"packages/vue": "1.11.0",
 	"packages/angular": "1.10.0",
 	"packages/solid": "1.10.0",
 	"packages/plugin": "1.9.0",

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/OneEyed1366/wolf-tui/compare/vue@v1.10.0...vue@v1.11.0) (2026-06-17)
+
+
+### Features
+
+* **vue:** re-export Styles, Key, Handler and core Vue types ([#41](https://github.com/OneEyed1366/wolf-tui/issues/41)) ([00c36ca](https://github.com/OneEyed1366/wolf-tui/commit/00c36ca7e3e50b4fb56f23efa0679c59e7d16f7e))
+
 ## [1.10.0](https://github.com/OneEyed1366/wolf-tui/compare/vue@v1.9.0...vue@v1.10.0) (2026-05-22)
 
 ### Features

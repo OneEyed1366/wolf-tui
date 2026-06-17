@@ -1,6 +1,6 @@
 {
 	"name": "@wolf-tui/vue",
-	"version": "1.10.0",
+	"version": "1.11.0",
 	"description": "Vue 3 adapter for wolf-tui — write terminal user interfaces using Vue 3 and Taffy layout engine.",
 	"license": "MIT",
 	"type": "module",
