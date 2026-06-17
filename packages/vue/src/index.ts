@@ -638,6 +638,7 @@ export * from './components'
 // Re-export composables
 export { useApp } from './composables/use-app'
 export { useInput } from './composables/use-input'
+export type { Key, Handler } from './composables/use-input'
 export { useFocus } from './composables/use-focus'
 export { useFocusManager } from './composables/use-focus-manager'
 export { useStdin } from './composables/use-stdin'
@@ -727,3 +728,10 @@ export {
 	ssrContextKey,
 	useSSRContext,
 } from 'vue'
+
+// Re-export commonly-used Vue types for consumers writing defineComponent/JSX
+export type { PropType, Component, Ref, ComputedRef, VNode } from 'vue'
+
+// Re-export the core style object type so consumers can type style objects
+// (e.g. `satisfies Record<string, Styles>`) without depending on @wolf-tui/core.
+export type { Styles } from '@wolf-tui/core'
