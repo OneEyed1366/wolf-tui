@@ -1,5 +1,3 @@
-# Local-only workflow — run via `act` pre-push hook.
-# Uses --bind so native bindings + pnpm store from the workspace are available.
 name: Local CI
 
 on:
